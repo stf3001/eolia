@@ -1,0 +1,715 @@
+service: eolia-backend
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-west-1
+  stage: ${opt:stage, 'dev'}
+  memorySize: 256
+  timeout: 30
+  httpApi:
+    cors:
+      allowedOrigins:
+        - http://localhost:5173
+        - http://localhost:5174
+        - http://localhost:3000
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+      allowCredentials: true
+  environment:
+    STAGE: ${self:provider.stage}
+    REGION: ${self:provider.region}
+    PRODUCTS_TABLE: ${self:service}-products-${self:provider.stage}
+    USERS_TABLE: ${self:service}-users-${self:provider.stage}
+    ORDERS_TABLE: ${self:service}-orders-${self:provider.stage}
+    ADDRESSES_TABLE: ${self:service}-addresses-${self:provider.stage}
+    AFFILIATES_TABLE: ${self:service}-affiliates-${self:provider.stage}
+    REFERRALS_TABLE: ${self:service}-referrals-${self:provider.stage}
+    COMMISSIONS_TABLE: ${self:service}-commissions-${self:provider.stage}
+    CONTRACTS_BUCKET: ${self:service}-contracts-${self:provider.stage}
+    FRONTEND_URL: ${env:FRONTEND_URL, 'http://localhost:5173'}
+    SERVICE_NAME: ${self:service}
+    USER_POOL_ID: !Ref CognitoUserPool
+    USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
+    STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ''}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:BatchGetItem
+            - dynamodb:BatchWriteItem
+          Resource:
+            - !GetAtt ProductsTable.Arn
+            - !GetAtt UsersTable.Arn
+            - !GetAtt OrdersTable.Arn
+            - !GetAtt AddressesTable.Arn
+            - !GetAtt AffiliatesTable.Arn
+            - !GetAtt ReferralsTable.Arn
+            - !GetAtt CommissionsTable.Arn
+            - !Sub '${ProductsTable.Arn}/index/*'
+            - !Sub '${UsersTable.Arn}/index/*'
+            - !Sub '${OrdersTable.Arn}/index/*'
+            - !Sub '${AddressesTable.Arn}/index/*'
+            - !Sub '${AffiliatesTable.Arn}/index/*'
+            - !Sub '${ReferralsTable.Arn}/index/*'
+            - !Sub '${CommissionsTable.Arn}/index/*'
+        - Effect: Allow
+          Action:
+            - cognito-idp:AdminInitiateAuth
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminSetUserPassword
+            - cognito-idp:AdminGetUser
+            - cognito-idp:AdminUpdateUserAttributes
+            - cognito-idp:ListUsers
+          Resource: !GetAtt CognitoUserPool.Arn
+        - Effect: Allow
+          Action:
+            - ses:SendEmail
+            - ses:SendRawEmail
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+          Resource:
+            - !Sub '${ContractsBucket.Arn}/*'
+        - Effect: Allow
+          Action:
+            - events:PutEvents
+          Resource:
+            - !Sub 'arn:aws:events:${AWS::Region}:${AWS::AccountId}:event-bus/default'
+        - Effect: Allow
+          Action:
+            - lambda:InvokeFunction
+          Resource:
+            - !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-generateContract'
+
+
+functions:
+  hello:
+    handler: src/functions/hello.handler
+    events:
+      - httpApi:
+          path: /hello
+          method: get
+
+  # Products
+  getProducts:
+    handler: src/functions/products/getProducts.handler
+    events:
+      - httpApi:
+          path: /products
+          method: get
+
+  createProduct:
+    handler: src/functions/products/createProduct.handler
+    events:
+      - httpApi:
+          path: /products
+          method: post
+
+  # Auth
+  register:
+    handler: src/functions/auth/register.handler
+    events:
+      - httpApi:
+          path: /auth/register
+          method: post
+
+  confirmSignUp:
+    handler: src/functions/auth/confirmSignUp.handler
+    events:
+      - httpApi:
+          path: /auth/confirm
+          method: post
+
+  login:
+    handler: src/functions/auth/login.handler
+    events:
+      - httpApi:
+          path: /auth/login
+          method: post
+
+  getMe:
+    handler: src/functions/auth/getMe.handler
+    events:
+      - httpApi:
+          path: /auth/me
+          method: get
+
+  # Addresses
+  createAddress:
+    handler: src/functions/addresses/createAddress.handler
+    events:
+      - httpApi:
+          path: /addresses
+          method: post
+
+  getAddresses:
+    handler: src/functions/addresses/getAddresses.handler
+    events:
+      - httpApi:
+          path: /addresses
+          method: get
+
+  updateAddress:
+    handler: src/functions/addresses/updateAddress.handler
+    events:
+      - httpApi:
+          path: /addresses/{addressId}
+          method: put
+
+  deleteAddress:
+    handler: src/functions/addresses/deleteAddress.handler
+    events:
+      - httpApi:
+          path: /addresses/{addressId}
+          method: delete
+
+  setDefaultAddress:
+    handler: src/functions/addresses/setDefaultAddress.handler
+    events:
+      - httpApi:
+          path: /addresses/{addressId}/default
+          method: put
+
+  # Payments
+  createPaymentIntent:
+    handler: src/functions/payments/createPaymentIntent.handler
+    events:
+      - httpApi:
+          path: /payments/create-intent
+          method: post
+
+  createAnemometerIntent:
+    handler: src/functions/payments/createAnemometerIntent.handler
+    events:
+      - httpApi:
+          path: /payments/create-anemometer-intent
+          method: post
+
+  # Orders
+  createOrder:
+    handler: src/functions/orders/createOrder.handler
+    events:
+      - httpApi:
+          path: /orders
+          method: post
+
+  getOrders:
+    handler: src/functions/orders/getOrders.handler
+    events:
+      - httpApi:
+          path: /orders
+          method: get
+
+  # Affiliates
+  registerB2BAffiliate:
+    handler: src/functions/affiliates/registerB2B.handler
+    events:
+      - httpApi:
+          path: /affiliates/b2b
+          method: post
+
+  getAffiliateProfile:
+    handler: src/functions/affiliates/getProfile.handler
+    events:
+      - httpApi:
+          path: /affiliates/me
+          method: get
+
+  validateAffiliateCode:
+    handler: src/functions/affiliates/validateCode.handler
+    events:
+      - httpApi:
+          path: /affiliates/validate-code/{code}
+          method: get
+
+  # Referrals
+  createManualReferral:
+    handler: src/functions/referrals/createManual.handler
+    events:
+      - httpApi:
+          path: /affiliates/me/referrals
+          method: post
+
+  getReferrals:
+    handler: src/functions/referrals/getReferrals.handler
+    events:
+      - httpApi:
+          path: /affiliates/me/referrals
+          method: get
+
+  # Commissions
+  getCommissions:
+    handler: src/functions/commissions/getCommissions.handler
+    events:
+      - httpApi:
+          path: /affiliates/me/commissions
+          method: get
+
+  # Notifications
+  sendEmailNotification:
+    handler: src/functions/notifications/sendEmail.handler
+    events:
+      - httpApi:
+          path: /notifications/email
+          method: post
+      - eventBridge:
+          pattern:
+            source:
+              - eolia.affiliates
+              - eolia.commissions
+            detail-type:
+              - ReferralCreated
+              - CommissionCreated
+              - CommissionValidated
+              - CommissionPaid
+
+  # Contracts
+  generateContract:
+    handler: src/functions/contracts/generateContract.handler
+    runtime: python3.11
+    timeout: 10
+    memorySize: 512
+    environment:
+      CONTRACTS_BUCKET: ${self:custom.contractsBucket}
+      AFFILIATES_TABLE: ${self:provider.environment.AFFILIATES_TABLE}
+
+  downloadContract:
+    handler: src/functions/contracts/downloadContract.handler
+    events:
+      - httpApi:
+          path: /affiliates/me/contract
+          method: get
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+
+custom:
+  contractsBucket: ${self:service}-contracts-${self:provider.stage}
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    exclude:
+      - aws-sdk
+    target: node20
+    platform: node
+    concurrency: 10
+
+
+resources:
+  Resources:
+    # Cognito User Pool
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: EoliaUserPool-${self:provider.stage}
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+        EmailVerificationMessage: 'Votre code de vérification EOLIA est: {####}'
+        EmailVerificationSubject: 'Code de vérification EOLIA'
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireUppercase: true
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: false
+        Schema:
+          - Name: email
+            AttributeDataType: String
+            Required: true
+            Mutable: false
+          - Name: name
+            AttributeDataType: String
+            Required: true
+            Mutable: true
+          - Name: role
+            AttributeDataType: String
+            Required: false
+            Mutable: true
+        UserAttributeUpdateSettings:
+          AttributesRequireVerificationBeforeUpdate:
+            - email
+
+    # Cognito User Pool Client
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: EoliaAppClient-${self:provider.stage}
+        UserPoolId: !Ref CognitoUserPool
+        GenerateSecret: false
+        ExplicitAuthFlows:
+          - ALLOW_ADMIN_USER_PASSWORD_AUTH
+          - ALLOW_USER_PASSWORD_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+        PreventUserExistenceErrors: ENABLED
+        AccessTokenValidity: 1
+        IdTokenValidity: 1
+        RefreshTokenValidity: 30
+        TokenValidityUnits:
+          AccessToken: hours
+          IdToken: hours
+          RefreshToken: days
+
+    # Table Products
+    ProductsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.PRODUCTS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: productId
+            AttributeType: S
+          - AttributeName: category
+            AttributeType: S
+        KeySchema:
+          - AttributeName: productId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: CategoryIndex
+            KeySchema:
+              - AttributeName: category
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # Table Users
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.USERS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # Table Orders
+    OrdersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.ORDERS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: orderId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: N
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: orderId
+            KeyType: HASH
+          - AttributeName: createdAt
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: UserIdIndex
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # Table Addresses
+    AddressesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.ADDRESSES_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: addressId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: addressId
+            KeyType: RANGE
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+
+    # Table Affiliates
+    AffiliatesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.AFFILIATES_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: affiliateId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: code
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: affiliateId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: CodeIndex
+            KeySchema:
+              - AttributeName: code
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: UserIdIndex
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # Table Referrals
+    ReferralsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.REFERRALS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: referralId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: N
+          - AttributeName: affiliateId
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+          - AttributeName: referredUserId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: referralId
+            KeyType: HASH
+          - AttributeName: createdAt
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: AffiliateIdIndex
+            KeySchema:
+              - AttributeName: affiliateId
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: ReferredUserIdIndex
+            KeySchema:
+              - AttributeName: referredUserId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # Table Commissions
+    CommissionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.COMMISSIONS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: commissionId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: N
+          - AttributeName: affiliateId
+            AttributeType: S
+          - AttributeName: status
+            AttributeType: S
+          - AttributeName: orderId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: commissionId
+            KeyType: HASH
+          - AttributeName: createdAt
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: AffiliateIdIndex
+            KeySchema:
+              - AttributeName: affiliateId
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: StatusIndex
+            KeySchema:
+              - AttributeName: status
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: OrderIdIndex
+            KeySchema:
+              - AttributeName: orderId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # S3 Bucket pour contrats PDF
+    ContractsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.CONTRACTS_BUCKET}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedMethods:
+                - GET
+              AllowedHeaders:
+                - '*'
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # Bucket Policy pour accès public lecture
+    ContractsBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref ContractsBucket
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: !Sub '${ContractsBucket.Arn}/affiliation/contracts/*'
+
+  Outputs:
+    CognitoUserPoolId:
+      Description: ID du User Pool Cognito
+      Value: !Ref CognitoUserPool
+      Export:
+        Name: ${self:service}-${self:provider.stage}-UserPoolId
+
+    CognitoUserPoolClientId:
+      Description: ID du Client App Cognito
+      Value: !Ref CognitoUserPoolClient
+      Export:
+        Name: ${self:service}-${self:provider.stage}-UserPoolClientId
+
+    ProductsTableName:
+      Description: Nom de la table Products
+      Value: !Ref ProductsTable
+
+    UsersTableName:
+      Description: Nom de la table Users
+      Value: !Ref UsersTable
+
+    OrdersTableName:
+      Description: Nom de la table Orders
+      Value: !Ref OrdersTable
+
+    AddressesTableName:
+      Description: Nom de la table Addresses
+      Value: !Ref AddressesTable
+
+    AffiliatesTableName:
+      Description: Nom de la table Affiliates
+      Value: !Ref AffiliatesTable
+
+    ReferralsTableName:
+      Description: Nom de la table Referrals
+      Value: !Ref ReferralsTable
+
+    CommissionsTableName:
+      Description: Nom de la table Commissions
+      Value: !Ref CommissionsTable
+
+    ContractsBucketName:
+      Description: Nom du bucket S3 pour les contrats
+      Value: !Ref ContractsBucket

@@ -1,0 +1,497 @@
+{
+  "products": [
+    {
+      "productId": "tulipe-1kwc",
+      "name": "Éolienne Tulipe 1 kWc",
+      "category": "turbine",
+      "price": 3990,
+      "powerKwc": 1,
+      "description": "Éolienne verticale Tulipe compacte, idéale pour les petites installations résidentielles. Design élégant et silencieux.",
+      "specs": {
+        "Puissance nominale": "1 kWc",
+        "Hauteur": "2.5 m",
+        "Diamètre rotor": "1.2 m",
+        "Vitesse démarrage": "2 m/s",
+        "Vitesse nominale": "12 m/s",
+        "Niveau sonore": "< 35 dB",
+        "Poids": "45 kg"
+      },
+      "imageUrl": "/images/products/tulipe-1kwc.jpg",
+      "images": [
+        "/images/products/tulipe-1kwc.jpg",
+        "/images/products/tulipe-1kwc-2.jpg",
+        "/images/products/tulipe-1kwc-3.jpg"
+      ],
+      "stock": 50,
+      "warranty": "5 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "tulipe-2kwc",
+      "name": "Éolienne Tulipe 2 kWc",
+      "category": "turbine",
+      "price": 6490,
+      "powerKwc": 2,
+      "description": "Éolienne verticale Tulipe pour installations résidentielles moyennes. Excellent rapport puissance/encombrement.",
+      "specs": {
+        "Puissance nominale": "2 kWc",
+        "Hauteur": "3.2 m",
+        "Diamètre rotor": "1.6 m",
+        "Vitesse démarrage": "2 m/s",
+        "Vitesse nominale": "12 m/s",
+        "Niveau sonore": "< 38 dB",
+        "Poids": "75 kg"
+      },
+      "imageUrl": "/images/products/tulipe-2kwc.jpg",
+      "images": [
+        "/images/products/tulipe-2kwc.jpg",
+        "/images/products/tulipe-2kwc-2.jpg",
+        "/images/products/tulipe-2kwc-3.jpg"
+      ],
+      "stock": 40,
+      "warranty": "5 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "tulipe-3kwc",
+      "name": "Éolienne Tulipe 3 kWc",
+      "category": "turbine",
+      "price": 8990,
+      "powerKwc": 3,
+      "description": "Éolienne verticale Tulipe polyvalente, adaptée aux maisons individuelles avec consommation moyenne.",
+      "specs": {
+        "Puissance nominale": "3 kWc",
+        "Hauteur": "4.0 m",
+        "Diamètre rotor": "2.0 m",
+        "Vitesse démarrage": "2 m/s",
+        "Vitesse nominale": "12 m/s",
+        "Niveau sonore": "< 40 dB",
+        "Poids": "110 kg"
+      },
+      "imageUrl": "/images/products/tulipe-3kwc.jpg",
+      "images": [
+        "/images/products/tulipe-3kwc.jpg",
+        "/images/products/tulipe-3kwc-2.jpg",
+        "/images/products/tulipe-3kwc-3.jpg"
+      ],
+      "stock": 35,
+      "warranty": "5 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "tulipe-5kwc",
+      "name": "Éolienne Tulipe 5 kWc",
+      "category": "turbine",
+      "price": 12990,
+      "powerKwc": 5,
+      "description": "Éolienne verticale Tulipe haute performance pour grandes maisons ou petits bâtiments professionnels.",
+      "specs": {
+        "Puissance nominale": "5 kWc",
+        "Hauteur": "5.0 m",
+        "Diamètre rotor": "2.5 m",
+        "Vitesse démarrage": "2 m/s",
+        "Vitesse nominale": "12 m/s",
+        "Niveau sonore": "< 42 dB",
+        "Poids": "160 kg"
+      },
+      "imageUrl": "/images/products/tulipe-5kwc.jpg",
+      "images": [
+        "/images/products/tulipe-5kwc.jpg",
+        "/images/products/tulipe-5kwc-2.jpg",
+        "/images/products/tulipe-5kwc-3.jpg"
+      ],
+      "stock": 25,
+      "warranty": "5 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "tulipe-10kwc",
+      "name": "Éolienne Tulipe 10 kWc",
+      "category": "turbine",
+      "price": 22990,
+      "powerKwc": 10,
+      "description": "Éolienne verticale Tulipe professionnelle, idéale pour exploitations agricoles, PME ou copropriétés.",
+      "specs": {
+        "Puissance nominale": "10 kWc",
+        "Hauteur": "7.0 m",
+        "Diamètre rotor": "3.5 m",
+        "Vitesse démarrage": "2 m/s",
+        "Vitesse nominale": "12 m/s",
+        "Niveau sonore": "< 45 dB",
+        "Poids": "280 kg"
+      },
+      "imageUrl": "/images/products/tulipe-10kwc.jpg",
+      "images": [
+        "/images/products/tulipe-10kwc.jpg",
+        "/images/products/tulipe-10kwc-2.jpg",
+        "/images/products/tulipe-10kwc-3.jpg"
+      ],
+      "stock": 15,
+      "warranty": "5 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "forfait-pose-30m",
+      "name": "Forfait Pose < 30m",
+      "category": "installation",
+      "subcategory": "forfait_pose",
+      "price": 2490,
+      "description": "Installation complète pour distance TGBT inférieure à 30 mètres. Inclut toutes les démarches administratives.",
+      "specs": {
+        "Distance TGBT": "< 30 m",
+        "Durée estimée": "2-3 jours",
+        "Techniciens": "2 personnes"
+      },
+      "imageUrl": "/images/products/forfait-pose.jpg",
+      "stock": 999,
+      "includes": [
+        "Déclaration préalable mairie",
+        "Demande raccordement Enedis",
+        "Attestation Consuel",
+        "Mise en service",
+        "Formation utilisateur"
+      ],
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "forfait-pose-60m",
+      "name": "Forfait Pose 30-60m",
+      "category": "installation",
+      "subcategory": "forfait_pose",
+      "price": 3290,
+      "description": "Installation complète pour distance TGBT entre 30 et 60 mètres. Inclut toutes les démarches administratives.",
+      "specs": {
+        "Distance TGBT": "30-60 m",
+        "Durée estimée": "3-4 jours",
+        "Techniciens": "2 personnes"
+      },
+      "imageUrl": "/images/products/forfait-pose.jpg",
+      "stock": 999,
+      "includes": [
+        "Déclaration préalable mairie",
+        "Demande raccordement Enedis",
+        "Attestation Consuel",
+        "Mise en service",
+        "Formation utilisateur",
+        "Câblage longue distance"
+      ],
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "forfait-pose-100m",
+      "name": "Forfait Pose 60-100m",
+      "category": "installation",
+      "subcategory": "forfait_pose",
+      "price": 4490,
+      "description": "Installation complète pour distance TGBT entre 60 et 100 mètres. Inclut toutes les démarches administratives.",
+      "specs": {
+        "Distance TGBT": "60-100 m",
+        "Durée estimée": "4-5 jours",
+        "Techniciens": "2-3 personnes"
+      },
+      "imageUrl": "/images/products/forfait-pose.jpg",
+      "stock": 999,
+      "includes": [
+        "Déclaration préalable mairie",
+        "Demande raccordement Enedis",
+        "Attestation Consuel",
+        "Mise en service",
+        "Formation utilisateur",
+        "Câblage longue distance",
+        "Tranchée si nécessaire"
+      ],
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "imeon-3.6",
+      "name": "Onduleur IMEON 3.6",
+      "category": "inverter",
+      "subcategory": "imeon",
+      "price": 2890,
+      "description": "Onduleur hybride intelligent IMEON 3.6 kW avec gestion IA intégrée. Compatible batteries lithium.",
+      "specs": {
+        "Puissance": "3.6 kW",
+        "Tension entrée": "80-450 V DC",
+        "Rendement": "97.5%",
+        "Compatibilité batterie": "Lithium 48V",
+        "Garantie batterie": "20 ans"
+      },
+      "imageUrl": "/images/products/imeon-3.6.jpg",
+      "images": [
+        "/images/products/imeon-3.6.jpg",
+        "/images/products/imeon-3.6-2.jpg"
+      ],
+      "stock": 30,
+      "warranty": "10 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "imeon-9.12",
+      "name": "Onduleur IMEON 9.12",
+      "category": "inverter",
+      "subcategory": "imeon",
+      "price": 4990,
+      "description": "Onduleur hybride intelligent IMEON 9.12 kW triphasé avec gestion IA avancée. Idéal pour grandes installations.",
+      "specs": {
+        "Puissance": "9.12 kW",
+        "Type": "Triphasé",
+        "Tension entrée": "80-550 V DC",
+        "Rendement": "98%",
+        "Compatibilité batterie": "Lithium 48V",
+        "Garantie batterie": "20 ans"
+      },
+      "imageUrl": "/images/products/imeon-9.12.jpg",
+      "images": [
+        "/images/products/imeon-9.12.jpg",
+        "/images/products/imeon-9.12-2.jpg"
+      ],
+      "stock": 20,
+      "warranty": "10 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "fronius-primo-3.0",
+      "name": "Onduleur Fronius Primo 3.0",
+      "category": "inverter",
+      "subcategory": "fronius",
+      "price": 1890,
+      "description": "Onduleur Fronius Primo 3.0 kW monophasé. Qualité autrichienne reconnue, monitoring intégré.",
+      "specs": {
+        "Puissance": "3.0 kW",
+        "Type": "Monophasé",
+        "Tension entrée": "80-600 V DC",
+        "Rendement": "98.1%",
+        "Monitoring": "Fronius Solar.web"
+      },
+      "imageUrl": "/images/products/fronius-primo-3.0.jpg",
+      "stock": 25,
+      "warranty": "10 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "fronius-symo-10.0",
+      "name": "Onduleur Fronius Symo 10.0",
+      "category": "inverter",
+      "subcategory": "fronius",
+      "price": 3490,
+      "description": "Onduleur Fronius Symo 10.0 kW triphasé. Solution professionnelle pour grandes installations.",
+      "specs": {
+        "Puissance": "10.0 kW",
+        "Type": "Triphasé",
+        "Tension entrée": "150-800 V DC",
+        "Rendement": "98%",
+        "Monitoring": "Fronius Solar.web"
+      },
+      "imageUrl": "/images/products/fronius-symo-10.0.jpg",
+      "stock": 15,
+      "warranty": "10 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "pales-tulipe-1kwc",
+      "name": "Jeu de pales Tulipe 1-2 kWc",
+      "category": "accessory",
+      "subcategory": "pales",
+      "price": 590,
+      "description": "Jeu complet de 3 pales de remplacement pour éoliennes Tulipe 1 et 2 kWc.",
+      "specs": {
+        "Compatibilité": "Tulipe 1-2 kWc",
+        "Quantité": "3 pales",
+        "Matériau": "Composite fibre de verre",
+        "Longueur": "1.2 m"
+      },
+      "imageUrl": "/images/products/pales-tulipe.jpg",
+      "stock": 100,
+      "warranty": "2 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "pales-tulipe-3-5kwc",
+      "name": "Jeu de pales Tulipe 3-5 kWc",
+      "category": "accessory",
+      "subcategory": "pales",
+      "price": 890,
+      "description": "Jeu complet de 3 pales de remplacement pour éoliennes Tulipe 3 et 5 kWc.",
+      "specs": {
+        "Compatibilité": "Tulipe 3-5 kWc",
+        "Quantité": "3 pales",
+        "Matériau": "Composite fibre de verre",
+        "Longueur": "2.0 m"
+      },
+      "imageUrl": "/images/products/pales-tulipe.jpg",
+      "stock": 80,
+      "warranty": "2 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "pales-tulipe-10kwc",
+      "name": "Jeu de pales Tulipe 10 kWc",
+      "category": "accessory",
+      "subcategory": "pales",
+      "price": 1490,
+      "description": "Jeu complet de 3 pales de remplacement pour éolienne Tulipe 10 kWc.",
+      "specs": {
+        "Compatibilité": "Tulipe 10 kWc",
+        "Quantité": "3 pales",
+        "Matériau": "Composite fibre de verre renforcé",
+        "Longueur": "3.5 m"
+      },
+      "imageUrl": "/images/products/pales-tulipe.jpg",
+      "stock": 40,
+      "warranty": "2 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "mat-6m",
+      "name": "Mât autoportant 6m",
+      "category": "accessory",
+      "subcategory": "mat",
+      "price": 1290,
+      "description": "Mât autoportant galvanisé de 6 mètres avec platine de fixation. Compatible toutes éoliennes Tulipe.",
+      "specs": {
+        "Hauteur": "6 m",
+        "Diamètre base": "200 mm",
+        "Diamètre sommet": "150 mm",
+        "Matériau": "Acier galvanisé",
+        "Charge max": "500 kg"
+      },
+      "imageUrl": "/images/products/mat-6m.jpg",
+      "stock": 30,
+      "warranty": "10 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "mat-9m",
+      "name": "Mât autoportant 9m",
+      "category": "accessory",
+      "subcategory": "mat",
+      "price": 1890,
+      "description": "Mât autoportant galvanisé de 9 mètres avec platine de fixation. Idéal pour zones avec obstacles.",
+      "specs": {
+        "Hauteur": "9 m",
+        "Diamètre base": "250 mm",
+        "Diamètre sommet": "150 mm",
+        "Matériau": "Acier galvanisé",
+        "Charge max": "600 kg"
+      },
+      "imageUrl": "/images/products/mat-9m.jpg",
+      "stock": 20,
+      "warranty": "10 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "mat-12m",
+      "name": "Mât autoportant 12m",
+      "category": "accessory",
+      "subcategory": "mat",
+      "price": 2690,
+      "description": "Mât autoportant galvanisé de 12 mètres avec platine de fixation. Hauteur maximale autorisée sans permis.",
+      "specs": {
+        "Hauteur": "12 m",
+        "Diamètre base": "300 mm",
+        "Diamètre sommet": "150 mm",
+        "Matériau": "Acier galvanisé",
+        "Charge max": "800 kg"
+      },
+      "imageUrl": "/images/products/mat-12m.jpg",
+      "stock": 15,
+      "warranty": "10 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "kit-fixation-sol",
+      "name": "Kit fixation sol béton",
+      "category": "accessory",
+      "subcategory": "fixation",
+      "price": 390,
+      "description": "Kit complet de fixation pour ancrage sur dalle béton. Inclut tiges filetées et platine.",
+      "specs": {
+        "Type": "Fixation sol béton",
+        "Tiges filetées": "4 x M20",
+        "Platine": "400x400 mm",
+        "Épaisseur platine": "15 mm"
+      },
+      "imageUrl": "/images/products/kit-fixation-sol.jpg",
+      "stock": 100,
+      "warranty": "5 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "kit-fixation-toiture",
+      "name": "Kit fixation toiture plate",
+      "category": "accessory",
+      "subcategory": "fixation",
+      "price": 590,
+      "description": "Kit de fixation pour installation sur toiture plate. Inclut lestage et étanchéité.",
+      "specs": {
+        "Type": "Fixation toiture plate",
+        "Lestage recommandé": "200 kg",
+        "Étanchéité": "Membrane EPDM incluse",
+        "Compatibilité": "Tulipe 1-5 kWc"
+      },
+      "imageUrl": "/images/products/kit-fixation-toiture.jpg",
+      "stock": 60,
+      "warranty": "5 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "cable-solaire-10m",
+      "name": "Câble solaire 10m (paire)",
+      "category": "accessory",
+      "subcategory": "cable",
+      "price": 89,
+      "description": "Paire de câbles solaires 6mm² de 10 mètres avec connecteurs MC4.",
+      "specs": {
+        "Longueur": "10 m",
+        "Section": "6 mm²",
+        "Connecteurs": "MC4",
+        "Tension max": "1000 V DC"
+      },
+      "imageUrl": "/images/products/cable-solaire.jpg",
+      "stock": 200,
+      "warranty": "2 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "cable-solaire-25m",
+      "name": "Câble solaire 25m (paire)",
+      "category": "accessory",
+      "subcategory": "cable",
+      "price": 189,
+      "description": "Paire de câbles solaires 6mm² de 25 mètres avec connecteurs MC4.",
+      "specs": {
+        "Longueur": "25 m",
+        "Section": "6 mm²",
+        "Connecteurs": "MC4",
+        "Tension max": "1000 V DC"
+      },
+      "imageUrl": "/images/products/cable-solaire.jpg",
+      "stock": 150,
+      "warranty": "2 ans",
+      "createdAt": 1704067200000
+    },
+    {
+      "productId": "anemometre-pret",
+      "name": "Anémomètre en prêt",
+      "category": "accessory",
+      "subcategory": "anemometre",
+      "price": 0,
+      "description": "Anémomètre professionnel en prêt gratuit pendant 1 mois. Caution de 100€ remboursée au retour.",
+      "specs": {
+        "Durée prêt": "1 mois",
+        "Caution": "100 €",
+        "Précision": "±0.1 m/s",
+        "Enregistrement": "Données horaires"
+      },
+      "imageUrl": "/images/products/anemometre.jpg",
+      "stock": 50,
+      "includes": [
+        "Anémomètre digital",
+        "Support de fixation",
+        "Notice d'utilisation",
+        "Bon de retour prépayé"
+      ],
+      "createdAt": 1704067200000
+    }
+  ]
+}

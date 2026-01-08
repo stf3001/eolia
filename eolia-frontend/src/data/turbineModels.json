@@ -1,0 +1,27 @@
+{
+  "tulipe": {
+    "name": "Éolienne Tulipe",
+    "manufacturer": "EOLIA",
+    "type": "vertical",
+    "nominalPowerKwc": 6.0,
+    "warranty": "5 ans",
+    "description": "Éolienne verticale design Green Tech",
+    "powerCurve": {
+      "windSpeedMs": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      "powerKw": [0, 0, 0.05, 0.25, 0.6, 1.0, 1.6, 2.3, 3.0, 3.6, 4.2, 4.7, 5.0, 5.05, 5.0]
+    },
+    "availablePowers": [1, 2, 3, 5, 10],
+    "specs": {
+      "cutInSpeed": "2 m/s",
+      "ratedSpeed": "12 m/s",
+      "cutOutSpeed": "25 m/s",
+      "rotorDiameter": "Variable selon puissance",
+      "height": "< 12m"
+    }
+  },
+  "constants": {
+    "grappeBonus": 0.05,
+    "electricityPricePerKwh": 0.26,
+    "hoursPerMonth": [744, 672, 744, 720, 744, 720, 744, 744, 720, 744, 720, 744]
+  }
+}
