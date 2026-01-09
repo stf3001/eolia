@@ -1,25 +1,146 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Wind, ShoppingCart, ArrowRight } from 'lucide-react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { Wind, ShoppingCart, ArrowRight, Save } from 'lucide-react';
 import CalculatorForm from '../components/calculator/CalculatorForm';
+import type { CalculatorFormInitialValues } from '../components/calculator/CalculatorForm';
 import ResultsDisplay from '../components/calculator/ResultsDisplay';
 import ProductionChart from '../components/calculator/ProductionChart';
-import { calculateProduction } from '../services/calculatorService';
+import SaveSimulationButton from '../components/calculator/SaveSimulationButton';
+import { calculateProduction, getDepartments } from '../services/calculatorService';
+import { simulationService } from '../services/simulationService';
+import { useAuth } from '../context/AuthContext';
 import type { CalculatorInputs, CalculatorResults } from '../types/calculator';
+import type { PendingSimulation } from '../types/simulation';
+
+const PENDING_SIMULATION_KEY = 'eolia_pending_simulation';
+const PENDING_EXPIRATION_MS = 30 * 60 * 1000; // 30 minutes
 
 export default function Calculator() {
+  const { isAuthenticated } = useAuth();
+  const [searchParams] = useSearchParams();
   const [results, setResults] = useState<CalculatorResults | null>(null);
+  const [currentInputs, setCurrentInputs] = useState<CalculatorInputs | null>(null);
+  const [currentDepartmentName, setCurrentDepartmentName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [showPendingSavePrompt, setShowPendingSavePrompt] = useState(false);
+  const [isSavingPending, setIsSavingPending] = useState(false);
+  const pendingProcessedRef = useRef(false);
+
+  // Parse URL params for pre-filling the form
+  const initialValues = useMemo<CalculatorFormInitialValues | undefined>(() => {
+    const dept = searchParams.get('dept');
+    if (!dept) return undefined;
+
+    const values: CalculatorFormInitialValues = {
+      departmentCode: dept,
+    };
+
+    const power = searchParams.get('power');
+    if (power) {
+      const powerNum = parseFloat(power);
+      if (!isNaN(powerNum)) values.powerKwc = powerNum;
+    }
+
+    const count = searchParams.get('count');
+    if (count) {
+      const countNum = parseInt(count, 10);
+      if (!isNaN(countNum)) values.turbineCount = countNum;
+    }
+
+    const anemoSpeed = searchParams.get('anemoSpeed');
+    if (anemoSpeed) {
+      const speedNum = parseFloat(anemoSpeed);
+      if (!isNaN(speedNum)) values.anemometerSpeed = speedNum;
+    }
+
+    const anemoMonth = searchParams.get('anemoMonth');
+    if (anemoMonth) {
+      const monthNum = parseInt(anemoMonth, 10);
+      if (!isNaN(monthNum)) values.anemometerMonth = monthNum;
+    }
+
+    return values;
+  }, [searchParams]);
+
+  // Determine if we should auto-calculate (when URL params are present)
+  const shouldAutoCalculate = !!initialValues?.departmentCode;
+
+  // Check for pending simulation on mount
+  useEffect(() => {
+    if (pendingProcessedRef.current) return;
+
+    const pendingData = localStorage.getItem(PENDING_SIMULATION_KEY);
+    if (!pendingData) return;
+
+    try {
+      const pending: PendingSimulation = JSON.parse(pendingData);
+      
+      // Check if expired (30 minutes)
+      if (Date.now() - pending.timestamp > PENDING_EXPIRATION_MS) {
+        localStorage.removeItem(PENDING_SIMULATION_KEY);
+        return;
+      }
+
+      // Restore the simulation results
+      setResults(pending.results);
+      setCurrentInputs(pending.inputs);
+      setCurrentDepartmentName(pending.departmentName);
+      pendingProcessedRef.current = true;
+
+      // If user is authenticated, show save prompt
+      if (isAuthenticated) {
+        setShowPendingSavePrompt(true);
+      }
+    } catch {
+      localStorage.removeItem(PENDING_SIMULATION_KEY);
+    }
+  }, [isAuthenticated]);
+
+  // Auto-save pending simulation when user becomes authenticated
+  useEffect(() => {
+    if (isAuthenticated && showPendingSavePrompt && currentInputs && results) {
+      // Clear the pending simulation from localStorage
+      localStorage.removeItem(PENDING_SIMULATION_KEY);
+    }
+  }, [isAuthenticated, showPendingSavePrompt, currentInputs, results]);
 
   const handleCalculate = (inputs: CalculatorInputs) => {
     try {
       setError(null);
+      setShowPendingSavePrompt(false);
       const calculationResults = calculateProduction(inputs);
       setResults(calculationResults);
+      setCurrentInputs(inputs);
+      
+      // Get department name
+      const departments = getDepartments();
+      const dept = departments.find(d => d.code === inputs.departmentCode);
+      setCurrentDepartmentName(dept?.name || inputs.departmentCode);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue');
       setResults(null);
+      setCurrentInputs(null);
     }
+  };
+
+  const handleSavePending = async () => {
+    if (!currentInputs || !results) return;
+
+    setIsSavingPending(true);
+    try {
+      await simulationService.saveSimulation(currentInputs, results, currentDepartmentName);
+      setShowPendingSavePrompt(false);
+      localStorage.removeItem(PENDING_SIMULATION_KEY);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur lors de la sauvegarde');
+    } finally {
+      setIsSavingPending(false);
+    }
+  };
+
+  const handleDismissPendingPrompt = () => {
+    setShowPendingSavePrompt(false);
+    localStorage.removeItem(PENDING_SIMULATION_KEY);
   };
 
   return (
@@ -40,10 +161,44 @@ export default function Calculator() {
 
       {/* Main Content */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Pending Save Prompt */}
+        {showPendingSavePrompt && isAuthenticated && (
+          <div className="mb-6 bg-green-50 border border-green-200 rounded-xl p-4 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Save className="h-6 w-6 text-green-600 flex-shrink-0" />
+              <div>
+                <p className="font-medium text-green-900">Simulation restaurée</p>
+                <p className="text-sm text-green-700">
+                  Voulez-vous sauvegarder cette simulation dans votre espace client ?
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2 flex-shrink-0">
+              <button
+                onClick={handleDismissPendingPrompt}
+                className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                Non merci
+              </button>
+              <button
+                onClick={handleSavePending}
+                disabled={isSavingPending}
+                className="px-4 py-2 text-sm bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+              >
+                {isSavingPending ? 'Sauvegarde...' : 'Sauvegarder'}
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Form */}
           <div>
-            <CalculatorForm onCalculate={handleCalculate} />
+            <CalculatorForm 
+              onCalculate={handleCalculate}
+              initialValues={initialValues}
+              autoCalculate={shouldAutoCalculate}
+            />
 
             {/* Error Message */}
             {error && (
@@ -54,10 +209,20 @@ export default function Calculator() {
           </div>
 
           {/* Right Column - Results */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             {results ? (
               <>
                 <ResultsDisplay results={results} />
+                
+                {/* Save Button - only show if not showing pending prompt */}
+                {currentInputs && !showPendingSavePrompt && (
+                  <SaveSimulationButton
+                    inputs={currentInputs}
+                    results={results}
+                    departmentName={currentDepartmentName}
+                  />
+                )}
+                
                 <ProductionChart monthlyProduction={results.monthlyProduction} />
               </>
             ) : (

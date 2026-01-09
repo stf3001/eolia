@@ -7,8 +7,9 @@ export default function ConfirmAccount() {
   const location = useLocation()
   const { confirmSignUp, resendCode, isLoading, error, clearError } = useAuth()
 
-  // Get email from location state
+  // Get email and redirect from location state
   const emailFromState = (location.state as { email?: string })?.email || ''
+  const redirectFromState = (location.state as { redirect?: string })?.redirect
 
   const [email, setEmail] = useState(emailFromState)
   const [code, setCode] = useState('')
@@ -87,7 +88,7 @@ export default function ConfirmAccount() {
             Votre compte a été vérifié avec succès. Vous pouvez maintenant vous connecter.
           </p>
           <Link
-            to="/connexion"
+            to={redirectFromState ? `/connexion?redirect=${redirectFromState}` : '/connexion'}
             className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-colors"
           >
             Se connecter
@@ -214,7 +215,7 @@ export default function ConfirmAccount() {
 
           {/* Back to login */}
           <div className="mt-6 pt-6 border-t border-gray-200 text-center text-sm">
-            <Link to="/connexion" className="text-gray-600 hover:text-primary">
+            <Link to={redirectFromState ? `/connexion?redirect=${redirectFromState}` : '/connexion'} className="text-gray-600 hover:text-primary">
               ← Retour à la connexion
             </Link>
           </div>

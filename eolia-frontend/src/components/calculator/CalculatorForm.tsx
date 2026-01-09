@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, Zap, Wind, Calendar, Calculator } from 'lucide-react';
 import { getDepartments, getAvailablePowers } from '../../services/calculatorService';
 import type { CalculatorInputs } from '../../types/calculator';
 
+export interface CalculatorFormInitialValues {
+  departmentCode?: string;
+  powerKwc?: number;
+  turbineCount?: number;
+  anemometerSpeed?: number;
+  anemometerMonth?: number;
+}
+
 interface CalculatorFormProps {
   onCalculate: (inputs: CalculatorInputs) => void;
+  initialValues?: CalculatorFormInitialValues;
+  autoCalculate?: boolean;
 }
 
 const departments = getDepartments();
@@ -25,13 +35,35 @@ const months = [
   { value: 12, label: 'Décembre' },
 ];
 
-export default function CalculatorForm({ onCalculate }: CalculatorFormProps) {
-  const [departmentCode, setDepartmentCode] = useState('');
-  const [powerKwc, setPowerKwc] = useState<number>(3);
-  const [turbineCount, setTurbineCount] = useState<number>(1);
-  const [showAnemometer, setShowAnemometer] = useState(false);
-  const [anemometerSpeed, setAnemometerSpeed] = useState<string>('');
-  const [anemometerMonth, setAnemometerMonth] = useState<string>('');
+export default function CalculatorForm({ onCalculate, initialValues, autoCalculate }: CalculatorFormProps) {
+  const [departmentCode, setDepartmentCode] = useState(initialValues?.departmentCode || '');
+  const [powerKwc, setPowerKwc] = useState<number>(initialValues?.powerKwc || 3);
+  const [turbineCount, setTurbineCount] = useState<number>(initialValues?.turbineCount || 1);
+  const hasAnemometerData = !!(initialValues?.anemometerSpeed && initialValues?.anemometerMonth);
+  const [showAnemometer, setShowAnemometer] = useState(hasAnemometerData);
+  const [anemometerSpeed, setAnemometerSpeed] = useState<string>(initialValues?.anemometerSpeed?.toString() || '');
+  const [anemometerMonth, setAnemometerMonth] = useState<string>(initialValues?.anemometerMonth?.toString() || '');
+  const autoCalculateTriggered = useRef(false);
+
+  // Auto-calculate on mount if initialValues and autoCalculate are provided
+  useEffect(() => {
+    if (autoCalculate && initialValues?.departmentCode && !autoCalculateTriggered.current) {
+      autoCalculateTriggered.current = true;
+      
+      const inputs: CalculatorInputs = {
+        departmentCode: initialValues.departmentCode,
+        powerKwc: initialValues.powerKwc || 3,
+        turbineCount: initialValues.turbineCount || 1,
+      };
+
+      if (initialValues.anemometerSpeed && initialValues.anemometerMonth) {
+        inputs.anemometerSpeed = initialValues.anemometerSpeed;
+        inputs.anemometerMonth = initialValues.anemometerMonth;
+      }
+
+      onCalculate(inputs);
+    }
+  }, [autoCalculate, initialValues, onCalculate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

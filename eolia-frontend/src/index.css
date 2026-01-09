@@ -1,52 +1,38 @@
 @import "tailwindcss";
 
-/* EOLIA Green Tech Design System */
+/* EOLIA Design System */
 :root {
-  /* Primary Colors */
-  --color-primary: #065f46;
-  --color-primary-light: #10b981;
-  --color-primary-dark: #064e3b;
-  
-  /* Background */
-  --color-background: #ffffff;
-  --color-background-alt: #f9fafb;
-  
-  /* Text */
-  --color-text: #1f2937;
-  --color-text-light: #6b7280;
-  --color-text-muted: #9ca3af;
-  
-  /* Borders */
-  --color-border: #e5e7eb;
-  --color-border-light: #f3f4f6;
-  
-  /* Status */
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  --color-info: #3b82f6;
+  --color-primary: #0284c7;
+  --color-primary-light: #38bdf8;
+  --color-primary-dark: #0369a1;
 }
 
 @theme {
-  --color-primary: #065f46;
-  --color-primary-light: #10b981;
-  --color-primary-dark: #064e3b;
+  --color-primary: #0284c7;
+  --color-primary-light: #38bdf8;
+  --color-primary-dark: #0369a1;
 }
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: var(--color-text);
-  background-color: var(--color-background);
   margin: 0;
   min-height: 100vh;
 }
 
-/* Base link styles */
-a {
-  color: var(--color-primary);
-  text-decoration: none;
+/* Boutons primaires - FORCE le texte blanc */
+.bg-primary,
+.bg-sky-600,
+[class*="bg-primary"],
+[class*="bg-sky-600"] {
+  color: #ffffff !important;
 }
 
-a:hover {
-  color: var(--color-primary-light);
+/* Fix pour les boutons */
+.btn-primary {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover {
+  background-color: #0369a1 !important;
 }

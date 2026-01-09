@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ShoppingCart, Wind, Zap, Package } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { Product } from '../../types/product';
@@ -22,6 +23,7 @@ const categoryLabels = {
 };
 
 export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+  const [imageError, setImageError] = useState(false);
   const Icon = categoryIcons[product.category];
   const categoryLabel = categoryLabels[product.category];
 
@@ -39,6 +41,10 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
     onAddToCart?.(product);
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   // Get main specs to display (max 3)
   const mainSpecs = Object.entries(product.specs).slice(0, 3);
 
@@ -49,23 +55,27 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
     >
       {/* Image */}
       <div className="relative aspect-square bg-gray-100 overflow-hidden">
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = '/images/placeholder-product.jpg';
-          }}
-        />
+        {imageError ? (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+            <Icon className="w-16 h-16 text-primary/40 mb-2" />
+            <span className="text-sm text-gray-400">{product.name}</span>
+          </div>
+        ) : (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={handleImageError}
+          />
+        )}
         {/* Category badge */}
-        <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-medium text-gray-700">
-          <Icon className="w-3.5 h-3.5 text-emerald-600" />
+        <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-full text-xs font-medium text-gray-700 shadow-sm">
+          <Icon className="w-3.5 h-3.5 text-primary" />
           {categoryLabel}
         </div>
         {/* Power badge for turbines */}
         {product.powerKwc && (
-          <div className="absolute top-3 right-3 bg-emerald-600 text-white px-2.5 py-1 rounded-full text-xs font-bold">
+          <div className="absolute top-3 right-3 bg-primary text-white px-2.5 py-1 rounded-full text-xs font-bold">
             {product.powerKwc} kWc
           </div>
         )}
@@ -79,7 +89,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
 
       {/* Content */}
       <div className="p-4 flex flex-col flex-grow">
-        <h3 className="font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors line-clamp-2 mb-2">
+        <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 mb-2">
           {product.name}
         </h3>
 
@@ -97,18 +107,18 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
           <div>
             {product.price > 0 ? (
-              <span className="text-xl font-bold text-emerald-600">
+              <span className="text-xl font-bold text-primary">
                 {formatPrice(product.price)}
               </span>
             ) : (
-              <span className="text-lg font-semibold text-emerald-600">
+              <span className="text-lg font-semibold text-primary">
                 Gratuit*
               </span>
             )}
           </div>
           <button
             onClick={handleAddToCart}
-            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors"
+            className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-full text-sm font-medium transition-colors"
           >
             <ShoppingCart className="w-4 h-4" />
             <span className="hidden sm:inline">Ajouter</span>

@@ -10,6 +10,18 @@ import {
   resendSignUpCode,
 } from 'aws-amplify/auth'
 
+// Demo mode - activé si Cognito n'est pas configuré
+const DEMO_MODE = !import.meta.env.VITE_COGNITO_USER_POOL_ID
+
+// Compte démo
+const DEMO_USER = {
+  userId: 'demo-user-123',
+  email: 'demo@eolia.fr',
+  name: 'Jean Dupont',
+  role: 'customer',
+  emailVerified: true,
+}
+
 export interface User {
   userId: string
   email: string
@@ -29,6 +41,7 @@ interface AuthContextType {
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
+  isDemoMode: boolean
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
   signUp: (data: SignUpData) => Promise<{ isSignUpComplete: boolean; nextStep: string }>
@@ -52,6 +65,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const checkAuthState = async () => {
+    if (DEMO_MODE) {
+      // En mode démo, vérifier si l'utilisateur était connecté (localStorage)
+      const savedUser = localStorage.getItem('demo_user')
+      if (savedUser) {
+        setUser(JSON.parse(savedUser))
+      }
+      setIsLoading(false)
+      return
+    }
+
     try {
       const currentUser = await getCurrentUser()
       const attributes = await fetchUserAttributes()
@@ -64,7 +87,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         emailVerified: attributes.email_verified === 'true',
       })
     } catch {
-      // User is not authenticated
       setUser(null)
     } finally {
       setIsLoading(false)
@@ -75,12 +97,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     setError(null)
 
-    try {
-      const result = await amplifySignIn({
-        username: email,
-        password,
-      })
+    if (DEMO_MODE) {
+      // Mode démo : accepter n'importe quel email/password
+      await new Promise(resolve => setTimeout(resolve, 500)) // Simuler latence
+      const demoUser = { ...DEMO_USER, email, name: email.split('@')[0] }
+      setUser(demoUser)
+      localStorage.setItem('demo_user', JSON.stringify(demoUser))
+      setIsLoading(false)
+      return
+    }
 
+    try {
+      const result = await amplifySignIn({ username: email, password })
       if (result.isSignedIn) {
         await checkAuthState()
       } else if (result.nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
@@ -99,6 +127,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     setError(null)
 
+    if (DEMO_MODE) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      setUser(null)
+      localStorage.removeItem('demo_user')
+      setIsLoading(false)
+      return
+    }
+
     try {
       await amplifySignOut()
       setUser(null)
@@ -115,18 +151,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     setError(null)
 
+    if (DEMO_MODE) {
+      await new Promise(resolve => setTimeout(resolve, 500))
+      setIsLoading(false)
+      // En mode démo, on simule une inscription réussie sans confirmation
+      return { isSignUpComplete: true, nextStep: 'DONE' }
+    }
+
     try {
       const result = await amplifySignUp({
         username: data.email,
         password: data.password,
-        options: {
-          userAttributes: {
-            email: data.email,
-            name: data.name,
-          },
-        },
+        options: { userAttributes: { email: data.email, name: data.name } },
       })
-
       return {
         isSignUpComplete: result.isSignUpComplete,
         nextStep: result.nextStep?.signUpStep || 'DONE',
@@ -144,11 +181,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     setError(null)
 
+    if (DEMO_MODE) {
+      await new Promise(resolve => setTimeout(resolve, 500))
+      setIsLoading(false)
+      return
+    }
+
     try {
-      await amplifyConfirmSignUp({
-        username: email,
-        confirmationCode: code,
-      })
+      await amplifyConfirmSignUp({ username: email, confirmationCode: code })
     } catch (err) {
       const message = getErrorMessage(err)
       setError(message)
@@ -160,7 +200,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resendCode = useCallback(async (email: string) => {
     setError(null)
-
+    if (DEMO_MODE) return
     try {
       await resendSignUpCode({ username: email })
     } catch (err) {
@@ -170,9 +210,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const clearError = useCallback(() => {
-    setError(null)
-  }, [])
+  const clearError = useCallback(() => setError(null), [])
 
   return (
     <AuthContext.Provider
@@ -181,6 +219,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated,
         isLoading,
         error,
+        isDemoMode: DEMO_MODE,
         signIn,
         signOut,
         signUp,
@@ -202,12 +241,9 @@ export function useAuth() {
   return context
 }
 
-// Helper function to translate Cognito errors to French
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     const message = error.message || error.name
-
-    // Map common Cognito errors to French messages
     const errorMap: Record<string, string> = {
       UserNotFoundException: 'Aucun compte trouvé avec cet email',
       NotAuthorizedException: 'Email ou mot de passe incorrect',
@@ -219,15 +255,10 @@ function getErrorMessage(error: unknown): string {
       UserNotConfirmedException: 'Veuillez confirmer votre compte',
       CONFIRM_SIGN_UP_REQUIRED: 'Veuillez confirmer votre compte',
     }
-
     for (const [key, value] of Object.entries(errorMap)) {
-      if (message.includes(key)) {
-        return value
-      }
+      if (message.includes(key)) return value
     }
-
     return message
   }
-
   return 'Une erreur inattendue est survenue'
 }

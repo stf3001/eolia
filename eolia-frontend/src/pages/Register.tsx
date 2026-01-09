@@ -1,11 +1,16 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Mail, Lock, User, AlertCircle, Eye, EyeOff, CheckCircle } from 'lucide-react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Mail, Lock, User, AlertCircle, Eye, EyeOff, CheckCircle, Info } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export default function Register() {
   const navigate = useNavigate()
-  const { signUp, isLoading, error, clearError } = useAuth()
+  const location = useLocation()
+  const { signUp, signIn, isLoading, error, clearError, isDemoMode } = useAuth()
+
+  // Get redirect path from query params
+  const searchParams = new URLSearchParams(location.search)
+  const redirectParam = searchParams.get('redirect')
 
   const [formData, setFormData] = useState({
     name: '',
@@ -74,8 +79,12 @@ export default function Register() {
         name: formData.name,
       })
 
-      if (result.nextStep === 'CONFIRM_SIGN_UP') {
-        navigate('/confirmer-compte', { state: { email: formData.email } })
+      if (isDemoMode) {
+        // En mode démo, connecter directement après inscription
+        await signIn(formData.email, formData.password)
+        navigate(redirectParam || '/espace-client', { replace: true })
+      } else if (result.nextStep === 'CONFIRM_SIGN_UP') {
+        navigate('/confirmer-compte', { state: { email: formData.email, redirect: redirectParam } })
       }
     } catch {
       // Error is handled by AuthContext
@@ -97,6 +106,14 @@ export default function Register() {
 
         {/* Form */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          {isDemoMode && (
+            <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg mb-5">
+              <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-blue-800">
+                <strong>Mode démo :</strong> Remplissez le formulaire pour créer un compte de test. Vous serez connecté automatiquement.
+              </div>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-5">
             {displayError && (
               <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -284,7 +301,7 @@ export default function Register() {
           <div className="mt-6 text-center text-sm">
             <p className="text-gray-600">
               Déjà un compte ?{' '}
-              <Link to="/connexion" className="text-primary font-medium hover:underline">
+              <Link to={redirectParam ? `/connexion?redirect=${redirectParam}` : '/connexion'} className="text-primary font-medium hover:underline">
                 Se connecter
               </Link>
             </p>

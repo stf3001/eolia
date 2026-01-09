@@ -1,20 +1,22 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Mail, Lock, AlertCircle, Eye, EyeOff } from 'lucide-react'
+import { Mail, Lock, AlertCircle, Eye, EyeOff, Info } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { signIn, isLoading, error, clearError } = useAuth()
+  const { signIn, isLoading, error, clearError, isDemoMode } = useAuth()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [localError, setLocalError] = useState<string | null>(null)
 
-  // Get redirect path from location state
-  const from = (location.state as { from?: string })?.from || '/espace-client'
+  // Get redirect path from query params or location state
+  const searchParams = new URLSearchParams(location.search)
+  const redirectParam = searchParams.get('redirect')
+  const from = redirectParam || (location.state as { from?: string })?.from || '/espace-client'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -57,6 +59,14 @@ export default function Login() {
 
         {/* Form */}
         <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          {isDemoMode && (
+            <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg mb-5">
+              <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-blue-800">
+                <strong>Mode démo :</strong> Entrez n'importe quel email et mot de passe pour tester.
+              </div>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-5">
             {displayError && (
               <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -146,7 +156,7 @@ export default function Login() {
           <div className="mt-6 text-center text-sm">
             <p className="text-gray-600">
               Pas encore de compte ?{' '}
-              <Link to="/inscription" className="text-primary font-medium hover:underline">
+              <Link to={redirectParam ? `/inscription?redirect=${redirectParam}` : '/inscription'} className="text-primary font-medium hover:underline">
                 Créer un compte
               </Link>
             </p>

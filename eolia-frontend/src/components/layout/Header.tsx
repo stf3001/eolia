@@ -63,7 +63,8 @@ export default function Header() {
             </button>
             <Link
               to="/connexion"
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-white text-sm font-medium hover:bg-primary-dark transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-sky-600 text-sm font-medium hover:bg-sky-700 transition-colors"
+              style={{ color: 'white' }}
             >
               <User className="h-4 w-4" />
               Connexion
@@ -120,7 +121,7 @@ export default function Header() {
               <Link
                 to="/connexion"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mx-4 mt-2 flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-primary text-white text-sm font-medium"
+                className="mx-4 mt-2 flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-sky-600 text-white text-sm font-medium"
               >
                 <User className="h-4 w-4" />
                 Connexion

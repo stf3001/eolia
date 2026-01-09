@@ -31,14 +31,15 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link
                   to="/produits"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-medium hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-sky-600 font-medium hover:bg-sky-700 transition-colors shadow-lg shadow-sky-600/25"
+                  style={{ color: 'white' }}
                 >
                   Découvrir
                   <ArrowRight className="h-5 w-5" />
                 </Link>
                 <Link
                   to="/calculateur"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-primary text-primary font-medium hover:bg-primary/5 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-sky-600 text-sky-600 font-medium hover:bg-sky-50 transition-colors"
                 >
                   <Calculator className="h-5 w-5" />
                   Calculer ma production
@@ -323,7 +324,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-primary">
+      <section className="py-20 bg-sky-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Prêt à produire votre propre énergie ?
@@ -335,7 +336,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/calculateur"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-primary font-medium hover:bg-gray-100 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-sky-600 font-medium hover:bg-gray-100 transition-colors"
             >
               <Calculator className="h-5 w-5" />
               Calculer ma production
@@ -372,7 +373,7 @@ export default function Home() {
             <div className="flex-shrink-0">
               <Link
                 to="/anemometre"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-white font-medium hover:bg-primary-dark transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-sky-600 text-white font-medium hover:bg-sky-700 transition-colors"
               >
                 Commander un anémomètre
                 <ArrowRight className="h-4 w-4" />

@@ -19,4 +19,5 @@ export const Tables = {
   AFFILIATES: process.env.AFFILIATES_TABLE || '',
   REFERRALS: process.env.REFERRALS_TABLE || '',
   COMMISSIONS: process.env.COMMISSIONS_TABLE || '',
+  SIMULATIONS: process.env.SIMULATIONS_TABLE || '',
 };

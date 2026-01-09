@@ -4,11 +4,11 @@ Plateforme web complète pour la vente d'éoliennes domestiques verticales de la
 
 ## 🌬️ Fonctionnalités
 
-- **Calculateur de production** - Estimation de la production éolienne par département avec données anémomètre optionnelles
+- **Calculateur de production** - Estimation de la production éolienne par département avec données anémomètre optionnelles, sauvegarde des simulations
 - **Boutique en ligne** - Catalogue éoliennes Tulipe (1-10 kWc), onduleurs, accessoires
 - **Tunnel de commande** - Checkout avec Stripe, forfaits pose, limite 36 kWc
 - **Prêt d'anémomètre** - Location 1 mois avec caution 100€
-- **Espace client** - Dashboard, adresses, historique commandes
+- **Espace client** - Dashboard optimisé (anémomètre & simulations mis en avant), gestion adresses, historique commandes
 - **Programme ambassadeur** - B2C (parrainage) et B2B (commissions)
 - **Pages informatives** - FAQ, processus Consuel, diagnostic
 

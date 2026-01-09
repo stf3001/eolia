@@ -35,6 +35,7 @@ provider:
     AFFILIATES_TABLE: ${self:service}-affiliates-${self:provider.stage}
     REFERRALS_TABLE: ${self:service}-referrals-${self:provider.stage}
     COMMISSIONS_TABLE: ${self:service}-commissions-${self:provider.stage}
+    SIMULATIONS_TABLE: ${self:service}-simulations-${self:provider.stage}
     CONTRACTS_BUCKET: ${self:service}-contracts-${self:provider.stage}
     FRONTEND_URL: ${env:FRONTEND_URL, 'http://localhost:5173'}
     SERVICE_NAME: ${self:service}
@@ -69,6 +70,7 @@ provider:
             - !GetAtt AffiliatesTable.Arn
             - !GetAtt ReferralsTable.Arn
             - !GetAtt CommissionsTable.Arn
+            - !GetAtt SimulationsTable.Arn
             - !Sub '${ProductsTable.Arn}/index/*'
             - !Sub '${UsersTable.Arn}/index/*'
             - !Sub '${OrdersTable.Arn}/index/*'
@@ -76,6 +78,7 @@ provider:
             - !Sub '${AffiliatesTable.Arn}/index/*'
             - !Sub '${ReferralsTable.Arn}/index/*'
             - !Sub '${CommissionsTable.Arn}/index/*'
+            - !Sub '${SimulationsTable.Arn}/index/*'
         - Effect: Allow
           Action:
             - cognito-idp:AdminInitiateAuth
@@ -305,6 +308,28 @@ functions:
       - httpApi:
           path: /affiliates/me/contract
           method: get
+
+  # Simulations
+  createSimulation:
+    handler: src/functions/simulations/createSimulation.handler
+    events:
+      - httpApi:
+          path: /simulations
+          method: post
+
+  getSimulations:
+    handler: src/functions/simulations/getSimulations.handler
+    events:
+      - httpApi:
+          path: /simulations
+          method: get
+
+  deleteSimulation:
+    handler: src/functions/simulations/deleteSimulation.handler
+    events:
+      - httpApi:
+          path: /simulations/{simulationId}
+          method: delete
 
 plugins:
   - serverless-esbuild
@@ -633,6 +658,28 @@ resources:
           - Key: Service
             Value: ${self:service}
 
+    # Table Simulations
+    SimulationsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.SIMULATIONS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: simulationId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: simulationId
+            KeyType: RANGE
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
     # S3 Bucket pour contrats PDF
     ContractsBucket:
       Type: AWS::S3::Bucket
@@ -709,6 +756,10 @@ resources:
     CommissionsTableName:
       Description: Nom de la table Commissions
       Value: !Ref CommissionsTable
+
+    SimulationsTableName:
+      Description: Nom de la table Simulations
+      Value: !Ref SimulationsTable
 
     ContractsBucketName:
       Description: Nom du bucket S3 pour les contrats
