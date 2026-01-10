@@ -5,14 +5,14 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/5 via-white to-primary/10 py-6 lg:py-8 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary/5 via-white to-primary/10 py-4 lg:py-6 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
             {/* Hero Content */}
             <div className="text-center lg:text-left">
@@ -87,7 +87,7 @@ export default function Home() {
 
       {/* Trust indicators - Bandeau de confiance */}
       <section className="py-4 bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-12 text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-5 w-5 text-primary" />
@@ -106,9 +106,9 @@ export default function Home() {
       </section>
 
       {/* Avantages Section */}
-      <section className="py-12 lg:py-14 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10 lg:mb-12">
+      <section className="py-8 lg:py-10 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Pourquoi choisir EOLIA ?
             </h2>
@@ -118,10 +118,10 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="group p-6 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
-              <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                <Zap className="h-7 w-7 text-primary" />
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="group p-4 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <Zap className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Haute Performance</h3>
               <p className="text-gray-600">
@@ -129,9 +129,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="group p-6 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
-              <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                <Shield className="h-7 w-7 text-primary" />
+            <div className="group p-4 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <Shield className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Garantie 5 ans</h3>
               <p className="text-gray-600">
@@ -139,9 +139,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="group p-6 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
-              <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                <Leaf className="h-7 w-7 text-primary" />
+            <div className="group p-4 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <Leaf className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Design Écologique</h3>
               <p className="text-gray-600">
@@ -149,9 +149,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="group p-6 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
-              <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                <Calculator className="h-7 w-7 text-primary" />
+            <div className="group p-4 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <Calculator className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Clé en Main</h3>
               <p className="text-gray-600">
@@ -163,8 +163,8 @@ export default function Home() {
       </section>
 
       {/* Comment ça marche Section */}
-      <section className="py-12 lg:py-14 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 lg:py-10 bg-gray-50">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 lg:mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Comment ça marche ?
@@ -178,7 +178,7 @@ export default function Home() {
             {/* Step 1 */}
             <div className="relative">
               <div className="text-center">
-                <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg shadow-primary/25">
+                <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg shadow-primary/25">
                   1
                 </div>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -190,13 +190,13 @@ export default function Home() {
                 </p>
               </div>
               {/* Connector line */}
-              <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-primary/20" />
+              <div className="hidden md:block absolute top-6 left-[60%] w-[80%] h-0.5 bg-primary/20" />
             </div>
 
             {/* Step 2 */}
             <div className="relative">
               <div className="text-center">
-                <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg shadow-primary/25">
+                <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg shadow-primary/25">
                   2
                 </div>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -207,13 +207,13 @@ export default function Home() {
                   Choisissez votre modèle Tulipe et les options adaptées à vos besoins.
                 </p>
               </div>
-              <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-primary/20" />
+              <div className="hidden md:block absolute top-6 left-[60%] w-[80%] h-0.5 bg-primary/20" />
             </div>
 
             {/* Step 3 */}
             <div className="relative">
               <div className="text-center">
-                <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg shadow-primary/25">
+                <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg shadow-primary/25">
                   3
                 </div>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -224,13 +224,13 @@ export default function Home() {
                   Nous gérons les démarches administratives : mairie, Enedis, Consuel.
                 </p>
               </div>
-              <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-primary/20" />
+              <div className="hidden md:block absolute top-6 left-[60%] w-[80%] h-0.5 bg-primary/20" />
             </div>
 
             {/* Step 4 */}
             <div className="relative">
               <div className="text-center">
-                <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold shadow-lg shadow-primary/25">
+                <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg shadow-primary/25">
                   4
                 </div>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -257,7 +257,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section - Démarrez votre projet */}
-      <section className="py-12 lg:py-14 bg-sky-600">
+      <section className="py-8 lg:py-10 bg-sky-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Prêt à produire votre propre énergie ?
@@ -289,8 +289,8 @@ export default function Home() {
       </section>
 
       {/* Témoignages Section */}
-      <section className="py-12 lg:py-14 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 lg:py-10 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 lg:mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Ils nous font confiance
@@ -300,9 +300,9 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {/* Testimonial 1 */}
-            <div className="bg-gray-50 rounded-2xl p-8">
+            <div className="bg-gray-50 rounded-2xl p-5">
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
@@ -313,8 +313,8 @@ export default function Home() {
                 couvre maintenant 60% de ma consommation électrique. Je recommande !"
               </p>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Users className="h-6 w-6 text-primary" />
+                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <Users className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900">Jean-Pierre M.</p>
@@ -324,7 +324,7 @@ export default function Home() {
             </div>
 
             {/* Testimonial 2 */}
-            <div className="bg-gray-50 rounded-2xl p-8">
+            <div className="bg-gray-50 rounded-2xl p-5">
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
@@ -335,8 +335,8 @@ export default function Home() {
                 de A à Z. L'éolienne est silencieuse, mes voisins ne l'entendent même pas."
               </p>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Users className="h-6 w-6 text-primary" />
+                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <Users className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900">Marie-Claire D.</p>
@@ -346,7 +346,7 @@ export default function Home() {
             </div>
 
             {/* Testimonial 3 */}
-            <div className="bg-gray-50 rounded-2xl p-8">
+            <div className="bg-gray-50 rounded-2xl p-5">
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
@@ -357,8 +357,8 @@ export default function Home() {
                 Le bonus de production est réel et l'investissement rentabilisé en 5 ans."
               </p>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Users className="h-6 w-6 text-primary" />
+                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <Users className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900">François L.</p>

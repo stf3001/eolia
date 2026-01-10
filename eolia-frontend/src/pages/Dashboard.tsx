@@ -246,7 +246,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-emerald-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <nav className="mb-8 text-sm">
           <ol className="flex items-center space-x-2 text-gray-600">
@@ -257,9 +257,9 @@ export default function Dashboard() {
         </nav>
 
         {/* Welcome */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Bonjour {user?.name || 'Utilisateur'} !
             </h1>
             <p className="text-gray-600">Gérez votre compte et suivez vos projets éoliens</p>
@@ -271,12 +271,12 @@ export default function Dashboard() {
         </div>
 
         {/* Section principale : Anémomètre + Simulations */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
           {/* Prêt d'anémomètre - VALORISÉ */}
-          <Link to="/anemometre" className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all group border-2 border-blue-200 hover:border-blue-400">
+          <Link to="/anemometre" className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg p-4 hover:shadow-xl transition-all group border-2 border-blue-200 hover:border-blue-400">
             <div className="flex items-center mb-4">
-              <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                <Wind className="w-7 h-7 text-white" />
+              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                <Wind className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Prêt d'anémomètre</h3>
@@ -292,11 +292,11 @@ export default function Dashboard() {
           </Link>
 
           {/* Mes simulations - VALORISÉ */}
-          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg p-6 border-2 border-amber-200">
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg p-4 border-2 border-amber-200">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
-                <div className="w-14 h-14 bg-amber-600 rounded-full flex items-center justify-center mr-4">
-                  <BarChart3 className="w-7 h-7 text-white" />
+                <div className="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center mr-4">
+                  <BarChart3 className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900">Mes simulations</h3>
@@ -348,15 +348,15 @@ export default function Dashboard() {
         </div>
 
         {/* Section secondaire : Infos + Commandes + Adresses */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           {/* Mes informations - Compact */}
-          <div className="bg-white rounded-xl shadow-md p-5">
+          <div className="bg-white rounded-xl shadow-md p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
-                  <User className="w-5 h-5 text-emerald-700" />
+                <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
+                  <User className="w-4 h-4 text-emerald-700" />
                 </div>
-                <h2 className="text-lg font-bold text-gray-900">Mes informations</h2>
+                <h2 className="text-base font-bold text-gray-900">Mes informations</h2>
               </div>
               {!isEditing && (
                 <button onClick={() => setIsEditing(true)} className="text-emerald-700 hover:text-emerald-800 p-1">
@@ -389,12 +389,12 @@ export default function Dashboard() {
           </div>
 
           {/* Mes commandes - Compact */}
-          <div className="bg-white rounded-xl shadow-md p-5">
+          <div className="bg-white rounded-xl shadow-md p-4">
             <div className="flex items-center mb-3">
-              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
-                <Package className="w-5 h-5 text-emerald-700" />
+              <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
+                <Package className="w-4 h-4 text-emerald-700" />
               </div>
-              <h2 className="text-lg font-bold text-gray-900">Mes commandes</h2>
+              <h2 className="text-base font-bold text-gray-900">Mes commandes</h2>
             </div>
 
             {isLoadingOrders ? (
@@ -429,13 +429,13 @@ export default function Dashboard() {
           </div>
 
           {/* Mes adresses - Compact */}
-          <div className="bg-white rounded-xl shadow-md p-5">
+          <div className="bg-white rounded-xl shadow-md p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
-                  <MapPin className="w-5 h-5 text-emerald-700" />
+                <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
+                  <MapPin className="w-4 h-4 text-emerald-700" />
                 </div>
-                <h2 className="text-lg font-bold text-gray-900">Mes adresses</h2>
+                <h2 className="text-base font-bold text-gray-900">Mes adresses</h2>
               </div>
               <button onClick={handleAddAddress} className="text-emerald-700 hover:text-emerald-800 p-1">
                 <Plus className="w-5 h-5" />
@@ -479,7 +479,7 @@ export default function Dashboard() {
         </div>
 
         {/* SAV & Support */}
-        <div className="bg-white rounded-xl shadow-md p-5 mb-6">
+        <div className="bg-white rounded-xl shadow-md p-4 mb-4">
           <Link to="/faq" className="flex items-center justify-between group">
             <div className="flex items-center">
               <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3 group-hover:bg-purple-200 transition-colors">
@@ -495,7 +495,7 @@ export default function Dashboard() {
         </div>
 
         {/* CTA Programme ambassadeur */}
-        <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 rounded-xl shadow-lg p-6 text-white">
+        <div className="bg-gradient-to-r from-emerald-700 to-emerald-600 rounded-xl shadow-lg p-4 text-white">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div>
               <h2 className="text-xl font-bold mb-1">Programme Ambassadeur</h2>

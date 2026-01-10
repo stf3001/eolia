@@ -147,7 +147,7 @@ export default function Calculator() {
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
       <section className="bg-primary text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-4">
             <Wind className="h-10 w-10" />
             <h1 className="text-3xl md:text-4xl font-bold">Calculateur de Production</h1>
@@ -160,7 +160,7 @@ export default function Calculator() {
       </section>
 
       {/* Main Content */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Pending Save Prompt */}
         {showPendingSavePrompt && isAuthenticated && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-xl p-4 flex items-center justify-between gap-4">

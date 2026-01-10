@@ -54,7 +54,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
       className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col"
     >
       {/* Image */}
-      <div className="relative aspect-square bg-gray-100 overflow-hidden">
+      <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
         {imageError ? (
           <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
             <Icon className="w-16 h-16 text-primary/40 mb-2" />
@@ -88,15 +88,15 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
       </div>
 
       {/* Content */}
-      <div className="p-4 flex flex-col flex-grow">
-        <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 mb-2">
+      <div className="p-3 flex flex-col flex-grow">
+        <h3 className="font-semibold text-gray-900 text-sm group-hover:text-primary transition-colors line-clamp-2 mb-2">
           {product.name}
         </h3>
 
         {/* Specs preview */}
         <div className="space-y-1 mb-4 flex-grow">
           {mainSpecs.map(([key, value]) => (
-            <div key={key} className="flex justify-between text-sm">
+            <div key={key} className="flex justify-between text-xs">
               <span className="text-gray-500">{key}</span>
               <span className="text-gray-700 font-medium">{value}</span>
             </div>
@@ -118,9 +118,9 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           </div>
           <button
             onClick={handleAddToCart}
-            className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-full text-sm font-medium transition-colors"
+            className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-3 py-1.5 rounded-full text-sm font-medium transition-colors"
           >
-            <ShoppingCart className="w-4 h-4" />
+            <ShoppingCart className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Ajouter</span>
           </button>
         </div>
