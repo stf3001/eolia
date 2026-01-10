@@ -36,7 +36,7 @@ eolia-backend/      # Serverless Framework + AWS Lambda + DynamoDB
 - AWS Lambda (Node.js 20 + Python 3.11)
 - DynamoDB (7 tables)
 - Cognito (authentification)
-- S3 (contrats PDF)
+- S3 (contrats PDF, médias)
 - SES (emails)
 - Stripe (paiements)
 
@@ -66,6 +66,7 @@ VITE_API_URL=https://xxx.execute-api.eu-west-1.amazonaws.com
 VITE_STRIPE_PUBLIC_KEY=pk_test_xxx
 VITE_COGNITO_USER_POOL_ID=eu-west-1_xxx
 VITE_COGNITO_CLIENT_ID=xxx
+VITE_MEDIA_URL=https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com
 ```
 
 ### Backend (.env)

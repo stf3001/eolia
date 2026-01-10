@@ -66,13 +66,24 @@ export default function Home() {
             {/* Hero Visual */}
             <div className="relative">
               <div className="relative bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl p-8 lg:p-12">
-                {/* Placeholder for wind turbine image/video */}
+                {/* Video showcase */}
                 <div className="aspect-square bg-white rounded-2xl shadow-xl flex items-center justify-center overflow-hidden">
-                  <div className="text-center p-8">
-                    <Wind className="h-32 w-32 text-primary mx-auto mb-6 animate-pulse" />
-                    <p className="text-gray-500 text-sm">Éolienne Tulipe</p>
-                    <p className="text-2xl font-bold text-primary mt-2">1 à 10 kWc</p>
-                  </div>
+                  <video
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    poster="/images/eolienne-tulipe-poster.jpg"
+                  >
+                    <source src={`${import.meta.env.VITE_MEDIA_URL || 'https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com'}/videos/eolienne-tulipe.mp4`} type="video/mp4" />
+                    {/* Fallback si la vidéo ne charge pas */}
+                    <div className="text-center p-8">
+                      <Wind className="h-32 w-32 text-primary mx-auto mb-6 animate-pulse" />
+                      <p className="text-gray-500 text-sm">Éolienne Tulipe</p>
+                      <p className="text-2xl font-bold text-primary mt-2">1 à 10 kWc</p>
+                    </div>
+                  </video>
                 </div>
                 
                 {/* Floating stats cards */}

@@ -37,6 +37,7 @@ provider:
     COMMISSIONS_TABLE: ${self:service}-commissions-${self:provider.stage}
     SIMULATIONS_TABLE: ${self:service}-simulations-${self:provider.stage}
     CONTRACTS_BUCKET: ${self:service}-contracts-${self:provider.stage}
+    MEDIA_BUCKET: ${self:service}-media-${self:provider.stage}
     FRONTEND_URL: ${env:FRONTEND_URL, 'http://localhost:5173'}
     SERVICE_NAME: ${self:service}
     USER_POOL_ID: !Ref CognitoUserPool
@@ -99,6 +100,7 @@ provider:
             - s3:GetObject
           Resource:
             - !Sub '${ContractsBucket.Arn}/*'
+            - !Sub '${MediaBucket.Arn}/*'
         - Effect: Allow
           Action:
             - events:PutEvents
@@ -716,6 +718,42 @@ resources:
               Action: 's3:GetObject'
               Resource: !Sub '${ContractsBucket.Arn}/affiliation/contracts/*'
 
+    # S3 Bucket pour médias publics (vidéos, images)
+    MediaBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.MEDIA_BUCKET}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedMethods:
+                - GET
+              AllowedHeaders:
+                - '*'
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # Bucket Policy pour accès public lecture médias
+    MediaBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref MediaBucket
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: !Sub '${MediaBucket.Arn}/*'
+
   Outputs:
     CognitoUserPoolId:
       Description: ID du User Pool Cognito
@@ -764,3 +802,11 @@ resources:
     ContractsBucketName:
       Description: Nom du bucket S3 pour les contrats
       Value: !Ref ContractsBucket
+
+    MediaBucketName:
+      Description: Nom du bucket S3 pour les médias publics
+      Value: !Ref MediaBucket
+
+    MediaBucketUrl:
+      Description: URL publique du bucket média
+      Value: !Sub 'https://${MediaBucket}.s3.${AWS::Region}.amazonaws.com'
