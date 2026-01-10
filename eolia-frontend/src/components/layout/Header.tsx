@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, Wind, User, ShoppingCart } from 'lucide-react'
+import { Menu, X, Wind, User, ShoppingCart, ChevronDown } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import CartSidebar from '../shop/CartSidebar'
 
@@ -8,17 +8,28 @@ const navLinks = [
   { to: '/', label: 'Accueil' },
   { to: '/calculateur', label: 'Calculateur' },
   { to: '/produits', label: 'Gamme Tulipe' },
-  { to: '/diagnostic', label: 'Diagnostic' },
+  { to: '/faq', label: 'FAQ' },
+  { to: '/ambassadeur', label: 'Ambassadeur' },
   { to: '/espace-client', label: 'Espace Client' },
+]
+
+const aboutLinks = [
+  { to: '/a-propos/qui-sommes-nous', label: 'Qui sommes-nous' },
+  { to: '/a-propos/vision', label: 'Notre vision' },
+  { to: '/a-propos/pourquoi-eolia', label: 'Pourquoi Eolia' },
+  { to: '/a-propos/contact', label: 'Nous contacter' },
 ]
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false)
+  const [mobileAboutOpen, setMobileAboutOpen] = useState(false)
   const location = useLocation()
   const { totalItems } = useCart()
 
   const isActive = (path: string) => location.pathname === path
+  const isAboutActive = () => location.pathname.startsWith('/a-propos')
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -45,6 +56,46 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+            
+            {/* À propos Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setAboutDropdownOpen(true)}
+              onMouseLeave={() => setAboutDropdownOpen(false)}
+            >
+              <button
+                className={`flex items-center gap-1 text-sm font-medium transition-colors ${
+                  isAboutActive()
+                    ? 'text-primary'
+                    : 'text-gray-600 hover:text-primary'
+                }`}
+                onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
+              >
+                À propos
+                <ChevronDown className={`h-4 w-4 transition-transform ${aboutDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {aboutDropdownOpen && (
+                <div className="absolute top-full left-0 pt-2 z-50">
+                  <div className="w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
+                    {aboutLinks.map((link) => (
+                      <Link
+                        key={link.to}
+                        to={link.to}
+                        onClick={() => setAboutDropdownOpen(false)}
+                        className={`block px-4 py-2 text-sm transition-colors ${
+                          isActive(link.to)
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Desktop Auth Button */}
@@ -118,6 +169,44 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
+              
+              {/* À propos Mobile Section */}
+              <div>
+                <button
+                  onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                    isAboutActive()
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  À propos
+                  <ChevronDown className={`h-4 w-4 transition-transform ${mobileAboutOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {mobileAboutOpen && (
+                  <div className="ml-4 mt-1 flex flex-col gap-1">
+                    {aboutLinks.map((link) => (
+                      <Link
+                        key={link.to}
+                        to={link.to}
+                        onClick={() => {
+                          setMobileMenuOpen(false)
+                          setMobileAboutOpen(false)
+                        }}
+                        className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+                          isActive(link.to)
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-gray-500 hover:bg-gray-50'
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
               <Link
                 to="/connexion"
                 onClick={() => setMobileMenuOpen(false)}

@@ -5,27 +5,27 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/5 via-white to-primary/10 py-20 lg:py-28 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary/5 via-white to-primary/10 py-6 lg:py-8 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
             {/* Hero Content */}
             <div className="text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium mb-4 lg:mb-3">
                 <Leaf className="h-4 w-4" />
                 Énergie verte made in France
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 lg:mb-3 leading-tight">
                 Éoliennes Verticales{' '}
                 <span className="text-primary">Tulipe</span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-xl mx-auto lg:mx-0">
-                Produisez votre propre électricité verte avec nos éoliennes silencieuses 
+              <p className="text-lg md:text-xl text-gray-600 mb-6 lg:mb-5 max-w-xl mx-auto lg:mx-0">
+                Produisez votre propre électricité verte avec nos éoliennes silencieuses
                 et esthétiques, conçues pour les particuliers et professionnels.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -45,29 +45,13 @@ export default function Home() {
                   Calculer ma production
                 </Link>
               </div>
-              
-              {/* Trust indicators */}
-              <div className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-gray-500">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-primary" />
-                  <span>Garantie 5 ans</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-primary" />
-                  <span>Installation clé en main</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-primary" />
-                  <span>SAV France</span>
-                </div>
-              </div>
             </div>
-            
+
             {/* Hero Visual */}
             <div className="relative">
               <div className="relative bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl p-8 lg:p-12">
                 {/* Video showcase */}
-                <div className="aspect-square bg-white rounded-2xl shadow-xl flex items-center justify-center overflow-hidden">
+                <div className="aspect-square lg:aspect-video bg-white rounded-2xl shadow-xl flex items-center justify-center overflow-hidden">
                   <video
                     className="w-full h-full object-cover"
                     autoPlay
@@ -85,7 +69,7 @@ export default function Home() {
                     </div>
                   </video>
                 </div>
-                
+
                 {/* Floating stats cards */}
                 <div className="absolute -left-4 top-1/4 bg-white rounded-xl shadow-lg p-4 hidden lg:block">
                   <p className="text-2xl font-bold text-primary">-70%</p>
@@ -101,19 +85,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Avantages Section */}
-      <section className="py-20 bg-white">
+      {/* Trust indicators - Bandeau de confiance */}
+      <section className="py-4 bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-12 text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5 text-primary" />
+              <span>Garantie 5 ans</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5 text-primary" />
+              <span>Installation clé en main</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5 text-primary" />
+              <span>SAV France</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Avantages Section */}
+      <section className="py-12 lg:py-14 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 lg:mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Pourquoi choisir EOLIA ?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Des éoliennes verticales innovantes, pensées pour s'intégrer parfaitement 
+              Des éoliennes verticales innovantes, pensées pour s'intégrer parfaitement
               à votre environnement tout en maximisant votre production d'énergie.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="group p-6 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
               <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
@@ -124,7 +128,7 @@ export default function Home() {
                 Technologie verticale optimisée pour capter le vent de toutes directions, même par vent faible.
               </p>
             </div>
-            
+
             <div className="group p-6 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
               <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
                 <Shield className="h-7 w-7 text-primary" />
@@ -134,7 +138,7 @@ export default function Home() {
                 Qualité française avec une garantie complète sur tous nos produits et pièces détachées disponibles.
               </p>
             </div>
-            
+
             <div className="group p-6 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
               <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
                 <Leaf className="h-7 w-7 text-primary" />
@@ -144,7 +148,7 @@ export default function Home() {
                 Silencieuse (35 dB) et respectueuse de la faune, notre éolienne Tulipe s'intègre harmonieusement.
               </p>
             </div>
-            
+
             <div className="group p-6 rounded-2xl bg-gray-50 hover:bg-primary/5 transition-colors">
               <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
                 <Calculator className="h-7 w-7 text-primary" />
@@ -159,9 +163,9 @@ export default function Home() {
       </section>
 
       {/* Comment ça marche Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-12 lg:py-14 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 lg:mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Comment ça marche ?
             </h2>
@@ -169,7 +173,7 @@ export default function Home() {
               Un parcours simple et accompagné pour votre projet d'éolienne domestique.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-4 gap-8">
             {/* Step 1 */}
             <div className="relative">
@@ -188,7 +192,7 @@ export default function Home() {
               {/* Connector line */}
               <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-primary/20" />
             </div>
-            
+
             {/* Step 2 */}
             <div className="relative">
               <div className="text-center">
@@ -205,7 +209,7 @@ export default function Home() {
               </div>
               <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-primary/20" />
             </div>
-            
+
             {/* Step 3 */}
             <div className="relative">
               <div className="text-center">
@@ -222,7 +226,7 @@ export default function Home() {
               </div>
               <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-primary/20" />
             </div>
-            
+
             {/* Step 4 */}
             <div className="relative">
               <div className="text-center">
@@ -239,8 +243,8 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
-          <div className="text-center mt-12">
+
+          <div className="text-center mt-8">
             <Link
               to="/comment-ca-marche"
               className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
@@ -252,10 +256,42 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CTA Section - Démarrez votre projet */}
+      <section className="py-12 lg:py-14 bg-sky-600">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            Prêt à produire votre propre énergie ?
+          </h2>
+          <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
+            Deux façons de démarrer votre projet selon vos besoins :
+            une estimation de production ou des mesures précises sur votre terrain.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+            <Link
+              to="/calculateur"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-sky-600 font-medium hover:bg-gray-100 transition-colors"
+            >
+              <Calculator className="h-5 w-5" />
+              Calculer ma production
+            </Link>
+            <Link
+              to="/anemometre"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-white text-white font-medium hover:bg-white/10 transition-colors"
+            >
+              <Wind className="h-5 w-5" />
+              Recevoir mon anémomètre
+            </Link>
+          </div>
+          <p className="text-white/60 text-sm mt-6">
+            Anémomètre prêté gratuitement pendant 1 mois (caution 100€ remboursable)
+          </p>
+        </div>
+      </section>
+
       {/* Témoignages Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 lg:mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Ils nous font confiance
             </h2>
@@ -263,7 +299,7 @@ export default function Home() {
               Découvrez les retours d'expérience de nos clients satisfaits.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {/* Testimonial 1 */}
             <div className="bg-gray-50 rounded-2xl p-8">
@@ -273,7 +309,7 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-gray-700 mb-6 italic">
-                "Installation impeccable et équipe très professionnelle. Mon éolienne Tulipe 3kWc 
+                "Installation impeccable et équipe très professionnelle. Mon éolienne Tulipe 3kWc
                 couvre maintenant 60% de ma consommation électrique. Je recommande !"
               </p>
               <div className="flex items-center gap-4">
@@ -286,7 +322,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            
+
             {/* Testimonial 2 */}
             <div className="bg-gray-50 rounded-2xl p-8">
               <div className="flex gap-1 mb-4">
@@ -295,7 +331,7 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-gray-700 mb-6 italic">
-                "Très satisfaite du suivi client. Les démarches administratives ont été gérées 
+                "Très satisfaite du suivi client. Les démarches administratives ont été gérées
                 de A à Z. L'éolienne est silencieuse, mes voisins ne l'entendent même pas."
               </p>
               <div className="flex items-center gap-4">
@@ -308,7 +344,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            
+
             {/* Testimonial 3 */}
             <div className="bg-gray-50 rounded-2xl p-8">
               <div className="flex gap-1 mb-4">
@@ -317,7 +353,7 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-gray-700 mb-6 italic">
-                "En tant que professionnel, j'ai équipé mon exploitation de 2 éoliennes en grappe. 
+                "En tant que professionnel, j'ai équipé mon exploitation de 2 éoliennes en grappe.
                 Le bonus de production est réel et l'investissement rentabilisé en 5 ans."
               </p>
               <div className="flex items-center gap-4">
@@ -329,66 +365,6 @@ export default function Home() {
                   <p className="text-sm text-gray-500">Occitanie - 2x Tulipe 10kWc</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-sky-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Prêt à produire votre propre énergie ?
-          </h2>
-          <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
-            Commencez par estimer votre production potentielle avec notre calculateur gratuit, 
-            ou découvrez notre gamme d'éoliennes Tulipe.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/calculateur"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-sky-600 font-medium hover:bg-gray-100 transition-colors"
-            >
-              <Calculator className="h-5 w-5" />
-              Calculer ma production
-            </Link>
-            <Link
-              to="/diagnostic"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-white text-white font-medium hover:bg-white/10 transition-colors"
-            >
-              Faire un diagnostic
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Anémomètre CTA */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
-            <div className="flex-shrink-0">
-              <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center">
-                <Wind className="h-10 w-10 text-primary" />
-              </div>
-            </div>
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Mesurez le potentiel éolien de votre site
-              </h3>
-              <p className="text-gray-600">
-                Empruntez gratuitement un anémomètre pendant 1 mois (caution 100€ remboursable) 
-                et obtenez des données précises pour votre projet.
-              </p>
-            </div>
-            <div className="flex-shrink-0">
-              <Link
-                to="/anemometre"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-sky-600 text-white font-medium hover:bg-sky-700 transition-colors"
-              >
-                Commander un anémomètre
-                <ArrowRight className="h-4 w-4" />
-              </Link>
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ Plateforme web complète pour la vente d'éoliennes domestiques verticales de la
 - **Tunnel de commande** - Checkout avec Stripe, forfaits pose, limite 36 kWc
 - **Prêt d'anémomètre** - Location 1 mois avec caution 100€
 - **Espace client** - Dashboard optimisé (anémomètre & simulations mis en avant), gestion adresses, historique commandes
-- **Programme ambassadeur** - B2C (parrainage) et B2B (commissions)
+- **Programme ambassadeur** - Page publique de présentation, programmes B2C (parrainage avec bons d'achat) et B2B (commissions 5-12,5%)
 - **Pages informatives** - FAQ, processus Consuel, diagnostic
 
 ## 🏗️ Architecture

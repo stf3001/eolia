@@ -16,7 +16,7 @@ import Calculator from './pages/Calculator'
 import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import Partners from './pages/Partners'
-import Diagnostic from './pages/Diagnostic'
+
 import Anemometer from './pages/Anemometer'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
@@ -33,6 +33,12 @@ import CGV from './pages/CGV'
 import MentionsLegales from './pages/MentionsLegales'
 import CookiePolicy from './pages/CookiePolicy'
 
+// About Pages
+import AboutUs from './pages/AboutUs'
+import Vision from './pages/Vision'
+import WhyEolia from './pages/WhyEolia'
+import Contact from './pages/Contact'
+
 function App() {
   return (
     <Router>
@@ -48,7 +54,7 @@ function App() {
             <Route path="/produits" element={<Products />} />
             <Route path="/produits/:productId" element={<ProductDetail />} />
             <Route path="/partenaires" element={<Partners />} />
-            <Route path="/diagnostic" element={<Diagnostic />} />
+
             <Route path="/anemometre" element={<Anemometer />} />
             <Route path="/panier" element={<Cart />} />
             <Route path="/commande" element={<Checkout />} />
@@ -60,8 +66,10 @@ function App() {
             
             {/* Protected Routes */}
             <Route path="/espace-client" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/ambassadeur" element={<ProtectedRoute><Ambassador /></ProtectedRoute>} />
             <Route path="/ambassadeur-b2b" element={<ProtectedRoute><B2BRegistration /></ProtectedRoute>} />
+            
+            {/* Public Ambassador Route (shows presentation or dashboard based on auth) */}
+            <Route path="/ambassadeur" element={<Ambassador />} />
             
             {/* Informational Pages */}
             <Route path="/comment-ca-marche" element={<HowItWorks />} />
@@ -72,6 +80,12 @@ function App() {
             <Route path="/cgv" element={<CGV />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/politique-cookies" element={<CookiePolicy />} />
+            
+            {/* About Pages */}
+            <Route path="/a-propos/qui-sommes-nous" element={<AboutUs />} />
+            <Route path="/a-propos/vision" element={<Vision />} />
+            <Route path="/a-propos/pourquoi-eolia" element={<WhyEolia />} />
+            <Route path="/a-propos/contact" element={<Contact />} />
           </Routes>
           </main>
           <Footer />

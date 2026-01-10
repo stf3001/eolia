@@ -1,451 +1,389 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Gift, Users, TrendingUp, Wind, ChevronRight, Loader2, Building2, Euro } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import { affiliateService } from '../services/affiliateService';
-import AmbassadorCodeCard from '../components/ambassador/AmbassadorCodeCard';
-import ReferralsList from '../components/ambassador/ReferralsList';
-import RewardsProgress from '../components/ambassador/RewardsProgress';
-import CommissionsTable from '../components/ambassador/CommissionsTable';
-import CommissionTiers from '../components/ambassador/CommissionTiers';
-import type { AffiliateProfile, Referral, Commission } from '../types/affiliate';
-import { B2C_REWARDS } from '../types/affiliate';
+import {
+  Coins,
+  Leaf,
+  Wind,
+  Gift,
+  Users,
+  Building2,
+  Shield,
+  CheckCircle2,
+  AlertCircle,
+  Phone,
+  GraduationCap,
+  FileText
+} from 'lucide-react';
 
 export default function Ambassador() {
-  const { isAuthenticated } = useAuth();
-  const [profile, setProfile] = useState<AffiliateProfile | null>(null);
-  const [referrals, setReferrals] = useState<Referral[]>([]);
-  const [commissions, setCommissions] = useState<Commission[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadAmbassadorData();
-    } else {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated]);
-
-  const loadAmbassadorData = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      
-      const [profileData, referralsData] = await Promise.all([
-        affiliateService.getProfile(),
-        affiliateService.getReferrals(),
-      ]);
-      
-      setProfile(profileData);
-      setReferrals(referralsData.referrals);
-
-      // Load commissions for B2B affiliates
-      if (profileData.affiliate.type === 'B2B') {
-        const commissionsData = await affiliateService.getCommissions();
-        setCommissions(commissionsData.commissions);
-      }
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Calculate total earned based on referral count
-  const calculateTotalEarned = (referralCount: number): number => {
-    return B2C_REWARDS.slice(0, referralCount).reduce((sum, r) => sum + r.amount, 0);
-  };
-
-  // Show presentation for non-authenticated users
-  if (!isAuthenticated) {
-    return <AmbassadorPresentation />;
-  }
-
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
-        </div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-          <p className="text-red-600 mb-4">{error}</p>
-          <button
-            onClick={loadAmbassadorData}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-          >
-            Réessayer
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // No profile found - show presentation with CTA
-  if (!profile) {
-    return <AmbassadorPresentation showLoginCTA />;
-  }
-
-  const referralCount = profile.affiliate.referralCount || 0;
-  const totalEarned = calculateTotalEarned(referralCount);
-  const isB2B = profile.affiliate.type === 'B2B';
-
-  // B2B Dashboard
-  if (isB2B) {
-    const cumulativeRevenue = profile.affiliate.cumulativeRevenue || 0;
-    const currentTier = profile.affiliate.currentTier || 5;
-    const totalCommissions = profile.stats.totalCommissions || 0;
-    const pendingCommissions = profile.stats.pendingCommissions || 0;
-
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <Building2 className="w-8 h-8 text-emerald-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Programme Ambassadeur B2B</h1>
-          </div>
-          <p className="text-gray-600">
-            {profile.affiliate.companyName} - SIRET: {profile.affiliate.siret}
-          </p>
-        </div>
-
-        {/* Stats cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <Users className="w-5 h-5 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Filleuls</p>
-                <p className="text-2xl font-bold text-gray-900">{referrals.length}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <Euro className="w-5 h-5 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">CA généré</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {cumulativeRevenue.toLocaleString('fr-FR')} €
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <Gift className="w-5 h-5 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Commissions totales</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {totalCommissions.toLocaleString('fr-FR')} €
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <TrendingUp className="w-5 h-5 text-orange-600" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">En attente</p>
-                <p className="text-2xl font-bold text-orange-600">
-                  {pendingCommissions.toLocaleString('fr-FR')} €
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Main content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left column - Code card */}
-          <div className="lg:col-span-1 space-y-6">
-            <AmbassadorCodeCard affiliate={profile.affiliate} />
-            <CommissionTiers cumulativeRevenue={cumulativeRevenue} currentTier={currentTier} />
-          </div>
-
-          {/* Right column - Referrals and Commissions */}
-          <div className="lg:col-span-2 space-y-6">
-            <ReferralsList referrals={referrals} />
-            <CommissionsTable commissions={commissions} type="B2B" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // B2C Dashboard (default)
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Programme Ambassadeur</h1>
-        <p className="text-gray-600">
-          Parrainez vos proches et gagnez des bons d'achat EOLIA
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-white to-emerald-50">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-emerald-600 to-emerald-800 text-white py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              Devenez Ambassadeur EOLIA
+            </h1>
+            <p className="text-xl md:text-2xl text-white/90 mb-8">
+              Partagez votre conviction pour l'énergie éolienne, générez des revenus et participez à la transition énergétique
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/inscription"
+                className="bg-white text-emerald-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg"
+              >
+                Devenir ambassadeur
+              </Link>
+              <Link
+                to="/connexion"
+                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all"
+              >
+                Espace ambassadeur
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Stats cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-100 rounded-lg">
-              <Users className="w-5 h-5 text-emerald-600" />
+      {/* Pourquoi devenir ambassadeur */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+            Pourquoi devenir ambassadeur ?
+          </h2>
+          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            Rejoignez un mouvement qui a du sens et profitez d'avantages concrets
+          </p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            {/* Gagner des revenus */}
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
+                <Coins className="w-7 h-7 text-emerald-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Générez des revenus</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Recevez des bons d'achat ou des commissions attractives pour chaque recommandation réussie.
+                Financez votre propre éolienne grâce à vos parrainages !
+              </p>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Filleuls</p>
-              <p className="text-2xl font-bold text-gray-900">{referralCount}</p>
+
+            {/* Transition écologique */}
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <Leaf className="w-7 h-7 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Agissez pour la planète</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Contribuez activement à la transition énergétique en promouvant l'énergie éolienne domestique
+                et en réduisant la dépendance aux énergies fossiles.
+              </p>
             </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-100 rounded-lg">
-              <Gift className="w-5 h-5 text-emerald-600" />
+
+            {/* Énergie renouvelable */}
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                <Wind className="w-7 h-7 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Énergie renouvelable</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Participez à la décentralisation de la production d'énergie et aidez vos proches
+                à devenir autonomes avec une éolienne Tulipe.
+              </p>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Bons gagnés</p>
-              <p className="text-2xl font-bold text-gray-900">{totalEarned} €</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-100 rounded-lg">
-              <TrendingUp className="w-5 h-5 text-emerald-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Statut</p>
-              <p className="text-2xl font-bold text-emerald-600 capitalize">
-                {profile.affiliate.status === 'active' ? 'Actif' : 'Inactif'}
+
+            {/* Récompenses exceptionnelles */}
+            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-14 h-14 bg-pink-100 rounded-full flex items-center justify-center mb-4">
+                <Gift className="w-7 h-7 text-pink-600" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Cadeaux exceptionnels</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Obtenez votre propre éolienne Tulipe gratuitement après 10 recommandations !
+                Un cadeau d'une valeur d'environ 2 500€ pour récompenser votre engagement.
               </p>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Main content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left column - Code card */}
-        <div className="lg:col-span-1">
-          <AmbassadorCodeCard affiliate={profile.affiliate} />
-        </div>
+      {/* B2C vs B2B */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+            Deux programmes adaptés à votre profil
+          </h2>
+          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            Que vous soyez particulier ou professionnel, nous avons le programme qui vous correspond
+          </p>
 
-        {/* Right column - Rewards and Referrals */}
-        <div className="lg:col-span-2 space-y-6">
-          <RewardsProgress referralCount={referralCount} totalEarned={totalEarned} />
-          <ReferralsList referrals={referrals} />
-        </div>
-      </div>
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Programme Particulier B2C */}
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl p-8 border-2 border-emerald-200">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold">Programme Particulier</h3>
+              </div>
 
-      {/* B2B CTA */}
-      <div className="mt-8 bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl p-6 text-white">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <h3 className="text-xl font-bold mb-1">Vous êtes professionnel ?</h3>
-            <p className="text-gray-300">
-              Découvrez notre programme B2B avec des commissions jusqu'à 12,5%
-            </p>
-          </div>
-          <Link
-            to="/ambassadeur-b2b"
-            className="flex items-center gap-2 px-6 py-3 bg-white text-gray-900 rounded-full font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap"
-          >
-            Devenir apporteur d'affaires
-            <ChevronRight className="w-5 h-5" />
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
+                  <p className="text-gray-700">
+                    <strong>200€ à 300€ en bons d'achat</strong> par recommandation réussie
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
+                  <p className="text-gray-700">
+                    <strong>200€</strong> pour le 1er filleul, <strong>250€</strong> pour le 2ème, <strong>300€</strong> pour les suivants
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
+                  <p className="text-gray-700">
+                    Plafond de <strong>10 recommandations par an</strong>
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
+                  <p className="text-gray-700">
+                    <strong>Éolienne Tulipe offerte</strong> à la 10ème recommandation (valeur ~2 500€)
+                  </p>
+                </div>
+              </div>
 
-// Presentation component for non-authenticated users
-function AmbassadorPresentation({ showLoginCTA = false }: { showLoginCTA?: boolean }) {
-  const advantages = [
-    {
-      icon: Gift,
-      title: '200€ à 300€ par filleul',
-      description: 'Gagnez un bon d\'achat pour chaque proche qui achète une éolienne Tulipe',
-    },
-    {
-      icon: Users,
-      title: 'Jusqu\'à 10 parrainages/an',
-      description: 'Parrainez jusqu\'à 10 personnes par an et cumulez vos récompenses',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Récompenses progressives',
-      description: '200€ pour le 1er filleul, 250€ pour le 2ème, puis 300€ pour les suivants',
-    },
-  ];
+              <div className="bg-white rounded-lg p-4 border border-emerald-300">
+                <div className="flex items-start gap-2">
+                  <Shield className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 mb-1">Cadre légal</p>
+                    <p className="text-sm text-gray-600">
+                      En tant que particulier, vous recevez des <strong>bons d'achat</strong> et non des
+                      commissions en euros. L'État français tolère cette pratique dans le cadre du parrainage
+                      non professionnel.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-  const steps = [
-    { number: '1', title: 'Inscrivez-vous', description: 'Créez votre compte EOLIA gratuitement' },
-    { number: '2', title: 'Partagez votre code', description: 'Envoyez votre code unique à vos proches' },
-    { number: '3', title: 'Gagnez des bons', description: 'Recevez un bon d\'achat à chaque achat de filleul' },
-  ];
-
-  return (
-    <div className="bg-white">
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-emerald-600 to-emerald-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Programme Ambassadeur EOLIA
-            </h1>
-            <p className="text-xl text-emerald-100 mb-8">
-              Parrainez vos proches et gagnez jusqu'à 3 000€ de bons d'achat par an. 
-              Partagez votre passion pour l'énergie éolienne et soyez récompensé.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/inscription"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-emerald-700 rounded-full font-semibold hover:bg-emerald-50 transition-colors"
+                className="mt-6 block w-full bg-emerald-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-emerald-700 transition-colors"
               >
-                Devenir ambassadeur
-                <ChevronRight className="w-5 h-5 ml-2" />
+                Devenir ambassadeur particulier
               </Link>
-              {showLoginCTA && (
+            </div>
+
+            {/* Programme Professionnel B2B */}
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 border-2 border-purple-200">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
+                  <Building2 className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold">Programme Professionnel</h3>
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
+                  <p className="text-gray-700">
+                    <strong>Commissions de 5% à 12,5%</strong> selon le CA généré
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
+                  <p className="text-gray-700">
+                    <strong>Aucun plafond</strong> de recommandations
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-1" />
+                  <p className="text-gray-700">
+                    Versement mensuel en <strong>euros</strong>
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg p-4 border border-purple-300">
+                <div className="flex items-start gap-2">
+                  <Shield className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900 mb-1">Cadre légal</p>
+                    <p className="text-sm text-gray-600">
+                      Programme réservé aux <strong>apporteurs d'affaires professionnels</strong>.
+                      Contrat d'apporteur obligatoire. Les commissions sont imposables et doivent être déclarées.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                to="/ambassadeur-b2b"
+                className="mt-6 block w-full bg-purple-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+              >
+                Devenir ambassadeur professionnel
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Nos exigences */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+            Notre engagement : l'intégrité avant tout
+          </h2>
+          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            EOLIA s'engage à respecter le droit et attend la même rigueur de ses ambassadeurs
+          </p>
+
+          <div className="max-w-4xl mx-auto">
+            {/* Carte principale */}
+            <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-6 h-6 text-red-600" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">Règles essentielles</h3>
+                  <p className="text-gray-600">
+                    Ces règles sont détaillées dans notre règlement et doivent être respectées par tous les ambassadeurs
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                {/* Transparence */}
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold">1</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg mb-2">Transparence absolue</h4>
+                    <p className="text-gray-700 mb-2">
+                      <strong>Aucun mensonge, aucune exagération.</strong> Présentez nos éoliennes de manière
+                      honnête et factuelle. Les performances de nos Tulipe sont déjà exceptionnelles,
+                      nul besoin d'en rajouter.
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      En cas de doute sur une information technique ou commerciale, contactez-nous.
+                      Nous sommes là pour vous aider à répondre correctement à vos prospects.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Conformité légale */}
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold">2</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg mb-2">Conformité légale</h4>
+                    <p className="text-gray-700 mb-2">
+                      EOLIA s'engage à être <strong>irréprochable</strong> dans le respect du droit français
+                      et européen. Nous attendons la même rigueur de nos ambassadeurs.
+                    </p>
+                    <ul className="text-sm text-gray-600 space-y-1 ml-4">
+                      <li>• Respect du RGPD dans la collecte de données</li>
+                      <li>• Obtention du consentement des filleuls</li>
+                      <li>• Respect des règles de démarchage</li>
+                      <li>• Déclaration fiscale des revenus (B2B)</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Protection image */}
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold">3</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg mb-2">Protection de notre image</h4>
+                    <p className="text-gray-700">
+                      Représentez EOLIA avec professionnalisme et bienveillance. Notre réputation
+                      repose sur la qualité de nos éoliennes et l'intégrité de nos ambassadeurs.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Support cards */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border-2 border-purple-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                    <GraduationCap className="w-5 h-5 text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg">Formation disponible</h4>
+                </div>
+                <p className="text-gray-700 mb-4">
+                  Pour les apporteurs professionnels, EOLIA peut vous former sur nos éoliennes
+                  et vous fournir des supports de présentation.
+                </p>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 text-purple-600 font-semibold hover:text-purple-700"
+                >
+                  <Phone className="w-4 h-4" />
+                  Nous contacter
+                </Link>
+              </div>
+
+              <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl p-6 border-2 border-emerald-200">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center">
+                    <FileText className="w-5 h-5 text-white" />
+                  </div>
+                  <h4 className="font-bold text-lg">Supports marketing</h4>
+                </div>
+                <p className="text-gray-700 mb-4">
+                  Accédez à nos brochures, visuels et argumentaires pour présenter EOLIA
+                  de manière professionnelle et convaincante.
+                </p>
                 <Link
                   to="/connexion"
-                  className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-colors"
+                  className="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-700"
                 >
-                  J'ai déjà un compte
+                  <FileText className="w-4 h-4" />
+                  Accéder aux ressources
                 </Link>
-              )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Advantages */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-          Les avantages du programme
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {advantages.map((advantage, index) => (
-            <div key={index} className="text-center">
-              <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <advantage.icon className="w-8 h-8 text-emerald-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">{advantage.title}</h3>
-              <p className="text-gray-600">{advantage.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* How it works */}
-      <div className="bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-            Comment ça marche ?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {steps.map((step, index) => (
-              <div key={index} className="relative">
-                <div className="bg-white rounded-xl p-6 shadow-sm">
-                  <div className="w-10 h-10 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold mb-4">
-                    {step.number}
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
-                </div>
-                {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-                    <ChevronRight className="w-8 h-8 text-gray-300" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Rewards table */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-          Grille des récompenses
-        </h2>
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-emerald-50">
-                <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-emerald-800">
-                    Filleul
-                  </th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold text-emerald-800">
-                    Bon d'achat
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                <tr>
-                  <td className="px-6 py-4 text-gray-900">1er filleul</td>
-                  <td className="px-6 py-4 text-right font-semibold text-emerald-600">200 €</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 text-gray-900">2ème filleul</td>
-                  <td className="px-6 py-4 text-right font-semibold text-emerald-600">250 €</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 text-gray-900">3ème filleul et suivants</td>
-                  <td className="px-6 py-4 text-right font-semibold text-emerald-600">300 €</td>
-                </tr>
-              </tbody>
-              <tfoot className="bg-emerald-600 text-white">
-                <tr>
-                  <td className="px-6 py-4 font-semibold">Maximum annuel (10 filleuls)</td>
-                  <td className="px-6 py-4 text-right font-bold text-xl">2 850 €</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="bg-emerald-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+      {/* CTA Final */}
+      <section className="py-16 bg-emerald-700 text-white">
+        <div className="container mx-auto px-4 text-center">
           <Wind className="w-16 h-16 text-emerald-300 mx-auto mb-6" />
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Prêt à devenir ambassadeur ?
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Prêt à rejoindre l'aventure ?
           </h2>
-          <p className="text-emerald-100 mb-8 max-w-2xl mx-auto">
-            Rejoignez notre communauté d'ambassadeurs et participez à la transition énergétique 
-            tout en étant récompensé.
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            Devenez ambassadeur EOLIA dès aujourd'hui et commencez à générer des revenus
+            tout en participant à la transition énergétique
           </p>
-          <Link
-            to="/inscription"
-            className="inline-flex items-center px-8 py-4 bg-white text-emerald-700 rounded-full font-semibold hover:bg-emerald-50 transition-colors"
-          >
-            Créer mon compte
-            <ChevronRight className="w-5 h-5 ml-2" />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/inscription"
+              className="bg-white text-emerald-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg inline-block"
+            >
+              Créer mon compte
+            </Link>
+            <Link
+              to="/faq"
+              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all inline-block"
+            >
+              FAQ
+            </Link>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

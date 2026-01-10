@@ -32,6 +32,36 @@ const faqData: FAQItem[] = [
     question: "L'éolienne fait-elle du bruit ?",
     answer: "L'éolienne Tulipe produit moins de 35 dB à 5 mètres, soit moins qu'un réfrigérateur. Sa conception verticale et ses pales hélicoïdales minimisent les vibrations et le bruit aérodynamique."
   },
+  {
+    category: 'product',
+    question: "Puis-je ajouter une batterie pour stocker l'électricité ?",
+    answer: "Absolument ! Notre système est 100% compatible avec les batteries de stockage domestiques (Tesla Powerwall, BYD, Huawei, etc.). Vous pouvez ainsi stocker l'énergie produite la nuit ou par vent fort pour l'utiliser quand vous en avez besoin. C'est la solution idéale pour maximiser votre autonomie. Nous pouvons vous conseiller sur le dimensionnement adapté à votre consommation."
+  },
+  {
+    category: 'product',
+    question: "Est-ce dangereux d'avoir une éolienne chez soi ?",
+    answer: "Soyez rassuré : nos éoliennes Tulipe sont conçues pour une sécurité maximale. Elles fonctionnent en basse tension (48V), ce qui élimine tout risque d'électrocution. Le système de freinage automatique arrête les pales en cas de vent trop fort. Les pales en composite sont légères et ne peuvent pas blesser en cas de contact accidentel. Toutes nos installations sont certifiées conformes aux normes électriques françaises (Consuel)."
+  },
+  {
+    category: 'product',
+    question: "Que se passe-t-il en cas de tempête ?",
+    answer: "Pas d'inquiétude ! L'éolienne Tulipe est équipée d'un système de freinage automatique qui ralentit puis stoppe les pales lorsque le vent dépasse 25 m/s (90 km/h). Elle est conçue pour résister à des vents de 180 km/h en position arrêtée. En 10 ans, nous n'avons jamais eu de dommage lié aux tempêtes sur nos installations."
+  },
+  {
+    category: 'product',
+    question: "L'éolienne peut-elle gêner mes voisins ?",
+    answer: "La Tulipe est l'une des éoliennes les plus silencieuses du marché : moins de 35 dB à 5 mètres, soit moins qu'une conversation à voix basse. Son design vertical élimine l'effet stroboscopique (ombres portées) qui peut gêner avec les éoliennes horizontales. La plupart de nos clients nous disent que leurs voisins ne remarquent même pas qu'elle tourne !"
+  },
+  {
+    category: 'product',
+    question: "L'éolienne fonctionne-t-elle la nuit ?",
+    answer: "Bien sûr ! Contrairement aux panneaux solaires, l'éolienne produit de l'électricité 24h/24 tant qu'il y a du vent. C'est d'ailleurs souvent la nuit que le vent est le plus régulier. Combinée à une batterie, vous pouvez ainsi couvrir vos besoins même pendant les heures creuses."
+  },
+  {
+    category: 'product',
+    question: "Quelle est la production réelle d'une éolienne domestique ?",
+    answer: "La production dépend principalement du vent sur votre site. En moyenne, une Tulipe 3kW produit entre 3000 et 6000 kWh par an selon l'exposition. C'est l'équivalent de 30 à 60% de la consommation d'un foyer moyen. Notre calculateur en ligne vous donne une estimation personnalisée basée sur les données météo de votre commune. N'hésitez pas à nous contacter pour affiner cette estimation."
+  },
   // Installation
   {
     category: 'installation',
@@ -52,6 +82,21 @@ const faqData: FAQItem[] = [
     category: 'installation',
     question: "Quel type de fondation est nécessaire ?",
     answer: "Une dalle béton de 1m x 1m x 0.5m minimum est recommandée pour les mâts jusqu'à 10m. Pour les mâts haubanés, des plots d'ancrage suffisent. Nos forfaits pose incluent l'étude de sol."
+  },
+  {
+    category: 'installation',
+    question: "Comment connecter ma Tulipe à mon installation électrique ?",
+    answer: "Rassurez-vous, c'est plus simple qu'il n'y paraît ! L'éolienne se raccorde via un onduleur qui convertit le courant continu en courant alternatif compatible avec votre installation. L'onduleur se connecte ensuite à votre tableau électrique. Un électricien qualifié réalise cette opération en quelques heures. Notre équipe vous accompagne pour trouver un installateur près de chez vous si besoin."
+  },
+  {
+    category: 'installation',
+    question: "L'installation nécessite-t-elle de gros travaux ?",
+    answer: "Bonne nouvelle : l'installation d'une Tulipe ne nécessite pas de travaux lourds ! Il faut prévoir une fondation béton pour le mât (environ 1m²), le passage d'un câble jusqu'à votre tableau électrique, et c'est tout. Pas besoin de modifier votre toiture ou votre façade. La plupart des installations sont terminées en 1 à 2 jours."
+  },
+  {
+    category: 'installation',
+    question: "Puis-je installer l'éolienne sur mon toit ?",
+    answer: "Nous déconseillons l'installation sur toiture pour plusieurs raisons : les vibrations peuvent se transmettre à la structure, le vent y est souvent plus turbulent, et l'accès pour la maintenance est compliqué. Un mât au sol ou sur un poteau dédié offre de bien meilleures performances et une durée de vie optimale. Contactez-nous pour étudier ensemble la meilleure implantation sur votre terrain."
   },
   // Commande
   {
@@ -74,6 +119,21 @@ const faqData: FAQItem[] = [
     question: "Comment fonctionne le prêt d'anémomètre ?",
     answer: "Nous vous prêtons un anémomètre pendant 1 mois contre une caution de 100€. Vous mesurez le vent sur votre site, puis nous renvoyez l'appareil avec le bon de retour prépayé. La caution est remboursée à réception."
   },
+  {
+    category: 'order',
+    question: "Quel est le retour sur investissement ?",
+    answer: "En moyenne, nos clients amortissent leur installation en 8 à 12 ans, selon leur consommation et le potentiel éolien de leur site. Avec la hausse continue des prix de l'électricité, ce délai tend à se réduire. Et surtout, une fois amorti, vous produisez de l'électricité gratuite pendant encore 15 ans minimum ! Nous pouvons vous faire une simulation personnalisée."
+  },
+  {
+    category: 'order',
+    question: "Proposez-vous un service d'installation ?",
+    answer: "Oui ! Nous travaillons avec un réseau d'installateurs partenaires formés à nos produits dans toute la France. Vous pouvez aussi choisir votre propre électricien : nous lui fournissons toute la documentation technique nécessaire. Dans tous les cas, notre équipe technique reste joignable pour accompagner l'installation."
+  },
+  {
+    category: 'order',
+    question: "Que comprend la garantie ?",
+    answer: "Notre garantie est l'une des plus complètes du marché : 5 ans sur les pales et composants mécaniques, 10 ans sur l'alternateur, 2 ans sur l'onduleur. En cas de problème, nous intervenons rapidement. Les pièces détachées sont garanties disponibles pendant 15 ans. Vous êtes entre de bonnes mains !"
+  },
   // Maintenance
   {
     category: 'maintenance',
@@ -90,6 +150,16 @@ const faqData: FAQItem[] = [
     question: "Les pièces détachées sont-elles disponibles ?",
     answer: "Oui, toutes les pièces détachées (pales, roulements, câbles, etc.) sont disponibles dans notre boutique. Nous garantissons leur disponibilité pendant 15 ans minimum après l'achat."
   },
+  {
+    category: 'maintenance',
+    question: "L'éolienne nécessite-t-elle beaucoup d'entretien ?",
+    answer: "Très peu ! Un simple contrôle visuel annuel (état des pales, fixations, câbles) suffit. Pas de lubrification nécessaire grâce aux roulements étanches. Comptez 30 minutes par an. Si vous préférez déléguer, nous proposons des contrats de maintenance à partir de 150€/an."
+  },
+  {
+    category: 'maintenance',
+    question: "Que faire si l'éolienne s'arrête de tourner ?",
+    answer: "Pas de panique ! Vérifiez d'abord le disjoncteur dédié et l'onduleur. Si tout semble normal, contactez notre support technique : nous pouvons diagnostiquer la plupart des problèmes à distance. En cas de besoin, nous organisons une intervention rapide. Notre taux de panne est inférieur à 2% par an."
+  },
   // Administratif
   {
     category: 'admin',
@@ -105,6 +175,21 @@ const faqData: FAQItem[] = [
     category: 'admin',
     question: "Y a-t-il des aides financières ?",
     answer: "Les aides varient selon les régions et évoluent régulièrement. Certaines collectivités proposent des subventions. La TVA réduite à 10% s'applique pour les installations sur des logements de plus de 2 ans."
+  },
+  {
+    category: 'admin',
+    question: "Quelles sont les démarches administratives à effectuer ?",
+    answer: "On vous accompagne à chaque étape ! Les démarches sont simples : 1) Déclaration préalable en mairie (formulaire Cerfa, nous vous aidons à le remplir), 2) Attestation Consuel après installation (votre électricien s'en charge), 3) Demande de raccordement si vous souhaitez revendre le surplus. Comptez 2 à 3 mois au total. Notre équipe reste disponible pour répondre à vos questions tout au long du processus."
+  },
+  {
+    category: 'admin',
+    question: "Faut-il prévenir mes voisins avant d'installer une éolienne ?",
+    answer: "Ce n'est pas obligatoire légalement, mais nous vous conseillons d'en discuter avec eux par courtoisie. La plupart des voisins sont curieux et enthousiastes ! Vous pouvez leur montrer notre documentation sur le niveau sonore et l'esthétique. En cas de questions, n'hésitez pas à nous mettre en contact avec eux, nous serons ravis de les rassurer."
+  },
+  {
+    category: 'admin',
+    question: "Mon terrain est-il adapté à une éolienne ?",
+    answer: "Chaque terrain est unique ! Les critères importants sont : une exposition au vent dominant (généralement ouest/sud-ouest en France), peu d'obstacles à proximité (arbres, bâtiments), et un espace suffisant pour le mât. Notre service de prêt d'anémomètre vous permet de mesurer le vent réel sur votre terrain pendant 1 mois. C'est gratuit et sans engagement. Contactez-nous pour en bénéficier !"
   }
 ]
 
@@ -142,13 +227,13 @@ export default function FAQ() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/5 via-white to-primary/10 py-16">
+      <section className="bg-gradient-to-br from-primary/5 via-white to-primary/10 py-10 lg:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 lg:mb-2">
               Questions <span className="text-primary">fréquentes</span>
             </h1>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-base text-gray-600 mb-5 lg:mb-4">
               Trouvez rapidement les réponses à vos questions sur nos éoliennes, 
               l'installation, les commandes et les démarches administratives.
             </p>
@@ -161,7 +246,7 @@ export default function FAQ() {
                 placeholder="Rechercher une question..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full pl-12 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
               />
             </div>
           </div>
@@ -169,9 +254,9 @@ export default function FAQ() {
       </section>
 
       {/* Categories */}
-      <section className="py-8 bg-white border-b">
+      <section className="py-4 lg:py-3 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-2">
             {categories.map(cat => (
               <button
                 key={cat.id}
@@ -192,30 +277,30 @@ export default function FAQ() {
 
 
       {/* FAQ List */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 lg:py-6 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredFAQ.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-500">Aucune question ne correspond à votre recherche.</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 lg:space-y-2 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
               {filteredFAQ.map((item, index) => (
-                <div key={index} className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
                   <button
                     onClick={() => toggleItem(index)}
-                    className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                    className="w-full flex items-center justify-between p-4 lg:p-3 text-left hover:bg-gray-50 transition-colors"
                   >
-                    <span className="font-medium text-gray-900 pr-4">{item.question}</span>
+                    <span className="font-medium text-gray-900 pr-4 text-sm lg:text-sm">{item.question}</span>
                     <ChevronDown 
-                      className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform ${
+                      className={`w-4 h-4 text-gray-500 flex-shrink-0 transition-transform ${
                         openItems.includes(index) ? 'rotate-180' : ''
                       }`} 
                     />
                   </button>
                   {openItems.includes(index) && (
-                    <div className="px-6 pb-6">
-                      <p className="text-gray-600 leading-relaxed">{item.answer}</p>
+                    <div className="px-4 pb-4 lg:px-3 lg:pb-3">
+                      <p className="text-gray-600 leading-relaxed text-sm">{item.answer}</p>
                     </div>
                   )}
                 </div>
@@ -226,26 +311,26 @@ export default function FAQ() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-white">
+      <section className="py-10 lg:py-6 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-xl font-bold text-gray-900 mb-3 lg:mb-2">
             Vous n'avez pas trouvé votre réponse ?
           </h2>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-600 mb-5 lg:mb-4 text-sm">
             Notre équipe est disponible pour répondre à toutes vos questions 
             et vous accompagner dans votre projet éolien.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               to="/diagnostic"
-              className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
+              className="inline-flex items-center justify-center px-5 py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors text-sm"
             >
               Faire un diagnostic gratuit
-              <ArrowRight className="w-5 h-5 ml-2" />
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
             <a
               href="mailto:contact@eolia.fr"
-              className="inline-flex items-center justify-center px-6 py-3 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary/5 transition-colors"
+              className="inline-flex items-center justify-center px-5 py-2.5 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary/5 transition-colors text-sm"
             >
               Nous contacter
             </a>
