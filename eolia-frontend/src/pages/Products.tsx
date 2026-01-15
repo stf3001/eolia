@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Wind, Zap, Package, Wrench, Filter, Search } from 'lucide-react';
 import ProductCard from '../components/shop/ProductCard';
+import InstallationInfoBanner from '../components/shop/InstallationInfoBanner';
 import productsData from '../data/products.json';
 import type { Product, CategoryFilter } from '../types/product';
 
@@ -48,13 +49,13 @@ export default function Products() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-emerald-800 to-emerald-600 text-white py-10">
+      <section className="bg-gradient-to-br from-emerald-800 to-emerald-600 text-white py-4 lg:py-5">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">
               Notre Catalogue
             </h1>
-            <p className="text-xl text-emerald-100 max-w-2xl mx-auto">
+            <p className="text-base text-emerald-100 max-w-2xl mx-auto">
               Découvrez notre gamme complète d'éoliennes verticales Tulipe,
               onduleurs partenaires et accessoires pour votre installation.
             </p>
@@ -120,9 +121,16 @@ export default function Products() {
           </p>
         </div>
 
+        {/* Installation Info Banner - Affichage conditionnel */}
+        {activeCategory === 'installation' && <InstallationInfoBanner />}
+
         {/* Products Grid */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+          <div className={`grid gap-4 ${
+            activeCategory === 'installation' 
+              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto' 
+              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+          }`}>
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.productId}

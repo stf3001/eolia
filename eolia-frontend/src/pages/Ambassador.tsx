@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   Coins,
@@ -18,25 +19,25 @@ export default function Ambassador() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-emerald-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-emerald-600 to-emerald-800 text-white py-20">
-        <div className="container mx-auto px-4">
+      <section className="relative bg-gradient-to-br from-emerald-600 to-emerald-800 text-white py-4 lg:py-5">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">
               Devenez Ambassadeur EOLIA
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 mb-8">
+            <p className="text-base text-white/90 mb-4">
               Partagez votre conviction pour l'énergie éolienne, générez des revenus et participez à la transition énergétique
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 to="/inscription"
-                className="bg-white text-emerald-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg"
+                className="bg-white text-emerald-700 px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-100 transition-all shadow-lg"
               >
                 Devenir ambassadeur
               </Link>
               <Link
                 to="/connexion"
-                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all"
+                className="bg-transparent border-2 border-white text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-white/10 transition-all"
               >
                 Espace ambassadeur
               </Link>
@@ -46,18 +47,32 @@ export default function Ambassador() {
       </section>
 
       {/* Pourquoi devenir ambassadeur */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-            Pourquoi devenir ambassadeur ?
-          </h2>
-          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            Rejoignez un mouvement qui a du sens et profitez d'avantages concrets
-          </p>
+      <section className="py-8 lg:py-10">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Pourquoi devenir ambassadeur ?
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Rejoignez un mouvement qui a du sens et profitez d'avantages concrets
+            </p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Gagner des revenus */}
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0 }}
+              className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
+            >
               <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mb-4">
                 <Coins className="w-7 h-7 text-emerald-600" />
               </div>
@@ -66,10 +81,16 @@ export default function Ambassador() {
                 Recevez des bons d'achat ou des commissions attractives pour chaque recommandation réussie.
                 Financez votre propre éolienne grâce à vos parrainages !
               </p>
-            </div>
+            </motion.div>
 
             {/* Transition écologique */}
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
+            >
               <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-4">
                 <Leaf className="w-7 h-7 text-green-600" />
               </div>
@@ -78,10 +99,16 @@ export default function Ambassador() {
                 Contribuez activement à la transition énergétique en promouvant l'énergie éolienne domestique
                 et en réduisant la dépendance aux énergies fossiles.
               </p>
-            </div>
+            </motion.div>
 
             {/* Énergie renouvelable */}
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
+            >
               <div className="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-4">
                 <Wind className="w-7 h-7 text-purple-600" />
               </div>
@@ -90,10 +117,16 @@ export default function Ambassador() {
                 Participez à la décentralisation de la production d'énergie et aidez vos proches
                 à devenir autonomes avec une éolienne Tulipe.
               </p>
-            </div>
+            </motion.div>
 
             {/* Récompenses exceptionnelles */}
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
+            >
               <div className="w-14 h-14 bg-pink-100 rounded-full flex items-center justify-center mb-4">
                 <Gift className="w-7 h-7 text-pink-600" />
               </div>
@@ -102,24 +135,38 @@ export default function Ambassador() {
                 Obtenez votre propre éolienne Tulipe gratuitement après 10 recommandations !
                 Un cadeau d'une valeur d'environ 2 500€ pour récompenser votre engagement.
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* B2C vs B2B */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-            Deux programmes adaptés à votre profil
-          </h2>
-          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            Que vous soyez particulier ou professionnel, nous avons le programme qui vous correspond
-          </p>
+      <section className="py-8 lg:py-10 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Deux programmes adaptés à votre profil
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Que vous soyez particulier ou professionnel, nous avons le programme qui vous correspond
+            </p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {/* Programme Particulier B2C */}
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl p-8 border-2 border-emerald-200">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0 }}
+              className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl p-8 border-2 border-emerald-200"
+            >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center">
                   <Users className="w-6 h-6 text-white" />
@@ -174,10 +221,16 @@ export default function Ambassador() {
               >
                 Devenir ambassadeur particulier
               </Link>
-            </div>
+            </motion.div>
 
             {/* Programme Professionnel B2B */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 border-2 border-purple-200">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 border-2 border-purple-200"
+            >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
                   <Building2 className="w-6 h-6 text-white" />
@@ -225,20 +278,28 @@ export default function Ambassador() {
               >
                 Devenir ambassadeur professionnel
               </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Nos exigences */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-            Notre engagement : l'intégrité avant tout
-          </h2>
-          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            EOLIA s'engage à respecter le droit et attend la même rigueur de ses ambassadeurs
-          </p>
+      <section className="py-8 lg:py-10">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Notre engagement : l'intégrité avant tout
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              EOLIA s'engage à respecter le droit et attend la même rigueur de ses ambassadeurs
+            </p>
+          </motion.div>
 
           <div className="max-w-4xl mx-auto">
             {/* Carte principale */}
@@ -358,30 +419,38 @@ export default function Ambassador() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-16 bg-emerald-700 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <Wind className="w-16 h-16 text-emerald-300 mx-auto mb-6" />
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Prêt à rejoindre l'aventure ?
-          </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Devenez ambassadeur EOLIA dès aujourd'hui et commencez à générer des revenus
-            tout en participant à la transition énergétique
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/inscription"
-              className="bg-white text-emerald-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg inline-block"
-            >
-              Créer mon compte
-            </Link>
-            <Link
-              to="/faq"
-              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all inline-block"
-            >
-              FAQ
-            </Link>
-          </div>
+      <section className="py-8 lg:py-10 bg-emerald-700 text-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <Wind className="w-12 h-12 text-emerald-300 mx-auto mb-4" />
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Prêt à rejoindre l'aventure ?
+            </h2>
+            <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto">
+              Devenez ambassadeur EOLIA dès aujourd'hui et commencez à générer des revenus
+              tout en participant à la transition énergétique
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/inscription"
+                className="bg-white text-emerald-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all shadow-lg inline-block"
+              >
+                Créer mon compte
+              </Link>
+              <Link
+                to="/faq"
+                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all inline-block"
+              >
+                FAQ
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

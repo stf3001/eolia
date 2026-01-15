@@ -1,391 +1,204 @@
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
-  Zap,
-  Battery,
-  Cpu,
-  Shield,
-  Award,
-  ArrowRight,
-  Check,
-  Globe,
-  Leaf,
+  Wind,
+  Sun,
+  Droplets,
+  Calculator,
+  MessageCircle,
+  AlertTriangle,
 } from 'lucide-react';
-
-const partners = [
-  {
-    id: 'imeon',
-    name: 'IMEON Énergie',
-    logo: '/images/partners/imeon-logo.png',
-    tagline: "L'intelligence artificielle au service de votre énergie",
-    description:
-      "IMEON Énergie est un fabricant français d'onduleurs hybrides intelligents. Leur technologie brevetée intègre une intelligence artificielle qui optimise en temps réel la gestion de votre production et consommation d'énergie.",
-    country: 'France',
-    founded: '2014',
-    features: [
-      {
-        icon: Cpu,
-        title: 'IA Intégrée',
-        description:
-          "L'onduleur apprend vos habitudes de consommation et optimise automatiquement l'utilisation de votre production.",
-      },
-      {
-        icon: Battery,
-        title: 'Batteries 20 ans',
-        description:
-          'Compatible avec des batteries lithium garanties 20 ans pour une autonomie maximale.',
-      },
-      {
-        icon: Shield,
-        title: 'Garantie 10 ans',
-        description:
-          'Tous les onduleurs IMEON sont garantis 10 ans, extensible à 20 ans.',
-      },
-      {
-        icon: Leaf,
-        title: 'Made in France',
-        description:
-          'Conception et assemblage en France pour une qualité et un SAV de proximité.',
-      },
-    ],
-    products: [
-      {
-        name: 'IMEON 3.6',
-        power: '3.6 kW',
-        type: 'Monophasé',
-        price: '2 890 €',
-        productId: 'imeon-3.6',
-      },
-      {
-        name: 'IMEON 9.12',
-        power: '9.12 kW',
-        type: 'Triphasé',
-        price: '4 990 €',
-        productId: 'imeon-9.12',
-      },
-    ],
-    color: 'blue',
-  },
-  {
-    id: 'fronius',
-    name: 'Fronius',
-    logo: '/images/partners/fronius-logo.png',
-    tagline: 'La qualité autrichienne depuis 1945',
-    description:
-      "Fronius est un leader mondial dans le domaine des onduleurs photovoltaïques. Avec plus de 75 ans d'expérience, la marque autrichienne est synonyme de fiabilité, d'innovation et de performance.",
-    country: 'Autriche',
-    founded: '1945',
-    features: [
-      {
-        icon: Award,
-        title: 'Leader mondial',
-        description:
-          "Plus de 3 millions d'onduleurs installés dans le monde, une référence du secteur.",
-      },
-      {
-        icon: Globe,
-        title: 'Monitoring Solar.web',
-        description:
-          'Plateforme de monitoring gratuite pour suivre votre production en temps réel.',
-      },
-      {
-        icon: Shield,
-        title: 'Garantie 10 ans',
-        description:
-          'Garantie fabricant de 10 ans sur tous les onduleurs de la gamme.',
-      },
-      {
-        icon: Zap,
-        title: 'Rendement 98%+',
-        description:
-          'Les meilleurs rendements du marché pour maximiser votre production.',
-      },
-    ],
-    products: [
-      {
-        name: 'Fronius Primo 3.0',
-        power: '3.0 kW',
-        type: 'Monophasé',
-        price: '1 890 €',
-        productId: 'fronius-primo-3.0',
-      },
-      {
-        name: 'Fronius Symo 10.0',
-        power: '10.0 kW',
-        type: 'Triphasé',
-        price: '3 490 €',
-        productId: 'fronius-symo-10.0',
-      },
-    ],
-    color: 'red',
-  },
-];
+import PartnerCard from '../components/partners/PartnerCard';
+import { partners } from '../data/partners';
 
 export default function Partners() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-emerald-800 to-emerald-600 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - Task 4.1 */}
+      <section className="relative bg-gradient-to-br from-sky-600 to-sky-500 text-white py-4 lg:py-5 overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Nos Partenaires Onduleurs
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+              Nos Partenaires
             </h1>
-            <p className="text-xl text-emerald-100 max-w-3xl mx-auto">
-              EOLIA a sélectionné les meilleurs fabricants d'onduleurs pour
-              garantir la performance et la durabilité de votre installation
-              éolienne.
+            <p className="text-base text-sky-100 max-w-3xl mx-auto">
+              Un écosystème de confiance sélectionné par EOLIA pour accompagner 
+              votre installation éolienne avec des équipements adaptés et des 
+              professionnels qualifiés.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Why Partners Matter */}
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-7 h-7 text-emerald-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Conversion optimale
-              </h3>
-              <p className="text-gray-600 text-sm">
-                L'onduleur convertit le courant continu de votre éolienne en
-                courant alternatif utilisable.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Battery className="w-7 h-7 text-emerald-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Stockage intelligent
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Les onduleurs hybrides permettent de stocker l'énergie dans des
-                batteries pour une autonomie maximale.
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-7 h-7 text-emerald-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Protection garantie
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Nos partenaires offrent des garanties longues et un SAV réactif
-                pour votre tranquillité.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Partners Detail */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
-          {partners.map((partner, index) => (
-            <div
-              key={partner.id}
-              id={partner.id}
-              className={`scroll-mt-24 ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
-            >
-              <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-                {/* Header */}
-                <div
-                  className={`p-8 ${
-                    partner.color === 'blue'
-                      ? 'bg-gradient-to-r from-blue-600 to-blue-500'
-                      : 'bg-gradient-to-r from-red-600 to-red-500'
-                  } text-white`}
-                >
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                      <div className="flex items-center gap-4 mb-2">
-                        <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-2">
-                          <img
-                            src={partner.logo}
-                            alt={partner.name}
-                            className="w-full h-full object-contain"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = 'none';
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <h2 className="text-3xl font-bold">{partner.name}</h2>
-                          <p className="text-white/80">{partner.tagline}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4 text-sm">
-                      <div className="bg-white/20 rounded-lg px-4 py-2">
-                        <span className="block text-white/70">Pays</span>
-                        <span className="font-semibold">{partner.country}</span>
-                      </div>
-                      <div className="bg-white/20 rounded-lg px-4 py-2">
-                        <span className="block text-white/70">Fondé en</span>
-                        <span className="font-semibold">{partner.founded}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-8">
-                  <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                    {partner.description}
-                  </p>
-
-                  {/* Features */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    {partner.features.map((feature) => {
-                      const FeatureIcon = feature.icon;
-                      return (
-                        <div
-                          key={feature.title}
-                          className="flex gap-4 p-4 bg-gray-50 rounded-xl"
-                        >
-                          <div
-                            className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                              partner.color === 'blue'
-                                ? 'bg-blue-100 text-blue-600'
-                                : 'bg-red-100 text-red-600'
-                            }`}
-                          >
-                            <FeatureIcon className="w-6 h-6" />
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900 mb-1">
-                              {feature.title}
-                            </h4>
-                            <p className="text-gray-600 text-sm">
-                              {feature.description}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Products */}
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                      Produits disponibles
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {partner.products.map((product) => (
-                        <Link
-                          key={product.productId}
-                          to={`/produits/${product.productId}`}
-                          className="group flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:border-emerald-300 hover:bg-emerald-50 transition-all"
-                        >
-                          <div>
-                            <h4 className="font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors">
-                              {product.name}
-                            </h4>
-                            <div className="flex gap-3 text-sm text-gray-500 mt-1">
-                              <span>{product.power}</span>
-                              <span>•</span>
-                              <span>{product.type}</span>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <span className="font-bold text-emerald-600">
-                              {product.price}
-                            </span>
-                            <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all" />
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Why Choose Our Partners */}
-      <section className="py-16 bg-emerald-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+      {/* Section éducative sur l'intermittence - Task 4.2 */}
+      <section className="py-8 lg:py-10 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Pourquoi ces partenaires ?
+              L'éolien, une énergie qui demande des équipements adaptés
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              EOLIA a sélectionné IMEON et Fronius pour leur excellence technique
-              et leur engagement qualité.
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Contrairement au solaire ou à l'hydraulique, le vent est une source 
+              d'énergie particulièrement variable. Cette intermittence nécessite 
+              des équipements spécifiquement conçus pour gérer ces fluctuations.
             </p>
+          </motion.div>
+
+          {/* Comparaison visuelle vent/soleil/eau */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {/* Vent */}
+            <div className="bg-sky-50 rounded-2xl p-6 border-2 border-sky-200">
+              <div className="w-14 h-14 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Wind className="w-7 h-7 text-sky-600" />
+              </div>
+              <h3 className="font-semibold text-gray-900 text-center mb-2">Vent</h3>
+              <div className="flex justify-center gap-1 mb-3">
+                <span className="text-sky-600 text-2xl">+++</span>
+              </div>
+              <p className="text-sm text-gray-600 text-center">
+                <span className="font-medium text-sky-700">Très variable</span> — 
+                Rafales, accalmies, changements de direction. Nécessite des onduleurs 
+                robustes capables de gérer les pics de puissance.
+              </p>
+            </div>
+
+            {/* Soleil */}
+            <div className="bg-amber-50 rounded-2xl p-6 border border-amber-100">
+              <div className="w-14 h-14 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Sun className="w-7 h-7 text-amber-600" />
+              </div>
+              <h3 className="font-semibold text-gray-900 text-center mb-2">Soleil</h3>
+              <div className="flex justify-center gap-1 mb-3">
+                <span className="text-amber-600 text-2xl">++</span>
+              </div>
+              <p className="text-sm text-gray-600 text-center">
+                <span className="font-medium text-amber-700">Prévisible</span> — 
+                Cycle jour/nuit régulier, variations saisonnières connues. 
+                Production plus stable et anticipable.
+              </p>
+            </div>
+
+            {/* Eau */}
+            <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100">
+              <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Droplets className="w-7 h-7 text-emerald-600" />
+              </div>
+              <h3 className="font-semibold text-gray-900 text-center mb-2">Eau</h3>
+              <div className="flex justify-center gap-1 mb-3">
+                <span className="text-emerald-600 text-2xl">+</span>
+              </div>
+              <p className="text-sm text-gray-600 text-center">
+                <span className="font-medium text-emerald-700">Constant</span> — 
+                Débit régulier, production stable. L'énergie hydraulique est 
+                la plus prévisible des énergies renouvelables.
+              </p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: 'Compatibilité garantie',
-                description:
-                  'Tous nos onduleurs sont testés et validés avec les éoliennes Tulipe.',
-              },
-              {
-                title: 'SAV réactif',
-                description:
-                  'Un réseau de techniciens formés pour une intervention rapide.',
-              },
-              {
-                title: 'Garanties longues',
-                description:
-                  'Minimum 10 ans de garantie sur tous les onduleurs partenaires.',
-              },
-              {
-                title: 'Évolutivité',
-                description:
-                  'Possibilité d\'ajouter des batteries ou d\'étendre votre installation.',
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="bg-white rounded-xl p-6 shadow-md"
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <Check className="w-5 h-5 text-emerald-600" />
-                  <h3 className="font-semibold text-gray-900">{item.title}</h3>
-                </div>
-                <p className="text-gray-600 text-sm">{item.description}</p>
+          {/* Texte explicatif */}
+          <div className="bg-gray-50 rounded-2xl p-6 lg:p-8">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <AlertTriangle className="w-6 h-6 text-sky-600" />
               </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  Pourquoi des équipements spécifiques pour l'éolien ?
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Une éolienne peut passer de 0 à 100% de sa puissance en quelques 
+                  secondes lors d'une rafale. Cette caractéristique impose des 
+                  contraintes techniques importantes : l'onduleur doit absorber ces 
+                  variations sans surchauffe, le système de stockage doit pouvoir 
+                  encaisser des cycles de charge/décharge fréquents, et l'installation 
+                  doit être réalisée par des professionnels formés à ces spécificités.
+                </p>
+                <p className="text-gray-600 leading-relaxed mt-3">
+                  C'est pourquoi EOLIA a sélectionné des partenaires dont les produits 
+                  sont <span className="font-medium text-gray-900">spécifiquement adaptés 
+                  à l'énergie éolienne</span>, garantissant performance et durabilité 
+                  de votre installation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Grille des 4 cartes partenaires - Task 4.3 */}
+      <section className="py-8 lg:py-10">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Nos partenaires de confiance
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Des équipements et services sélectionnés pour leur excellence 
+              et leur adaptation aux spécificités de l'énergie éolienne.
+            </p>
+          </motion.div>
+
+          {/* Grille responsive : 1 col mobile, 2 col tablette, 4 col desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {partners.map((partner) => (
+              <PartnerCard key={partner.id} partner={partner} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Besoin de conseils ?
-          </h2>
-          <p className="text-gray-600 mb-8">
-            Notre équipe vous aide à choisir l'onduleur adapté à votre
-            installation et à vos besoins énergétiques.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/produits?category=inverter"
-              className="inline-flex items-center justify-center gap-2 bg-emerald-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-emerald-700 transition-colors"
-            >
-              Voir tous les onduleurs
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link
-              to="/diagnostic"
-              className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-600 px-8 py-3 rounded-full font-semibold hover:bg-emerald-50 transition-colors"
-            >
-              Faire un diagnostic
-            </Link>
-          </div>
+      {/* Section CTA - Task 4.4 */}
+      <section className="py-8 lg:py-10 bg-sky-600">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Besoin de conseils pour votre installation ?
+            </h2>
+            <p className="text-lg text-sky-100 mb-6 max-w-2xl mx-auto">
+              Notre équipe vous accompagne dans le choix des équipements adaptés 
+              à votre projet et à vos besoins énergétiques.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/calculateur"
+                className="inline-flex items-center justify-center gap-2 bg-white text-sky-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors"
+              >
+                <Calculator className="w-5 h-5" />
+                Calculer ma production
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-colors"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Nous contacter
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

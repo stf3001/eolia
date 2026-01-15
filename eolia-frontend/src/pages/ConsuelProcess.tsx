@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { 
   FileText, CheckCircle, Clock, AlertCircle, ArrowRight,
@@ -85,13 +86,13 @@ export default function ConsuelProcess() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/5 via-white to-primary/10 py-16">
+      <section className="bg-gradient-to-br from-primary/5 via-white to-primary/10 py-4 lg:py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               Raccordement <span className="text-primary">Enedis & Consuel</span>
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-base text-gray-600">
               Guide complet des démarches administratives pour raccorder votre éolienne 
               au réseau électrique et obtenir votre attestation de conformité.
             </p>
@@ -100,14 +101,22 @@ export default function ConsuelProcess() {
       </section>
 
       {/* Timeline */}
-      <section className="py-16 bg-white">
+      <section className="py-8 lg:py-10 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
-            Les 5 étapes du raccordement
-          </h2>
-          <p className="text-center text-gray-600 mb-12">
-            Délai total estimé : 3 à 6 mois selon votre situation
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Les 5 étapes du raccordement
+            </h2>
+            <p className="text-gray-600">
+              Délai total estimé : 3 à 6 mois selon votre situation
+            </p>
+          </motion.div>
           
           <div className="relative">
             {/* Ligne verticale */}
@@ -151,11 +160,17 @@ export default function ConsuelProcess() {
 
 
       {/* Documents nécessaires */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-8 lg:py-10 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl font-bold text-center text-gray-900 mb-8"
+          >
             Documents à rassembler
-          </h2>
+          </motion.h2>
           <div className="bg-white rounded-xl shadow-sm overflow-hidden">
             <table className="w-full">
               <thead className="bg-primary text-white">
@@ -182,9 +197,15 @@ export default function ConsuelProcess() {
       </section>
 
       {/* Info importante */}
-      <section className="py-16 bg-white">
+      <section className="py-8 lg:py-10 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-amber-50 border border-amber-200 rounded-xl p-6"
+          >
             <div className="flex items-start space-x-4">
               <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" />
               <div>
@@ -199,36 +220,44 @@ export default function ConsuelProcess() {
                 </ul>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-primary/5">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Besoin d'accompagnement ?
-          </h2>
-          <p className="text-gray-600 mb-8">
-            Notre équipe peut vous accompagner dans vos démarches administratives 
-            et vous mettre en relation avec des installateurs certifiés.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/diagnostic"
-              className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
-            >
-              Faire un diagnostic
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
-            <a
-              href="tel:+33123456789"
-              className="inline-flex items-center justify-center px-6 py-3 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary/5 transition-colors"
-            >
-              <Phone className="w-5 h-5 mr-2" />
-              Nous contacter
-            </a>
-          </div>
+      <section className="py-8 lg:py-10 bg-primary/5">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Besoin d'accompagnement ?
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Notre équipe peut vous accompagner dans vos démarches administratives 
+              et vous mettre en relation avec des installateurs certifiés.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/diagnostic"
+                className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
+              >
+                Faire un diagnostic
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Link>
+              <a
+                href="tel:+33123456789"
+                className="inline-flex items-center justify-center px-6 py-3 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary/5 transition-colors"
+              >
+                <Phone className="w-5 h-5 mr-2" />
+                Nous contacter
+              </a>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

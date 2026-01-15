@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { 
   Wind, Zap, Volume2, Leaf, ArrowRight, CheckCircle, 
@@ -71,13 +72,13 @@ export default function HowItWorks() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/5 via-white to-primary/10 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-br from-primary/5 via-white to-primary/10 py-4 lg:py-5">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               La technologie éolienne <span className="text-primary">verticale</span>
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-base text-gray-600">
               Découvrez comment nos éoliennes Tulipe transforment le vent en électricité 
               propre, silencieusement et efficacement.
             </p>
@@ -87,12 +88,18 @@ export default function HowItWorks() {
 
 
       {/* Avantages */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+      <section className="py-8 lg:py-10 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl font-bold text-center text-gray-900 mb-8"
+          >
             Les avantages de l'éolienne verticale
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          </motion.h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {advantages.map((advantage, index) => (
               <div key={index} className="flex items-start space-x-4 p-6 rounded-xl bg-gray-50 hover:bg-primary/5 transition-colors">
                 <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -109,16 +116,24 @@ export default function HowItWorks() {
       </section>
 
       {/* Comment ça marche */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
-            Comment ça fonctionne ?
-          </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            De la captation du vent à l'utilisation de l'électricité, voici les 4 étapes 
-            de la production d'énergie avec une éolienne Tulipe.
-          </p>
-          <div className="space-y-8">
+      <section className="py-8 lg:py-10 bg-gray-50">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Comment ça fonctionne ?
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              De la captation du vent à l'utilisation de l'électricité, voici les 4 étapes 
+              de la production d'énergie avec une éolienne Tulipe.
+            </p>
+          </motion.div>
+          <div className="space-y-6">
             {steps.map((step, index) => (
               <div key={index} className="flex items-start space-x-6 bg-white p-6 rounded-xl shadow-sm">
                 <div className="flex-shrink-0 w-16 h-16 bg-primary rounded-full flex items-center justify-center">
@@ -136,11 +151,17 @@ export default function HowItWorks() {
 
 
       {/* Conditions optimales */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+      <section className="py-8 lg:py-10 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl font-bold text-center text-gray-900 mb-8"
+          >
             Conditions et caractéristiques
-          </h2>
+          </motion.h2>
           <div className="grid md:grid-cols-4 gap-6">
             {conditions.map((condition, index) => (
               <div key={index} className="text-center p-6 bg-gray-50 rounded-xl">
@@ -154,12 +175,18 @@ export default function HowItWorks() {
       </section>
 
       {/* Comparaison */}
-      <section className="py-16 bg-primary/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+      <section className="py-8 lg:py-10 bg-primary/5">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl font-bold text-center text-gray-900 mb-8"
+          >
             Verticale vs Horizontale
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8">
+          </motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white p-8 rounded-xl shadow-sm">
               <h3 className="text-xl font-semibold text-primary mb-6 flex items-center">
                 <CheckCircle className="w-6 h-6 mr-2" />
@@ -206,30 +233,38 @@ export default function HowItWorks() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Prêt à passer à l'énergie éolienne ?
-          </h2>
-          <p className="text-gray-600 mb-8">
-            Estimez votre production potentielle avec notre calculateur gratuit 
-            ou découvrez notre gamme d'éoliennes Tulipe.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/calculateur"
-              className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
-            >
-              Calculer ma production
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
-            <Link
-              to="/produits"
-              className="inline-flex items-center justify-center px-6 py-3 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary/5 transition-colors"
-            >
-              Voir la gamme Tulipe
-            </Link>
-          </div>
+      <section className="py-8 lg:py-10 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl mx-auto text-center"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Prêt à passer à l'énergie éolienne ?
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Estimez votre production potentielle avec notre calculateur gratuit 
+              ou découvrez notre gamme d'éoliennes Tulipe.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/calculateur"
+                className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-colors"
+              >
+                Calculer ma production
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Link>
+              <Link
+                to="/produits"
+                className="inline-flex items-center justify-center px-6 py-3 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary/5 transition-colors"
+              >
+                Voir la gamme Tulipe
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

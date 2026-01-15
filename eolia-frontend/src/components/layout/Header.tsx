@@ -9,6 +9,7 @@ const navLinks = [
   { to: '/calculateur', label: 'Calculateur' },
   { to: '/produits', label: 'Gamme Tulipe' },
   { to: '/faq', label: 'FAQ' },
+  { to: '/partenaires', label: 'Nos Partenaires' },
   { to: '/ambassadeur', label: 'Ambassadeur' },
   { to: '/espace-client', label: 'Espace Client' },
 ]

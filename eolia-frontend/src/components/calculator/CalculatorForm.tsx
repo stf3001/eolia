@@ -88,15 +88,15 @@ export default function CalculatorForm({ onCalculate, initialValues, autoCalcula
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-6 space-y-6">
-      <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-        <Calculator className="h-6 w-6 text-primary" />
+    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-4 lg:p-5 space-y-4">
+      <h2 className="text-lg lg:text-xl font-bold text-gray-900 flex items-center gap-2">
+        <Calculator className="h-5 w-5 lg:h-6 lg:w-6 text-primary" />
         Calculez votre production
       </h2>
 
       {/* Department Selection */}
       <div>
-        <label htmlFor="department" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="department" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1.5">
           <MapPin className="h-4 w-4 text-primary" />
           Département
         </label>
@@ -104,7 +104,7 @@ export default function CalculatorForm({ onCalculate, initialValues, autoCalcula
           id="department"
           value={departmentCode}
           onChange={(e) => setDepartmentCode(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+          className="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
           required
         >
           <option value="">Sélectionnez votre département</option>
@@ -116,50 +116,53 @@ export default function CalculatorForm({ onCalculate, initialValues, autoCalcula
         </select>
       </div>
 
-      {/* Power Selection */}
-      <div>
-        <label htmlFor="power" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-          <Zap className="h-4 w-4 text-primary" />
-          Puissance (kWc)
-        </label>
-        <select
-          id="power"
-          value={powerKwc}
-          onChange={(e) => setPowerKwc(Number(e.target.value))}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
-        >
-          {availablePowers.map((power) => (
-            <option key={power} value={power}>
-              {power} kWc
-            </option>
-          ))}
-        </select>
-      </div>
+      {/* Power and Turbine Count - Side by side on desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Power Selection */}
+        <div>
+          <label htmlFor="power" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1.5">
+            <Zap className="h-4 w-4 text-primary" />
+            Puissance (kWc)
+          </label>
+          <select
+            id="power"
+            value={powerKwc}
+            onChange={(e) => setPowerKwc(Number(e.target.value))}
+            className="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+          >
+            {availablePowers.map((power) => (
+              <option key={power} value={power}>
+                {power} kWc
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Turbine Count */}
-      <div>
-        <label htmlFor="turbineCount" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-          <Wind className="h-4 w-4 text-primary" />
-          Nombre d'éoliennes
-        </label>
-        <input
-          type="number"
-          id="turbineCount"
-          min={1}
-          max={10}
-          value={turbineCount}
-          onChange={(e) => setTurbineCount(Math.max(1, Math.min(10, parseInt(e.target.value, 10) || 1)))}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
-        />
-        {turbineCount > 1 && (
-          <p className="mt-1 text-sm text-primary">
-            ✓ Bonus grappe +5% appliqué (effet venturi)
-          </p>
-        )}
+        {/* Turbine Count */}
+        <div>
+          <label htmlFor="turbineCount" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1.5">
+            <Wind className="h-4 w-4 text-primary" />
+            Nombre d'éoliennes
+          </label>
+          <input
+            type="number"
+            id="turbineCount"
+            min={1}
+            max={10}
+            value={turbineCount}
+            onChange={(e) => setTurbineCount(Math.max(1, Math.min(10, parseInt(e.target.value, 10) || 1)))}
+            className="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+          />
+          {turbineCount > 1 && (
+            <p className="mt-1 text-sm text-primary">
+              ✓ Bonus grappe +5% appliqué (effet venturi)
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Anemometer Toggle */}
-      <div className="border-t border-gray-200 pt-4">
+      <div className="border-t border-gray-200 pt-3">
         <button
           type="button"
           onClick={() => setShowAnemometer(!showAnemometer)}
@@ -172,14 +175,14 @@ export default function CalculatorForm({ onCalculate, initialValues, autoCalcula
 
       {/* Anemometer Fields */}
       {showAnemometer && (
-        <div className="bg-gray-50 rounded-lg p-4 space-y-4">
+        <div className="bg-gray-50 rounded-lg p-3 space-y-3">
           <p className="text-sm text-gray-600">
             Si vous avez mesuré la vitesse du vent sur votre site, entrez vos données pour un calcul plus précis.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label htmlFor="anemometerSpeed" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="anemometerSpeed" className="block text-sm font-medium text-gray-700 mb-1.5">
                 Vitesse mesurée (m/s)
               </label>
               <input
@@ -191,12 +194,12 @@ export default function CalculatorForm({ onCalculate, initialValues, autoCalcula
                 value={anemometerSpeed}
                 onChange={(e) => setAnemometerSpeed(e.target.value)}
                 placeholder="Ex: 5.2"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                className="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
               />
             </div>
 
             <div>
-              <label htmlFor="anemometerMonth" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="anemometerMonth" className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1.5">
                 <Calendar className="h-4 w-4" />
                 Mois de mesure
               </label>
@@ -204,7 +207,7 @@ export default function CalculatorForm({ onCalculate, initialValues, autoCalcula
                 id="anemometerMonth"
                 value={anemometerMonth}
                 onChange={(e) => setAnemometerMonth(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                className="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
               >
                 <option value="">Sélectionnez le mois</option>
                 {months.map((month) => (
@@ -221,7 +224,7 @@ export default function CalculatorForm({ onCalculate, initialValues, autoCalcula
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full px-6 py-4 rounded-full bg-primary text-white font-semibold text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
+        className="w-full px-6 py-3 rounded-full bg-primary text-white font-semibold text-base lg:text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
       >
         <Calculator className="h-5 w-5" />
         Calculer ma production

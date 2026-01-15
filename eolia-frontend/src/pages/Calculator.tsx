@@ -145,22 +145,22 @@ export default function Calculator() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-primary text-white py-12">
+      {/* Hero Section - Compact on desktop */}
+      <section className="bg-primary text-white py-4 lg:py-5">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Wind className="h-10 w-10" />
-            <h1 className="text-3xl md:text-4xl font-bold">Calculateur de Production</h1>
+          <div className="flex items-center gap-2 mb-1">
+            <Wind className="h-7 w-7 lg:h-8 lg:w-8" />
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold">Calculateur de Production</h1>
           </div>
-          <p className="text-lg text-white/90 max-w-2xl">
+          <p className="text-sm lg:text-base text-white/90 max-w-2xl">
             Estimez la production annuelle de votre éolienne Tulipe en fonction de votre localisation
             et de la puissance choisie.
           </p>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Main Content - Reduced padding on desktop */}
+      <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Pending Save Prompt */}
         {showPendingSavePrompt && isAuthenticated && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-xl p-4 flex items-center justify-between gap-4">
@@ -226,15 +226,53 @@ export default function Calculator() {
                 <ProductionChart monthlyProduction={results.monthlyProduction} />
               </>
             ) : (
-              <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-                <Wind className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                  Prêt à calculer ?
+              <div className="bg-white rounded-xl shadow-lg p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Votre parcours vers l'autonomie
                 </h3>
-                <p className="text-gray-500">
-                  Sélectionnez votre département et la puissance souhaitée pour obtenir
-                  une estimation de production.
-                </p>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-7 h-7 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm font-bold">1</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">Estimez votre production</p>
+                      <p className="text-xs text-gray-500">Utilisez le calculateur ci-contre</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-7 h-7 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-primary text-sm font-bold">2</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">Affinez avec l'anémomètre</p>
+                      <p className="text-xs text-gray-500">Prêt gratuit 1 mois, mesurez le vent réel</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-7 h-7 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-primary text-sm font-bold">3</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">Validez votre configuration</p>
+                      <p className="text-xs text-gray-500">On vous conseille sur le bon dimensionnement</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-7 h-7 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-primary text-sm font-bold">4</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">On s'occupe de tout</p>
+                      <p className="text-xs text-gray-500">Livraison, installateur, démarches Consuel</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <p className="text-xs text-gray-500 text-center">
+                    Une question ? <Link to="/faq" className="text-primary hover:underline">Consultez notre FAQ</Link>
+                  </p>
+                </div>
               </div>
             )}
           </div>

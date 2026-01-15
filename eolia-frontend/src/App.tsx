@@ -17,6 +17,12 @@ import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
 import Partners from './pages/Partners'
 
+// Partner Detail Pages
+import FroniusDetail from './pages/partners/FroniusDetail'
+import ImeonDetail from './pages/partners/ImeonDetail'
+import EnergiestroDetail from './pages/partners/EnergiestroDetail'
+import InstallersDetail from './pages/partners/InstallersDetail'
+
 import Anemometer from './pages/Anemometer'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
@@ -54,6 +60,10 @@ function App() {
             <Route path="/produits" element={<Products />} />
             <Route path="/produits/:productId" element={<ProductDetail />} />
             <Route path="/partenaires" element={<Partners />} />
+            <Route path="/partenaires/fronius" element={<FroniusDetail />} />
+            <Route path="/partenaires/imeon" element={<ImeonDetail />} />
+            <Route path="/partenaires/energiestro" element={<EnergiestroDetail />} />
+            <Route path="/partenaires/installateurs" element={<InstallersDetail />} />
 
             <Route path="/anemometre" element={<Anemometer />} />
             <Route path="/panier" element={<Cart />} />

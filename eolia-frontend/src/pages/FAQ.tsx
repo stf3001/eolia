@@ -227,13 +227,13 @@ export default function FAQ() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/5 via-white to-primary/10 py-10 lg:py-8">
+      <section className="bg-primary py-4 lg:py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 lg:mb-2">
-              Questions <span className="text-primary">fréquentes</span>
+            <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+              Questions fréquentes
             </h1>
-            <p className="text-base text-gray-600 mb-5 lg:mb-4">
+            <p className="text-base text-white/90 mb-4">
               Trouvez rapidement les réponses à vos questions sur nos éoliennes, 
               l'installation, les commandes et les démarches administratives.
             </p>
@@ -246,7 +246,7 @@ export default function FAQ() {
                 placeholder="Rechercher une question..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full pl-12 pr-4 py-2.5 bg-white text-gray-900 placeholder-gray-400 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
               />
             </div>
           </div>
@@ -330,7 +330,7 @@ export default function FAQ() {
             </Link>
             <a
               href="mailto:contact@eolia.fr"
-              className="inline-flex items-center justify-center px-5 py-2.5 border-2 border-primary text-primary font-medium rounded-lg hover:bg-primary/5 transition-colors text-sm"
+              className="inline-flex items-center justify-center px-5 py-2.5 border-2 border-sky-600 text-sky-600 font-medium rounded-lg hover:bg-sky-50 transition-colors text-sm"
             >
               Nous contacter
             </a>

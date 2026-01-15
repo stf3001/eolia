@@ -6,42 +6,41 @@ export default function Vision() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative min-h-[50vh] flex items-center justify-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-sky-600 to-sky-800" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Notre Vision
-            </h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-              Un avenir durable où chaque foyer produit sa propre énergie verte
-            </p>
-          </motion.div>
+      <section className="relative bg-gradient-to-br from-primary via-sky-600 to-sky-800 py-4 lg:py-5">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+            Notre Vision
+          </h1>
+          <p className="text-base text-white/90 max-w-3xl mx-auto">
+            Un avenir durable où chaque foyer produit sa propre énergie verte
+          </p>
         </div>
       </section>
 
       {/* Vision Environnementale */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 lg:py-10 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col items-center text-center mb-12">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-                <Globe className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col items-center text-center mb-8"
+            >
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <Globe className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Vision Environnementale
               </h2>
-              <p className="text-lg text-gray-700 leading-relaxed mb-8">
+              <p className="text-lg text-gray-700 leading-relaxed">
                 Nous imaginons un monde où la production d'énergie ne dépend plus des combustibles fossiles. 
                 Notre vision est de contribuer activement à la transition énergétique en proposant une 
                 alternative écologique, durable et accessible à chaque foyer.
               </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
                   Transition Énergétique
@@ -84,23 +83,29 @@ export default function Vision() {
       </section>
 
       {/* Innovation Technologique */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 lg:py-10 bg-gray-50">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col items-center text-center mb-12">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-                <Lightbulb className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col items-center text-center mb-8"
+            >
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <Lightbulb className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Innovation Technologique
               </h2>
-              <p className="text-lg text-gray-700 leading-relaxed mb-8">
+              <p className="text-lg text-gray-700 leading-relaxed">
                 L'innovation est au cœur de notre ADN. Nous investissons continuellement dans la 
                 recherche et le développement pour améliorer nos micro-éoliennes et offrir des solutions 
                 toujours plus performantes, silencieuses et adaptées à l'environnement urbain.
               </p>
-            </div>
-            <div className="space-y-6">
+            </motion.div>
+            <div className="space-y-4">
               <div className="flex items-start space-x-4 bg-white p-6 rounded-lg">
                 <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                   <span className="text-primary font-bold text-lg">1</span>
@@ -163,23 +168,29 @@ export default function Vision() {
       </section>
 
       {/* Impact Social */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 lg:py-10 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col items-center text-center mb-12">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-                <Users className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col items-center text-center mb-8"
+            >
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <Users className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Impact Social
               </h2>
-              <p className="text-lg text-gray-700 leading-relaxed mb-8">
+              <p className="text-lg text-gray-700 leading-relaxed">
                 Au-delà de la technologie, notre vision est de créer un impact social positif en 
                 démocratisant l'accès à l'énergie verte et en construisant une communauté engagée 
                 pour un avenir plus durable.
               </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="flex flex-col items-center text-center">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <span className="text-2xl font-bold text-primary">🏠</span>
@@ -217,7 +228,7 @@ export default function Vision() {
                 </p>
               </div>
             </div>
-            <div className="mt-12 bg-gray-50 p-8 rounded-lg">
+            <div className="mt-8 bg-gray-50 p-6 rounded-lg">
               <h3 className="text-2xl font-semibold text-gray-900 mb-4 text-center">
                 Ensemble, Construisons l'Avenir
               </h3>
@@ -232,21 +243,28 @@ export default function Vision() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-            Découvrez comment ça fonctionne
-          </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Explorez la technologie derrière nos éoliennes Tulipe et comprenez 
-            comment nous transformons le vent en électricité propre.
-          </p>
-          <Link
-            to="/fonctionnement"
-            className="inline-block bg-primary text-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-opacity"
+      <section className="py-8 lg:py-10 bg-gray-50">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            Voir comment ça fonctionne
-          </Link>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Découvrez comment ça fonctionne
+            </h2>
+            <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+              Explorez la technologie derrière nos éoliennes Tulipe et comprenez 
+              comment nous transformons le vent en électricité propre.
+            </p>
+            <Link
+              to="/fonctionnement"
+              className="inline-block bg-primary text-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-opacity"
+            >
+              Voir comment ça fonctionne
+            </Link>
+          </motion.div>
         </div>
       </section>
     </div>
