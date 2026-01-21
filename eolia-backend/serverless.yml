@@ -38,11 +38,18 @@ provider:
     SIMULATIONS_TABLE: ${self:service}-simulations-${self:provider.stage}
     CONTRACTS_BUCKET: ${self:service}-contracts-${self:provider.stage}
     MEDIA_BUCKET: ${self:service}-media-${self:provider.stage}
+    CLIENT_DOCUMENTS_BUCKET: ${self:service}-client-documents-${self:provider.stage}
+    ORDER_DOSSIERS_TABLE: ${self:service}-order-dossiers-${self:provider.stage}
+    DOSSIER_EVENTS_TABLE: ${self:service}-dossier-events-${self:provider.stage}
+    DOSSIER_DOCUMENTS_TABLE: ${self:service}-dossier-documents-${self:provider.stage}
     FRONTEND_URL: ${env:FRONTEND_URL, 'http://localhost:5173'}
     SERVICE_NAME: ${self:service}
     USER_POOL_ID: !Ref CognitoUserPool
     USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
     STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ''}
+    ADMIN_USERNAME: ${env:ADMIN_USERNAME, 'eolia_admin'}
+    ADMIN_PASSWORD: ${env:ADMIN_PASSWORD, ''}
+    ADMIN_TOKEN_SECRET: ${env:ADMIN_TOKEN_SECRET, ''}
 
   iam:
     role:
@@ -80,6 +87,12 @@ provider:
             - !Sub '${ReferralsTable.Arn}/index/*'
             - !Sub '${CommissionsTable.Arn}/index/*'
             - !Sub '${SimulationsTable.Arn}/index/*'
+            - !GetAtt OrderDossiersTable.Arn
+            - !GetAtt DossierEventsTable.Arn
+            - !GetAtt DossierDocumentsTable.Arn
+            - !Sub '${OrderDossiersTable.Arn}/index/*'
+            - !Sub '${DossierEventsTable.Arn}/index/*'
+            - !Sub '${DossierDocumentsTable.Arn}/index/*'
         - Effect: Allow
           Action:
             - cognito-idp:AdminInitiateAuth
@@ -101,6 +114,13 @@ provider:
           Resource:
             - !Sub '${ContractsBucket.Arn}/*'
             - !Sub '${MediaBucket.Arn}/*'
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+            - s3:DeleteObject
+          Resource:
+            - !Sub '${ClientDocumentsBucket.Arn}/*'
         - Effect: Allow
           Action:
             - events:PutEvents
@@ -332,6 +352,122 @@ functions:
       - httpApi:
           path: /simulations/{simulationId}
           method: delete
+
+  # Dossiers (Suivi post-achat)
+  getDossiers:
+    handler: src/functions/dossiers/getDossiers.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/dossiers
+          method: get
+
+  getDossierDetail:
+    handler: src/functions/dossiers/getDossierDetail.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/dossiers/{dossierId}
+          method: get
+
+  getDossierEvents:
+    handler: src/functions/dossiers/getDossierEvents.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/dossiers/{dossierId}/events
+          method: get
+
+  updateDossierStatus:
+    handler: src/functions/dossiers/updateDossierStatus.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/dossiers/{dossierId}
+          method: put
+
+  # Documents (Suivi post-achat)
+  getUploadUrl:
+    handler: src/functions/documents/getUploadUrl.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/documents/upload-url
+          method: post
+
+  getDocuments:
+    handler: src/functions/documents/getDocuments.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/documents
+          method: get
+
+  deleteDocument:
+    handler: src/functions/documents/deleteDocument.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/documents/{documentId}
+          method: delete
+
+  addDocument:
+    handler: src/functions/documents/addDocument.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/documents
+          method: post
+
+  # Installation (Suivi post-achat - VT)
+  submitVT:
+    handler: src/functions/installation/submitVT.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/installation/vt
+          method: post
+
+  sendVTToBE:
+    handler: src/functions/installation/sendVTToBE.handler
+    events:
+      - httpApi:
+          path: /orders/{orderId}/installation/send-to-be
+          method: post
+
+  # Admin Dashboard
+  adminAuth:
+    handler: src/functions/admin/auth.handler
+    events:
+      - httpApi:
+          path: /admin/auth
+          method: post
+
+  adminVerify:
+    handler: src/functions/admin/verify.handler
+    events:
+      - httpApi:
+          path: /admin/verify
+          method: get
+
+  adminGetStats:
+    handler: src/functions/admin/getStats.handler
+    events:
+      - httpApi:
+          path: /admin/stats
+          method: get
+
+  adminGetOrders:
+    handler: src/functions/admin/getOrders.handler
+    events:
+      - httpApi:
+          path: /admin/orders
+          method: get
+
+  adminGetOrderDetail:
+    handler: src/functions/admin/getOrderDetail.handler
+    events:
+      - httpApi:
+          path: /admin/orders/{orderId}
+          method: get
+
+  adminAddNote:
+    handler: src/functions/admin/addNote.handler
+    events:
+      - httpApi:
+          path: /admin/orders/{orderId}/notes
+          method: post
 
 plugins:
   - serverless-esbuild
@@ -682,6 +818,85 @@ resources:
           - Key: Service
             Value: ${self:service}
 
+    # Table OrderDossiers - Suivi post-achat
+    OrderDossiersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.ORDER_DOSSIERS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: orderId
+            AttributeType: S
+          - AttributeName: dossierId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: orderId
+            KeyType: HASH
+          - AttributeName: dossierId
+            KeyType: RANGE
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # Table DossierEvents - Historique des événements
+    DossierEventsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DOSSIER_EVENTS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: dossierId
+            AttributeType: S
+          - AttributeName: eventId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: dossierId
+            KeyType: HASH
+          - AttributeName: eventId
+            KeyType: RANGE
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # Table DossierDocuments - Documents des dossiers
+    DossierDocumentsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DOSSIER_DOCUMENTS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: documentId
+            AttributeType: S
+          - AttributeName: dossierId
+            AttributeType: S
+          - AttributeName: orderId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: documentId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: DossierIdIndex
+            KeySchema:
+              - AttributeName: dossierId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: OrderIdIndex
+            KeySchema:
+              - AttributeName: orderId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
     # S3 Bucket pour contrats PDF
     ContractsBucket:
       Type: AWS::S3::Bucket
@@ -736,6 +951,40 @@ resources:
                 - GET
               AllowedHeaders:
                 - '*'
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
+
+    # S3 Bucket pour documents clients (suivi post-achat)
+    ClientDocumentsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.CLIENT_DOCUMENTS_BUCKET}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - ${self:provider.environment.FRONTEND_URL}
+                - http://localhost:5173
+                - http://localhost:5174
+              AllowedMethods:
+                - GET
+                - PUT
+              AllowedHeaders:
+                - '*'
+              MaxAge: 3600
+        LifecycleConfiguration:
+          Rules:
+            - Id: DeleteOldTempFiles
+              Prefix: temp/
+              Status: Enabled
+              ExpirationInDays: 1
         Tags:
           - Key: Environment
             Value: ${self:provider.stage}
@@ -799,6 +1048,18 @@ resources:
       Description: Nom de la table Simulations
       Value: !Ref SimulationsTable
 
+    OrderDossiersTableName:
+      Description: Nom de la table OrderDossiers
+      Value: !Ref OrderDossiersTable
+
+    DossierEventsTableName:
+      Description: Nom de la table DossierEvents
+      Value: !Ref DossierEventsTable
+
+    DossierDocumentsTableName:
+      Description: Nom de la table DossierDocuments
+      Value: !Ref DossierDocumentsTable
+
     ContractsBucketName:
       Description: Nom du bucket S3 pour les contrats
       Value: !Ref ContractsBucket
@@ -810,3 +1071,7 @@ resources:
     MediaBucketUrl:
       Description: URL publique du bucket média
       Value: !Sub 'https://${MediaBucket}.s3.${AWS::Region}.amazonaws.com'
+
+    ClientDocumentsBucketName:
+      Description: Nom du bucket S3 pour les documents clients
+      Value: !Ref ClientDocumentsBucket

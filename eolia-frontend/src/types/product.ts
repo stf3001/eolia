@@ -5,7 +5,7 @@ export interface ProductSpecs {
 export interface Product {
   productId: string;
   name: string;
-  category: 'turbine' | 'inverter' | 'accessory' | 'installation';
+  category: 'turbine' | 'inverter' | 'accessory' | 'installation' | 'administrative';
   subcategory?: string;
   price: number;
   powerKwc?: number;
@@ -17,9 +17,11 @@ export interface Product {
   includes?: string[];
   warranty?: string;
   createdAt: number;
+  // Pour les produits administratifs
+  adminServices?: ('enedis' | 'consuel')[];
 }
 
-export type CategoryFilter = 'all' | 'turbine' | 'inverter' | 'accessory' | 'installation';
+export type CategoryFilter = 'all' | 'turbine' | 'inverter' | 'accessory' | 'installation' | 'administrative';
 
 export interface CartItem {
   product: Product;

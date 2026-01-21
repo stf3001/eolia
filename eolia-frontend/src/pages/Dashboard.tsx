@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { fetchAuthSession } from 'aws-amplify/auth';
-import { User, MapPin, Package, Edit2, Plus, Trash2, LogOut, Wind, BarChart3, Wrench, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { User, MapPin, Package, Edit2, Plus, Trash2, LogOut, Wind, BarChart3, Wrench, ArrowRight, ChevronDown, ChevronUp, FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { addressService } from '../services/addressService';
 import { orderService } from '../services/orderService';
@@ -12,6 +12,25 @@ import SimulationCard from '../components/dashboard/SimulationCard';
 import type { Address, AddressFormData } from '../types/address';
 import type { Order } from '../types/order';
 import type { SavedSimulation } from '../types/simulation';
+
+// Helper functions for order tracking buttons
+const isPaymentConfirmed = (status: string): boolean => {
+  return ['confirmed', 'validated', 'shipped', 'delivered'].includes(status);
+};
+
+const hasPhysicalProducts = (order: Order): boolean => {
+  return order.items.some(item => 
+    ['turbine', 'inverter', 'accessory'].includes(item.category)
+  );
+};
+
+const hasAdminForfait = (order: Order): boolean => {
+  return order.items.some(item => item.category === 'administrative');
+};
+
+const hasInstallationForfait = (order: Order): boolean => {
+  return order.items.some(item => item.category === 'installation');
+};
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
@@ -228,6 +247,7 @@ export default function Dashboard() {
       setAddressError(errorMessage);
     }
   };
+  void handleSetDefaultAddress; // Suppress unused warning - will be used in future
 
   const getStatusLabel = (status: string) => {
     const statusMap: Record<string, { label: string; color: string }> = {
@@ -389,7 +409,7 @@ export default function Dashboard() {
           </div>
 
           {/* Mes commandes - Compact */}
-          <div className="bg-white rounded-xl shadow-md p-4">
+          <div className="bg-white rounded-xl shadow-md p-4 md:col-span-2">
             <div className="flex items-center mb-3">
               <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
                 <Package className="w-4 h-4 text-emerald-700" />
@@ -411,19 +431,82 @@ export default function Dashboard() {
                 </Link>
               </div>
             ) : (
-              <div className="space-y-2">
-                {orders.slice(0, 2).map((order) => {
+              <div className="space-y-3">
+                {orders.slice(0, 3).map((order) => {
                   const status = getStatusLabel(order.status);
+                  const showTracking = isPaymentConfirmed(order.status);
+                  const showShipping = hasPhysicalProducts(order);
+                  const showAdmin = hasAdminForfait(order);
+                  const showInstallation = hasInstallationForfait(order);
+                  
                   return (
-                    <div key={order.orderId} className="border border-gray-200 rounded-lg p-2 text-sm">
-                      <div className="flex justify-between items-center">
-                        <span className="font-semibold">#{order.orderId.slice(0, 8)}</span>
+                    <div key={order.orderId} className="border border-gray-200 rounded-lg p-3">
+                      <div className="flex justify-between items-center mb-2">
+                        <Link 
+                          to={`/orders/${order.orderId}`}
+                          className="font-semibold text-sm hover:text-emerald-700 transition-colors"
+                        >
+                          #{order.orderId.slice(0, 8)}
+                        </Link>
                         <span className={`text-xs px-2 py-0.5 rounded-full ${status.color}`}>{status.label}</span>
                       </div>
-                      <p className="text-emerald-700 font-bold">{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(order.totalAmount)}</p>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600 text-xs">
+                          {new Date(order.createdAt).toLocaleDateString('fr-FR')}
+                        </span>
+                        <span className="text-emerald-700 font-bold text-sm">
+                          {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(order.totalAmount)}
+                        </span>
+                      </div>
+                      
+                      {/* Tracking buttons - Requirements 1.1, 1.2, 1.3, 1.4, 1.5 */}
+                      {showTracking && (showShipping || showAdmin || showInstallation) && (
+                        <div className="flex flex-wrap gap-2 mt-2 pt-2 border-t border-gray-100">
+                          {showShipping && (
+                            <Link
+                              to={`/orders/${order.orderId}/shipping`}
+                              className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-colors"
+                            >
+                              <Package className="w-3 h-3" />
+                              Suivi commande
+                            </Link>
+                          )}
+                          {showAdmin && (
+                            <Link
+                              to={`/orders/${order.orderId}/admin`}
+                              className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-white bg-green-600 hover:bg-green-700 rounded-full transition-colors"
+                            >
+                              <FileText className="w-3 h-3" />
+                              Suivi admin
+                            </Link>
+                          )}
+                          {showInstallation && (
+                            <Link
+                              to={`/orders/${order.orderId}/installation`}
+                              className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-white bg-orange-500 hover:bg-orange-600 rounded-full transition-colors"
+                            >
+                              <Wrench className="w-3 h-3" />
+                              Suivi installation
+                            </Link>
+                          )}
+                        </div>
+                      )}
+                      
+                      {/* Link to order detail */}
+                      <Link
+                        to={`/orders/${order.orderId}`}
+                        className="block text-center text-emerald-700 text-xs font-medium mt-2 hover:underline"
+                      >
+                        Voir le détail →
+                      </Link>
                     </div>
                   );
                 })}
+                {orders.length > 3 && (
+                  <p className="text-center text-gray-600 text-xs">
+                    + {orders.length - 3} autre{orders.length - 3 > 1 ? 's' : ''} commande{orders.length - 3 > 1 ? 's' : ''}
+                  </p>
+                )}
               </div>
             )}
           </div>

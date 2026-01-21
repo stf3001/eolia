@@ -8,7 +8,9 @@ Plateforme web complète pour la vente d'éoliennes domestiques verticales de la
 - **Boutique en ligne** - Catalogue éoliennes Tulipe (1-10 kWc), onduleurs, accessoires avec bannière informative installation
 - **Tunnel de commande** - Checkout avec Stripe, forfaits pose, limite 36 kWc
 - **Prêt d'anémomètre** - Location 1 mois avec caution 100€
-- **Espace client** - Dashboard optimisé (anémomètre & simulations mis en avant), gestion adresses, historique commandes
+- **Espace client** - Dashboard optimisé (anémomètre & simulations mis en avant), gestion adresses, historique commandes, suivi de commandes
+- **Suivi de commandes** - Timeline interactive par dossier (livraison, Enedis, Consuel, installation), upload documents, visite technique
+- **Dashboard admin** - KPIs temps réel, liste commandes avec filtres/recherche, détail client/dossiers, gestion statuts, notes internes
 - **Programme ambassadeur** - Page publique de présentation, programmes B2C (parrainage avec bons d'achat) et B2B (commissions 5-12,5%)
 - **Réseau partenaires** - Carte interactive des installateurs agréés par région avec filtres et détails
 - **Pages informatives** - FAQ, processus Consuel, diagnostic, vision, à propos
@@ -24,7 +26,6 @@ Plateforme web complète pour la vente d'éoliennes domestiques verticales de la
 ```
 eolia-frontend/     # React + Vite + TypeScript + Tailwind
 eolia-backend/      # Serverless Framework + AWS Lambda + DynamoDB
-.kiro/specs/        # Documentation spec-driven development
 ```
 
 ## 🚀 Stack Technique
@@ -43,7 +44,7 @@ eolia-backend/      # Serverless Framework + AWS Lambda + DynamoDB
 - AWS Lambda (Node.js 20 + Python 3.11)
 - DynamoDB (7 tables)
 - Cognito (authentification)
-- S3 (contrats PDF, médias)
+- S3 (contrats PDF, médias, documents)
 - SES (emails)
 - Stripe (paiements)
 
@@ -79,6 +80,9 @@ VITE_MEDIA_URL=https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com
 ### Backend (.env)
 ```
 STRIPE_SECRET_KEY=sk_test_xxx
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD_HASH=<bcrypt_hash>
+ADMIN_JWT_SECRET=<random_secret>
 ```
 
 ## 📄 License

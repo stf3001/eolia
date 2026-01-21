@@ -12,6 +12,7 @@ import {
   Package,
   ArrowLeft,
   Shield,
+  FileText,
 } from 'lucide-react';
 import productsData from '../data/products.json';
 import type { Product } from '../types/product';
@@ -21,6 +22,7 @@ const categoryIcons = {
   inverter: Zap,
   accessory: Package,
   installation: Package,
+  administrative: FileText,
 };
 
 const categoryLabels = {
@@ -28,6 +30,7 @@ const categoryLabels = {
   inverter: 'Onduleur',
   accessory: 'Accessoire',
   installation: 'Installation',
+  administrative: 'Administratif',
 };
 
 export default function ProductDetail() {

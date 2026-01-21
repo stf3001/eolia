@@ -16,11 +16,9 @@
         "Niveau sonore": "< 35 dB",
         "Poids": "45 kg"
       },
-      "imageUrl": "/images/products/tulipe-1kwc.jpg",
+      "imageUrl": "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Capture+d%E2%80%99%C3%A9cran+2026-01-08+143242.jpg",
       "images": [
-        "/images/products/tulipe-1kwc.jpg",
-        "/images/products/tulipe-1kwc-2.jpg",
-        "/images/products/tulipe-1kwc-3.jpg"
+        "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Capture+d%E2%80%99%C3%A9cran+2026-01-08+143242.jpg"
       ],
       "stock": 50,
       "warranty": "5 ans",
@@ -42,11 +40,9 @@
         "Niveau sonore": "< 38 dB",
         "Poids": "75 kg"
       },
-      "imageUrl": "/images/products/tulipe-2kwc.jpg",
+      "imageUrl": "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Capture+d%E2%80%99%C3%A9cran+2026-01-09+143708.jpg",
       "images": [
-        "/images/products/tulipe-2kwc.jpg",
-        "/images/products/tulipe-2kwc-2.jpg",
-        "/images/products/tulipe-2kwc-3.jpg"
+        "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Capture+d%E2%80%99%C3%A9cran+2026-01-09+143708.jpg"
       ],
       "stock": 40,
       "warranty": "5 ans",
@@ -68,11 +64,9 @@
         "Niveau sonore": "< 40 dB",
         "Poids": "110 kg"
       },
-      "imageUrl": "/images/products/tulipe-3kwc.jpg",
+      "imageUrl": "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Capture+d%E2%80%99%C3%A9cran+2026-01-10+101731.jpg",
       "images": [
-        "/images/products/tulipe-3kwc.jpg",
-        "/images/products/tulipe-3kwc-2.jpg",
-        "/images/products/tulipe-3kwc-3.jpg"
+        "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Capture+d%E2%80%99%C3%A9cran+2026-01-10+101731.jpg"
       ],
       "stock": 35,
       "warranty": "5 ans",
@@ -94,11 +88,9 @@
         "Niveau sonore": "< 42 dB",
         "Poids": "160 kg"
       },
-      "imageUrl": "/images/products/tulipe-5kwc.jpg",
+      "imageUrl": "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Capture+d%E2%80%99%C3%A9cran+2026-01-10+101754.jpg",
       "images": [
-        "/images/products/tulipe-5kwc.jpg",
-        "/images/products/tulipe-5kwc-2.jpg",
-        "/images/products/tulipe-5kwc-3.jpg"
+        "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Capture+d%E2%80%99%C3%A9cran+2026-01-10+101754.jpg"
       ],
       "stock": 25,
       "warranty": "5 ans",
@@ -120,11 +112,9 @@
         "Niveau sonore": "< 45 dB",
         "Poids": "280 kg"
       },
-      "imageUrl": "/images/products/tulipe-10kwc.jpg",
+      "imageUrl": "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/lampadaires+tulipes.jpg",
       "images": [
-        "/images/products/tulipe-10kwc.jpg",
-        "/images/products/tulipe-10kwc-2.jpg",
-        "/images/products/tulipe-10kwc-3.jpg"
+        "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/lampadaires+tulipes.jpg"
       ],
       "stock": 15,
       "warranty": "5 ans",
@@ -216,10 +206,9 @@
         "Compatibilité batterie": "Lithium 48V",
         "Garantie batterie": "20 ans"
       },
-      "imageUrl": "/images/products/imeon-3.6.jpg",
+      "imageUrl": "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Imeon-3.6-right-front.png",
       "images": [
-        "/images/products/imeon-3.6.jpg",
-        "/images/products/imeon-3.6-2.jpg"
+        "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Imeon-3.6-right-front.png"
       ],
       "stock": 30,
       "warranty": "10 ans",
@@ -240,10 +229,9 @@
         "Compatibilité batterie": "Lithium 48V",
         "Garantie batterie": "20 ans"
       },
-      "imageUrl": "/images/products/imeon-9.12.jpg",
+      "imageUrl": "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/onduleur-hybride-imeon-36.jpg",
       "images": [
-        "/images/products/imeon-9.12.jpg",
-        "/images/products/imeon-9.12-2.jpg"
+        "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/onduleur-hybride-imeon-36.jpg"
       ],
       "stock": 20,
       "warranty": "10 ans",
@@ -263,7 +251,10 @@
         "Rendement": "98.1%",
         "Monitoring": "Fronius Solar.web"
       },
-      "imageUrl": "/images/products/fronius-primo-3.0.jpg",
+      "imageUrl": "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/fronius.jpg",
+      "images": [
+        "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/fronius.jpg"
+      ],
       "stock": 25,
       "warranty": "10 ans",
       "createdAt": 1704067200000
@@ -282,7 +273,10 @@
         "Rendement": "98%",
         "Monitoring": "Fronius Solar.web"
       },
-      "imageUrl": "/images/products/fronius-symo-10.0.jpg",
+      "imageUrl": "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Fronius-GEN24-Plus-on-the-Floor-Photo.webp",
+      "images": [
+        "https://eolia-backend-media-dev.s3.eu-west-1.amazonaws.com/images/Fronius-GEN24-Plus-on-the-Floor-Photo.webp"
+      ],
       "stock": 15,
       "warranty": "10 ans",
       "createdAt": 1704067200000

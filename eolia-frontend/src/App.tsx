@@ -39,6 +39,16 @@ import CGV from './pages/CGV'
 import MentionsLegales from './pages/MentionsLegales'
 import CookiePolicy from './pages/CookiePolicy'
 
+// Order Tracking Pages
+import { OrderDetail, ShippingTracker, AdminTracker, InstallationTracker } from './pages/orders'
+
+// Admin Pages
+import AdminLogin from './pages/admin/AdminLogin'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminOrdersList from './pages/admin/AdminOrdersList'
+import AdminOrderDetail from './pages/admin/AdminOrderDetail'
+import AdminLayout from './components/admin/AdminLayout'
+
 // About Pages
 import AboutUs from './pages/AboutUs'
 import Vision from './pages/Vision'
@@ -50,10 +60,19 @@ function App() {
     <Router>
       <AuthProvider>
         <CartProvider>
-          <div className="min-h-screen bg-white flex flex-col">
-            <Header />
-            <main className="flex-1">
-              <Routes>
+          <Routes>
+            {/* Admin Routes - Outside main layout (Requirements: 1.1, 2.1, 3.1, 4.1) */}
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+            <Route path="/admin/orders" element={<AdminLayout><AdminOrdersList /></AdminLayout>} />
+            <Route path="/admin/orders/:orderId" element={<AdminLayout><AdminOrderDetail /></AdminLayout>} />
+
+            {/* Main Site Routes - With Header/Footer */}
+            <Route path="/*" element={
+              <div className="min-h-screen bg-white flex flex-col">
+                <Header />
+                <main className="flex-1">
+                  <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/calculateur" element={<Calculator />} />
@@ -78,6 +97,12 @@ function App() {
             <Route path="/espace-client" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/ambassadeur-b2b" element={<ProtectedRoute><B2BRegistration /></ProtectedRoute>} />
             
+            {/* Order Tracking Routes - Requirements 9.1 */}
+            <Route path="/orders/:orderId" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
+            <Route path="/orders/:orderId/shipping" element={<ProtectedRoute><ShippingTracker /></ProtectedRoute>} />
+            <Route path="/orders/:orderId/admin" element={<ProtectedRoute><AdminTracker /></ProtectedRoute>} />
+            <Route path="/orders/:orderId/installation" element={<ProtectedRoute><InstallationTracker /></ProtectedRoute>} />
+            
             {/* Public Ambassador Route (shows presentation or dashboard based on auth) */}
             <Route path="/ambassadeur" element={<Ambassador />} />
             
@@ -101,6 +126,8 @@ function App() {
           <Footer />
           <CookieBanner />
         </div>
+            } />
+          </Routes>
         </CartProvider>
       </AuthProvider>
     </Router>

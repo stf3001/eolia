@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShoppingCart, Wind, Zap, Package } from 'lucide-react';
+import { ShoppingCart, Wind, Zap, Package, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { Product } from '../../types/product';
 
@@ -13,6 +13,7 @@ const categoryIcons = {
   inverter: Zap,
   accessory: Package,
   installation: Package,
+  administrative: FileText,
 };
 
 const categoryLabels = {
@@ -20,6 +21,7 @@ const categoryLabels = {
   inverter: 'Onduleur',
   accessory: 'Accessoire',
   installation: 'Installation',
+  administrative: 'Administratif',
 };
 
 export default function ProductCard({ product, onAddToCart }: ProductCardProps) {

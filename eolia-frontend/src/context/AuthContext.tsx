@@ -10,18 +10,6 @@ import {
   resendSignUpCode,
 } from 'aws-amplify/auth'
 
-// Demo mode - activé si Cognito n'est pas configuré
-const DEMO_MODE = !import.meta.env.VITE_COGNITO_USER_POOL_ID
-
-// Compte démo
-const DEMO_USER = {
-  userId: 'demo-user-123',
-  email: 'demo@eolia.fr',
-  name: 'Jean Dupont',
-  role: 'customer',
-  emailVerified: true,
-}
-
 export interface User {
   userId: string
   email: string
@@ -41,7 +29,6 @@ interface AuthContextType {
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
-  isDemoMode: boolean
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
   signUp: (data: SignUpData) => Promise<{ isSignUpComplete: boolean; nextStep: string }>
@@ -65,16 +52,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const checkAuthState = async () => {
-    if (DEMO_MODE) {
-      // En mode démo, vérifier si l'utilisateur était connecté (localStorage)
-      const savedUser = localStorage.getItem('demo_user')
-      if (savedUser) {
-        setUser(JSON.parse(savedUser))
-      }
-      setIsLoading(false)
-      return
-    }
-
     try {
       const currentUser = await getCurrentUser()
       const attributes = await fetchUserAttributes()
@@ -97,16 +74,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     setError(null)
 
-    if (DEMO_MODE) {
-      // Mode démo : accepter n'importe quel email/password
-      await new Promise(resolve => setTimeout(resolve, 500)) // Simuler latence
-      const demoUser = { ...DEMO_USER, email, name: email.split('@')[0] }
-      setUser(demoUser)
-      localStorage.setItem('demo_user', JSON.stringify(demoUser))
-      setIsLoading(false)
-      return
-    }
-
     try {
       const result = await amplifySignIn({ username: email, password })
       if (result.isSignedIn) {
@@ -127,14 +94,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     setError(null)
 
-    if (DEMO_MODE) {
-      await new Promise(resolve => setTimeout(resolve, 300))
-      setUser(null)
-      localStorage.removeItem('demo_user')
-      setIsLoading(false)
-      return
-    }
-
     try {
       await amplifySignOut()
       setUser(null)
@@ -150,13 +109,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUp = useCallback(async (data: SignUpData) => {
     setIsLoading(true)
     setError(null)
-
-    if (DEMO_MODE) {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      setIsLoading(false)
-      // En mode démo, on simule une inscription réussie sans confirmation
-      return { isSignUpComplete: true, nextStep: 'DONE' }
-    }
 
     try {
       const result = await amplifySignUp({
@@ -181,12 +133,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     setError(null)
 
-    if (DEMO_MODE) {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      setIsLoading(false)
-      return
-    }
-
     try {
       await amplifyConfirmSignUp({ username: email, confirmationCode: code })
     } catch (err) {
@@ -200,7 +146,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resendCode = useCallback(async (email: string) => {
     setError(null)
-    if (DEMO_MODE) return
     try {
       await resendSignUpCode({ username: email })
     } catch (err) {
@@ -219,7 +164,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated,
         isLoading,
         error,
-        isDemoMode: DEMO_MODE,
         signIn,
         signOut,
         signUp,

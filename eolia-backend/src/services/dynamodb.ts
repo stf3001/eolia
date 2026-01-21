@@ -20,4 +20,7 @@ export const Tables = {
   REFERRALS: process.env.REFERRALS_TABLE || '',
   COMMISSIONS: process.env.COMMISSIONS_TABLE || '',
   SIMULATIONS: process.env.SIMULATIONS_TABLE || '',
+  ORDER_DOSSIERS: process.env.ORDER_DOSSIERS_TABLE || '',
+  DOSSIER_EVENTS: process.env.DOSSIER_EVENTS_TABLE || '',
+  DOSSIER_DOCUMENTS: process.env.DOSSIER_DOCUMENTS_TABLE || '',
 };

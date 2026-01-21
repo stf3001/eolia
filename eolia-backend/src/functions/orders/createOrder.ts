@@ -4,6 +4,9 @@ import { PutCommand } from '@aws-sdk/lib-dynamodb';
 import { formatJSONResponse } from '../../services/response';
 import { verifyAuth } from '../../services/auth';
 import { dynamoDb, Tables } from '../../services/dynamodb';
+import { createDossiersForOrder } from '../../services/dossierService';
+import { ProductCategory, isPhysicalProduct } from '../../models/product';
+import { DossierType, DossierStatus, ShippingStatus, AdminStatus, InstallationStatus } from '../../models/dossier';
 
 interface OrderItem {
   productId: string;
@@ -11,6 +14,7 @@ interface OrderItem {
   quantity: number;
   price: number;
   powerKwc?: number;
+  category?: ProductCategory;
 }
 
 interface ShippingAddress {
@@ -40,6 +44,59 @@ interface CreateOrderRequest {
   installationDetails?: InstallationDetails;
   paymentIntentId: string;
   affiliateCode?: string;
+}
+
+/**
+ * Détermine les dossiers à créer en fonction des catégories de produits
+ * Requirements: 1.1, 1.2, 1.3, 1.4, 10.3
+ */
+function determineDossiersToCreate(
+  items: OrderItem[]
+): Array<{ type: DossierType; status: DossierStatus; metadata?: Record<string, unknown> }> {
+  const dossierConfigs: Array<{ type: DossierType; status: DossierStatus; metadata?: Record<string, unknown> }> = [];
+  const addedTypes = new Set<DossierType>();
+
+  for (const item of items) {
+    if (!item.category) continue;
+
+    // Produits physiques (turbine, inverter, accessory) -> dossier shipping
+    if (isPhysicalProduct(item.category) && !addedTypes.has('shipping')) {
+      dossierConfigs.push({
+        type: 'shipping',
+        status: 'received' as ShippingStatus,
+      });
+      addedTypes.add('shipping');
+    }
+
+    // Forfait administratif -> dossiers admin_enedis et admin_consuel
+    if (item.category === 'administrative') {
+      if (!addedTypes.has('admin_enedis')) {
+        dossierConfigs.push({
+          type: 'admin_enedis',
+          status: 'not_started' as AdminStatus,
+        });
+        addedTypes.add('admin_enedis');
+      }
+      if (!addedTypes.has('admin_consuel')) {
+        dossierConfigs.push({
+          type: 'admin_consuel',
+          status: 'not_started' as AdminStatus,
+        });
+        addedTypes.add('admin_consuel');
+      }
+    }
+
+    // Forfait installation -> dossier installation
+    if (item.category === 'installation' && !addedTypes.has('installation')) {
+      dossierConfigs.push({
+        type: 'installation',
+        status: 'vt_pending' as InstallationStatus,
+      });
+      addedTypes.add('installation');
+    }
+  }
+
+  return dossierConfigs;
 }
 
 export const handler = async (
@@ -156,6 +213,20 @@ export const handler = async (
         Item: order,
       })
     );
+
+    // Créer automatiquement les dossiers de suivi selon les catégories de produits
+    // Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 10.3
+    if (body.type === 'standard' && body.items && body.items.length > 0) {
+      try {
+        const dossierConfigs = determineDossiersToCreate(body.items);
+        if (dossierConfigs.length > 0) {
+          await createDossiersForOrder(orderId, dossierConfigs);
+        }
+      } catch (dossierError) {
+        // Log l'erreur mais ne bloque pas la création de commande
+        console.error('Error creating dossiers for order:', dossierError);
+      }
+    }
 
     return formatJSONResponse(201, { order });
   } catch (error: any) {
