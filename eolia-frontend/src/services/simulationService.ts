@@ -1,6 +1,12 @@
 import { fetchAuthSession } from 'aws-amplify/auth';
 import type { CalculatorInputs, CalculatorResults } from '../types/calculator';
-import type { SavedSimulation, CreateSimulationResponse } from '../types/simulation';
+import type { 
+  SavedSimulation, 
+  CreateSimulationResponse, 
+  SimulationConsumptionData, 
+  SimulationBatteryData, 
+  SimulationAutoconsumptionResults 
+} from '../types/simulation';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -20,13 +26,22 @@ export const simulationService = {
   async saveSimulation(
     inputs: CalculatorInputs,
     results: CalculatorResults,
-    departmentName: string
+    departmentName: string,
+    consumption?: SimulationConsumptionData,
+    battery?: SimulationBatteryData,
+    autoconsumption?: SimulationAutoconsumptionResults
   ): Promise<CreateSimulationResponse> {
     const headers = await getAuthHeaders();
     const response = await fetch(`${API_URL}/simulations`, {
       method: 'POST',
       headers,
-      body: JSON.stringify({ inputs, results, departmentName }),
+      body: JSON.stringify({ 
+        inputs: { ...inputs, departmentName }, 
+        results, 
+        consumption, 
+        battery, 
+        autoconsumption 
+      }),
     });
 
     if (!response.ok) {

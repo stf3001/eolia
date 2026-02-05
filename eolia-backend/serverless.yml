@@ -2,6 +2,8 @@ service: eolia-backend
 
 frameworkVersion: '3'
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs20.x
@@ -14,6 +16,8 @@ provider:
       allowedOrigins:
         - http://localhost:5173
         - http://localhost:5174
+        - http://localhost:5175
+        - http://localhost:5176
         - http://localhost:3000
       allowedHeaders:
         - Content-Type
@@ -42,6 +46,7 @@ provider:
     ORDER_DOSSIERS_TABLE: ${self:service}-order-dossiers-${self:provider.stage}
     DOSSIER_EVENTS_TABLE: ${self:service}-dossier-events-${self:provider.stage}
     DOSSIER_DOCUMENTS_TABLE: ${self:service}-dossier-documents-${self:provider.stage}
+    ENEDIS_DATA_BUCKET: ${self:service}-enedis-data-${self:provider.stage}
     FRONTEND_URL: ${env:FRONTEND_URL, 'http://localhost:5173'}
     SERVICE_NAME: ${self:service}
     USER_POOL_ID: !Ref CognitoUserPool
@@ -121,6 +126,12 @@ provider:
             - s3:DeleteObject
           Resource:
             - !Sub '${ClientDocumentsBucket.Arn}/*'
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+          Resource:
+            - !Sub '${EnedisDataBucket.Arn}/*'
         - Effect: Allow
           Action:
             - events:PutEvents
@@ -352,6 +363,44 @@ functions:
       - httpApi:
           path: /simulations/{simulationId}
           method: delete
+
+  # Consumption
+  saveConsumption:
+    handler: src/functions/consumption/saveConsumption.handler
+    events:
+      - httpApi:
+          path: /consumption
+          method: post
+
+  getConsumption:
+    handler: src/functions/consumption/getConsumption.handler
+    events:
+      - httpApi:
+          path: /consumption
+          method: get
+
+  # Enedis
+  createEnedisConsent:
+    handler: src/functions/enedis/createConsent.handler
+    events:
+      - httpApi:
+          path: /enedis/consent
+          method: post
+
+  syncEnedisData:
+    handler: src/functions/enedis/syncData.handler
+    timeout: 60
+    events:
+      - httpApi:
+          path: /enedis/sync
+          method: post
+
+  getEnedisData:
+    handler: src/functions/enedis/getData.handler
+    events:
+      - httpApi:
+          path: /enedis/data
+          method: get
 
   # Dossiers (Suivi post-achat)
   getDossiers:
@@ -982,9 +1031,10 @@ resources:
         LifecycleConfiguration:
           Rules:
             - Id: DeleteOldTempFiles
-              Prefix: temp/
               Status: Enabled
               ExpirationInDays: 1
+              Filter:
+                Prefix: temp/
         Tags:
           - Key: Environment
             Value: ${self:provider.stage}
@@ -1002,6 +1052,29 @@ resources:
               Principal: '*'
               Action: 's3:GetObject'
               Resource: !Sub '${MediaBucket.Arn}/*'
+
+    # S3 Bucket pour données Enedis (consommation horaire)
+    EnedisDataBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.ENEDIS_DATA_BUCKET}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        LifecycleConfiguration:
+          Rules:
+            - Id: DeleteOldEnedisData
+              Status: Enabled
+              ExpirationInDays: 365
+              Filter:
+                Prefix: ''
+        Tags:
+          - Key: Environment
+            Value: ${self:provider.stage}
+          - Key: Service
+            Value: ${self:service}
 
   Outputs:
     CognitoUserPoolId:
@@ -1075,3 +1148,7 @@ resources:
     ClientDocumentsBucketName:
       Description: Nom du bucket S3 pour les documents clients
       Value: !Ref ClientDocumentsBucket
+
+    EnedisDataBucketName:
+      Description: Nom du bucket S3 pour les données Enedis
+      Value: !Ref EnedisDataBucket

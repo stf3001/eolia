@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Save, Check, Loader2, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { simulationService } from '../../services/simulationService';
-import type { CalculatorInputs, CalculatorResults } from '../../types/calculator';
-import type { PendingSimulation } from '../../types/simulation';
+import type { CalculatorInputs, CalculatorResults, ConsumptionData, BatteryResults } from '../../types/calculator';
+import type { PendingSimulation, SimulationConsumptionData, SimulationBatteryData, SimulationAutoconsumptionResults } from '../../types/simulation';
 import AuthRequiredModal from './AuthRequiredModal';
 
 interface SaveSimulationButtonProps {
@@ -11,6 +11,15 @@ interface SaveSimulationButtonProps {
   results: CalculatorResults;
   departmentName: string;
   onSaved?: () => void;
+  // Extended props for consumption and battery
+  consumptionData?: ConsumptionData;
+  batteryCapacity?: number | null;
+  batteryResults?: BatteryResults | null;
+  autoconsumptionResults?: {
+    annualAutoconsumption: number;
+    annualSurplus: number;
+    autoconsumptionRate: number;
+  } | null;
 }
 
 type ButtonState = 'default' | 'loading' | 'saved' | 'error';
@@ -22,13 +31,58 @@ export default function SaveSimulationButton({
   results,
   departmentName,
   onSaved,
+  consumptionData,
+  batteryCapacity,
+  batteryResults,
+  autoconsumptionResults,
 }: SaveSimulationButtonProps) {
   const { isAuthenticated } = useAuth();
   const [state, setState] = useState<ButtonState>('default');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
+  // Build consumption data for saving
+  const buildConsumptionPayload = (): SimulationConsumptionData | undefined => {
+    if (!consumptionData) return undefined;
+    
+    const annualTotal = consumptionData.annualTotal || 
+      (consumptionData.monthlyValues?.reduce((sum, val) => sum + val, 0)) || 
+      0;
+    
+    if (annualTotal === 0) return undefined;
+
+    return {
+      mode: consumptionData.mode,
+      annualTotal,
+      monthlyValues: consumptionData.monthlyValues || [],
+    };
+  };
+
+  // Build battery data for saving
+  const buildBatteryPayload = (): SimulationBatteryData | undefined => {
+    if (batteryCapacity === null || batteryCapacity === undefined) return undefined;
+    return { capacity: batteryCapacity };
+  };
+
+  // Build autoconsumption results for saving
+  const buildAutoconsumptionPayload = (): SimulationAutoconsumptionResults | undefined => {
+    if (!autoconsumptionResults) return undefined;
+    
+    return {
+      natural: autoconsumptionResults.annualAutoconsumption,
+      withBattery: batteryResults ? 
+        autoconsumptionResults.annualAutoconsumption + batteryResults.batteryGain : 
+        undefined,
+      rate: autoconsumptionResults.autoconsumptionRate,
+      surplus: autoconsumptionResults.annualSurplus,
+    };
+  };
+
   const handleSave = async () => {
+    const consumptionPayload = buildConsumptionPayload();
+    const batteryPayload = buildBatteryPayload();
+    const autoconsumptionPayload = buildAutoconsumptionPayload();
+
     if (!isAuthenticated) {
       // Save to localStorage before showing modal
       const pendingSimulation: PendingSimulation = {
@@ -36,6 +90,9 @@ export default function SaveSimulationButton({
         results,
         departmentName,
         timestamp: Date.now(),
+        consumption: consumptionPayload,
+        battery: batteryPayload,
+        autoconsumption: autoconsumptionPayload,
       };
       localStorage.setItem(PENDING_SIMULATION_KEY, JSON.stringify(pendingSimulation));
       setShowAuthModal(true);
@@ -46,7 +103,14 @@ export default function SaveSimulationButton({
     setErrorMessage(null);
 
     try {
-      await simulationService.saveSimulation(inputs, results, departmentName);
+      await simulationService.saveSimulation(
+        inputs, 
+        results, 
+        departmentName,
+        consumptionPayload,
+        batteryPayload,
+        autoconsumptionPayload
+      );
       setState('saved');
       onSaved?.();
     } catch (error) {

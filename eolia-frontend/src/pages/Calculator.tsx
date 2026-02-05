@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Wind, ShoppingCart, ArrowRight, Save } from 'lucide-react';
 import CalculatorForm from '../components/calculator/CalculatorForm';
@@ -6,10 +6,16 @@ import type { CalculatorFormInitialValues } from '../components/calculator/Calcu
 import ResultsDisplay from '../components/calculator/ResultsDisplay';
 import ProductionChart from '../components/calculator/ProductionChart';
 import SaveSimulationButton from '../components/calculator/SaveSimulationButton';
+import ConsumptionPanel from '../components/calculator/ConsumptionPanel';
+import SuperpositionChart from '../components/calculator/SuperpositionChart';
+import PersonalizedSummary from '../components/calculator/PersonalizedSummary';
 import { calculateProduction, getDepartments } from '../services/calculatorService';
 import { simulationService } from '../services/simulationService';
+import { calculateMonthlyAutoconsumption } from '../services/autoconsumptionService';
+import { applySeasonalProfile } from '../services/consumptionService';
 import { useAuth } from '../context/AuthContext';
-import type { CalculatorInputs, CalculatorResults } from '../types/calculator';
+import type { CalculatorInputs, CalculatorResults, ConsumptionData, BatteryResults } from '../types/calculator';
+import { DEFAULT_ANNUAL_CONSUMPTION } from '../types/calculator';
 import type { PendingSimulation } from '../types/simulation';
 
 const PENDING_SIMULATION_KEY = 'eolia_pending_simulation';
@@ -25,6 +31,65 @@ export default function Calculator() {
   const [showPendingSavePrompt, setShowPendingSavePrompt] = useState(false);
   const [isSavingPending, setIsSavingPending] = useState(false);
   const pendingProcessedRef = useRef(false);
+  
+  // Consumption and battery state for authenticated users
+  const [consumptionData, setConsumptionData] = useState<ConsumptionData | undefined>(undefined);
+  const [batteryCapacity, setBatteryCapacity] = useState<number | null>(null);
+  const [batteryResults, setBatteryResults] = useState<BatteryResults | null>(null);
+
+  // Handle consumption data change from ConsumptionPanel
+  const handleConsumptionChange = useCallback((data: ConsumptionData) => {
+    setConsumptionData(data);
+  }, []);
+
+  // Handle battery change from ResultsDisplay
+  const handleBatteryChange = useCallback((capacity: number | null, results: BatteryResults | null) => {
+    setBatteryCapacity(capacity);
+    setBatteryResults(results);
+  }, []);
+
+  // Calculate autoconsumption results when we have results and consumption data
+  const autoconsumptionData = useMemo(() => {
+    if (!results) return null;
+    
+    const annualConsumption = consumptionData?.annualTotal || 
+      (consumptionData?.monthlyValues?.reduce((sum, val) => sum + val, 0)) || 
+      DEFAULT_ANNUAL_CONSUMPTION;
+    
+    const monthlyConsumption = consumptionData?.monthlyValues || applySeasonalProfile(annualConsumption);
+    
+    const autoconsumptionResults = calculateMonthlyAutoconsumption(
+      results.monthlyProduction,
+      monthlyConsumption
+    );
+
+    // Calculate monthly battery gain if battery is selected
+    let monthlyBatteryGain: number[] | undefined;
+    if (batteryCapacity !== null && batteryResults !== null) {
+      // Distribute battery gain proportionally across months based on surplus
+      const totalSurplus = autoconsumptionResults.monthlySurplus.reduce((sum, val) => sum + val, 0);
+      if (totalSurplus > 0) {
+        monthlyBatteryGain = autoconsumptionResults.monthlySurplus.map(surplus => 
+          Math.round((surplus / totalSurplus) * batteryResults.batteryGain)
+        );
+      } else {
+        monthlyBatteryGain = new Array(12).fill(0);
+      }
+    }
+
+    return {
+      monthlyConsumption,
+      annualConsumption,
+      ...autoconsumptionResults,
+      monthlyBatteryGain,
+    };
+  }, [results, consumptionData, batteryCapacity, batteryResults]);
+
+  // Check if user has provided consumption data (not just default)
+  const hasConsumptionData = consumptionData !== undefined && (
+    consumptionData.annualTotal !== undefined || 
+    (consumptionData.monthlyValues && consumptionData.monthlyValues.length === 12)
+  );
 
   // Parse URL params for pre-filling the form
   const initialValues = useMemo<CalculatorFormInitialValues | undefined>(() => {
@@ -212,7 +277,19 @@ export default function Calculator() {
           <div className="space-y-6">
             {results ? (
               <>
-                <ResultsDisplay results={results} />
+                {/* Consumption Panel - only for authenticated users (Requirement 2.1) */}
+                {isAuthenticated && (
+                  <ConsumptionPanel
+                    onConsumptionChange={handleConsumptionChange}
+                    initialData={consumptionData}
+                  />
+                )}
+
+                <ResultsDisplay 
+                  results={results} 
+                  consumptionData={consumptionData}
+                  onBatteryChange={handleBatteryChange}
+                />
                 
                 {/* Save Button - only show if not showing pending prompt */}
                 {currentInputs && !showPendingSavePrompt && (
@@ -220,10 +297,40 @@ export default function Calculator() {
                     inputs={currentInputs}
                     results={results}
                     departmentName={currentDepartmentName}
+                    consumptionData={consumptionData}
+                    batteryCapacity={batteryCapacity}
+                    batteryResults={batteryResults}
+                    autoconsumptionResults={autoconsumptionData ? {
+                      annualAutoconsumption: autoconsumptionData.annualAutoconsumption,
+                      annualSurplus: autoconsumptionData.annualSurplus,
+                      autoconsumptionRate: autoconsumptionData.autoconsumptionRate,
+                    } : null}
                   />
                 )}
                 
                 <ProductionChart monthlyProduction={results.monthlyProduction} />
+
+                {/* SuperpositionChart - show when consumption is provided (Requirement 6.1) */}
+                {hasConsumptionData && autoconsumptionData && (
+                  <SuperpositionChart
+                    monthlyProduction={results.monthlyProduction}
+                    monthlyConsumption={autoconsumptionData.monthlyConsumption}
+                    monthlyAutoconsumption={autoconsumptionData.monthlyAutoconsumption}
+                    monthlyBatteryGain={autoconsumptionData.monthlyBatteryGain}
+                    monthlySurplus={autoconsumptionData.monthlySurplus}
+                  />
+                )}
+
+                {/* PersonalizedSummary - show when consumption is provided (Requirement 4.1) */}
+                {hasConsumptionData && autoconsumptionData && (
+                  <PersonalizedSummary
+                    annualProduction={results.annualProduction}
+                    annualAutoconsumption={autoconsumptionData.annualAutoconsumption}
+                    annualSavings={autoconsumptionData.annualSavings}
+                    batteryGain={batteryResults?.batteryGain}
+                    surplus={autoconsumptionData.annualSurplus}
+                  />
+                )}
               </>
             ) : (
               <div className="bg-white rounded-xl shadow-lg p-5">

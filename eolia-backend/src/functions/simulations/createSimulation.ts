@@ -24,9 +24,29 @@ interface SimulationResults {
   scalingFactor?: number;
 }
 
+interface SimulationConsumptionData {
+  mode: 'default' | 'simple' | 'precise' | 'enedis';
+  annualTotal: number;
+  monthlyValues: number[];
+}
+
+interface SimulationBatteryData {
+  capacity: number;
+}
+
+interface SimulationAutoconsumptionResults {
+  natural: number;
+  withBattery?: number;
+  rate: number;
+  surplus: number;
+}
+
 interface CreateSimulationRequest {
   inputs: SimulationInputs;
   results: SimulationResults;
+  consumption?: SimulationConsumptionData;
+  battery?: SimulationBatteryData;
+  autoconsumption?: SimulationAutoconsumptionResults;
 }
 
 export const handler = async (
@@ -87,12 +107,27 @@ export const handler = async (
     const dateStr = new Date(now).toLocaleDateString('fr-FR');
     const name = `Simulation ${body.inputs.departmentName} - ${dateStr}`;
 
+    // Build inputs with optional consumption and battery data
+    const inputs: Record<string, unknown> = { ...body.inputs };
+    if (body.consumption) {
+      inputs.consumption = body.consumption;
+    }
+    if (body.battery) {
+      inputs.battery = body.battery;
+    }
+
+    // Build results with optional autoconsumption data
+    const results: Record<string, unknown> = { ...body.results };
+    if (body.autoconsumption) {
+      results.autoconsumption = body.autoconsumption;
+    }
+
     const simulation = {
       userId,
       simulationId,
       name,
-      inputs: body.inputs,
-      results: body.results,
+      inputs,
+      results,
       createdAt: now,
     };
 

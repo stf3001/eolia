@@ -47,7 +47,6 @@ import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminOrdersList from './pages/admin/AdminOrdersList'
 import AdminOrderDetail from './pages/admin/AdminOrderDetail'
-import AdminLayout from './components/admin/AdminLayout'
 
 // About Pages
 import AboutUs from './pages/AboutUs'
@@ -63,9 +62,9 @@ function App() {
           <Routes>
             {/* Admin Routes - Outside main layout (Requirements: 1.1, 2.1, 3.1, 4.1) */}
             <Route path="/admin" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-            <Route path="/admin/orders" element={<AdminLayout><AdminOrdersList /></AdminLayout>} />
-            <Route path="/admin/orders/:orderId" element={<AdminLayout><AdminOrderDetail /></AdminLayout>} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/orders" element={<AdminOrdersList />} />
+            <Route path="/admin/orders/:orderId" element={<AdminOrderDetail />} />
 
             {/* Main Site Routes - With Header/Footer */}
             <Route path="/*" element={

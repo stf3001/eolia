@@ -1,12 +1,57 @@
+import { useState, useCallback } from 'react';
 import { Zap, Euro, Wind, Info } from 'lucide-react';
-import type { CalculatorResults } from '../../types/calculator';
+import type { CalculatorResults, BatteryResults, ConsumptionData } from '../../types/calculator';
+import { DEFAULT_ANNUAL_CONSUMPTION } from '../../types/calculator';
+import { calculateBatteryImpact } from '../../services/batteryService';
+import { calculateMonthlyAutoconsumption, type AutoconsumptionResults } from '../../services/autoconsumptionService';
+import { applySeasonalProfile } from '../../services/consumptionService';
+import BatterySelector from './BatterySelector';
+import BatteryComparisonChart from './BatteryComparisonChart';
 
 interface ResultsDisplayProps {
   results: CalculatorResults;
+  consumptionData?: ConsumptionData;
+  onBatteryChange?: (capacity: number | null, batteryResults: BatteryResults | null) => void;
 }
 
-export default function ResultsDisplay({ results }: ResultsDisplayProps) {
-  const { annualProduction, annualSavings, usedAnemometerData, scalingFactor } = results;
+export default function ResultsDisplay({ results, consumptionData, onBatteryChange }: ResultsDisplayProps) {
+  const { annualProduction, annualSavings, usedAnemometerData, scalingFactor, monthlyProduction } = results;
+  
+  const [selectedBatteryCapacity, setSelectedBatteryCapacity] = useState<number | null>(null);
+  const [batteryResults, setBatteryResults] = useState<BatteryResults | null>(null);
+
+  // Calculate consumption values
+  const annualConsumption = consumptionData?.annualTotal || 
+    (consumptionData?.monthlyValues?.reduce((sum, val) => sum + val, 0)) || 
+    DEFAULT_ANNUAL_CONSUMPTION;
+  
+  const monthlyConsumption = consumptionData?.monthlyValues || applySeasonalProfile(annualConsumption);
+
+  // Calculate natural autoconsumption
+  const autoconsumptionResults: AutoconsumptionResults = calculateMonthlyAutoconsumption(
+    monthlyProduction,
+    monthlyConsumption
+  );
+  const naturalAutoconsumption = autoconsumptionResults.annualAutoconsumption;
+
+  // Handle battery capacity change
+  const handleBatteryCapacityChange = useCallback((capacity: number | null) => {
+    setSelectedBatteryCapacity(capacity);
+    
+    if (capacity !== null) {
+      const newBatteryResults = calculateBatteryImpact(
+        capacity,
+        naturalAutoconsumption,
+        annualProduction,
+        annualConsumption
+      );
+      setBatteryResults(newBatteryResults);
+      onBatteryChange?.(capacity, newBatteryResults);
+    } else {
+      setBatteryResults(null);
+      onBatteryChange?.(null, null);
+    }
+  }, [naturalAutoconsumption, annualProduction, annualConsumption, onBatteryChange]);
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
@@ -77,6 +122,24 @@ export default function ResultsDisplay({ results }: ResultsDisplayProps) {
           )}
         </div>
       </div>
+
+      {/* Battery Selector - Requirement 1.1 */}
+      <BatterySelector
+        onCapacityChange={handleBatteryCapacityChange}
+        naturalAutoconsumption={naturalAutoconsumption}
+        annualProduction={annualProduction}
+        annualConsumption={annualConsumption}
+      />
+
+      {/* Battery Comparison Chart - Requirement 1.4 */}
+      {selectedBatteryCapacity !== null && batteryResults !== null && (
+        <BatteryComparisonChart
+          autoconsumptionWithoutBattery={naturalAutoconsumption}
+          autoconsumptionWithBattery={batteryResults.totalAutoconsumption}
+          annualProduction={annualProduction}
+          batteryCapacity={selectedBatteryCapacity}
+        />
+      )}
     </div>
   );
 }

@@ -100,6 +100,18 @@ export const handler = async (
   } catch (error: any) {
     console.error('Error getting admin stats:', error);
 
+    // En dev, retourner des données mock si DynamoDB n'est pas disponible
+    if (process.env.STAGE === 'dev' && error.name === 'ResourceNotFoundException') {
+      return formatJSONResponse(200, {
+        confirmedOrders: 3,
+        pendingInstallations: 2,
+        pendingEnedis: 1,
+        pendingConsuel: 1,
+        totalOrders: 12,
+        totalRevenue: 4500000, // 45 000 €
+      });
+    }
+
     return formatJSONResponse(500, {
       message: 'Erreur lors de la récupération des statistiques',
       error: process.env.STAGE === 'dev' ? error.message : undefined,

@@ -30,7 +30,8 @@ export const addressService = {
       const error = await response.json();
       throw new Error(error.message || 'Erreur lors de la récupération des adresses');
     }
-    return response.json();
+    const data = await response.json();
+    return data.addresses || [];
   },
 
   async updateAddress(addressId: string, addressData: AddressFormData, token: string): Promise<Address> {

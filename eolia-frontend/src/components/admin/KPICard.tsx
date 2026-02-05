@@ -4,7 +4,8 @@
  */
 
 import { Link } from 'react-router-dom';
-import { LucideIcon, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface KPICardProps {
   title: string;

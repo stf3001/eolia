@@ -4,7 +4,7 @@ Plateforme web complète pour la vente d'éoliennes domestiques verticales de la
 
 ## 🌬️ Fonctionnalités
 
-- **Calculateur de production** - Estimation de la production éolienne par département avec données anémomètre optionnelles, sauvegarde des simulations
+- **Calculateur avancé** - Estimation production éolienne, sélection batteries (5-20 kWh), profil de consommation (simple/précis/Enedis), graphiques superposition production/consommation, comparaison avec/sans batterie, calcul autoconsommation et économies, sauvegarde simulations
 - **Boutique en ligne** - Catalogue éoliennes Tulipe (1-10 kWc), onduleurs, accessoires avec bannière informative installation
 - **Tunnel de commande** - Checkout avec Stripe, forfaits pose, limite 36 kWc
 - **Prêt d'anémomètre** - Location 1 mois avec caution 100€
@@ -44,7 +44,7 @@ eolia-backend/      # Serverless Framework + AWS Lambda + DynamoDB
 - AWS Lambda (Node.js 20 + Python 3.11)
 - DynamoDB (7 tables)
 - Cognito (authentification)
-- S3 (contrats PDF, médias, documents)
+- S3 (contrats PDF, médias, documents, données Enedis)
 - SES (emails)
 - Stripe (paiements)
 
